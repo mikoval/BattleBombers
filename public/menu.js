@@ -9,97 +9,101 @@ function startMenu(){
     title.class("title")
     title.center();
     title.position(null, height/5);
+
+    
+
     
     //menu for choosing to join or create
+    var JoinCreateDiv = createElement("div");
+    JoinCreateDiv.class("menu-div");
+
     var join_button = createButton('Join Game');
     join_button.class("button button-lg")
-    join_button.center();
-    join_button.position(null,height/3 + 40);
+    join_button.parent(JoinCreateDiv);
+
     var create_button = createButton('Create Game');
     create_button.class("button button-lg")
-    create_button.center();
-    create_button.position(null,height/3 + 200);
+    create_button.parent(JoinCreateDiv);
+    JoinCreateDiv.center();
+
     
     create_button.mousePressed(createMenu);
     join_button.mousePressed(joinMenu);
 
     // code for creating game menu
+    var CreateDiv = createElement("div");
+    CreateDiv.class("menu-div");
+
     var promptCreate = createElement("h2", 'Select Game Mode');
     promptCreate.class("title")
-    promptCreate.center();
-    promptCreate.position(null, height/3 - 30);
-    promptCreate.hide();
+    promptCreate.parent(CreateDiv);
+  
 
     var twoP = createButton('Two Player');
     twoP.class("button-small button");
-    twoP.center();
-    twoP.position(null, height/3 + 30).hide();
-    twoP.hide();
+    twoP.parent(CreateDiv);
+    
 
     var threeP = createButton('Three Player');
     threeP.class("button-small button");
-    threeP.center();
-    threeP.position(null, height/3 + 80).hide();
-    threeP.hide();
+    threeP.parent(CreateDiv);
+
 
     var fourP = createButton('Four Player');
     fourP.class("button-small button");
-    fourP.center();
-    fourP.position(null, height/3 + 130).hide();
+    fourP.parent(CreateDiv);
+    
 
-    var back = createButton('Back');
-    back.class("button-small button-error");
-    back.center();
-    back.position(null, height/3 + 180).hide();
-    back.mousePressed(mainMenu);
-    fourP.hide();
+    var createBack = createButton('Back');
+    createBack.class("button-small button-error");
+    createBack.mousePressed(mainMenu);
+    createBack.parent(CreateDiv);
+
+    CreateDiv.center();
+    CreateDiv.hide();
+
+
+    
 
     // code for joining a room
+    var JoinDiv = createElement("div");
+    JoinDiv.class("menu-div");
+
     var promptJoin = createElement("h2", 'Enter game code to join');
     promptJoin.class("title")
-    promptJoin.center();
-    promptJoin.position(null, height/3 - 30);
-    promptJoin.hide();
+    promptJoin.parent(JoinDiv)
 
+    var roomInputDiv = createElement("div")
+    roomInputDiv.class("center-div");
     var roomInput = createInput();
-    roomInput.class("input-large");
-    roomInput.center();
+    roomInput.class('input-large')
     roomInput.attribute("placeholder", "Enter room code")
-    roomInput.position(null, height/3 + 40);
-    roomInput.hide();
+    roomInput.parent(roomInputDiv);
+    roomInputDiv.parent(JoinDiv);
+   
+    var backDiv = createElement("div")
+    backDiv.class("center-div");
+    var joinBack = createButton('Back');
+    joinBack.class("button-small button-error");
+    joinBack.mousePressed(mainMenu);
+    joinBack.parent(backDiv);
+    backDiv.parent(JoinDiv);
+
+    JoinDiv.center();
+    JoinDiv.hide()
 
     function createMenu(){
-        create_button.hide();
-        join_button.hide();
-        promptCreate.show();
-        twoP.show();
-        threeP.show();
-        fourP.show();
-        back.show();
+        JoinCreateDiv.hide();
+        CreateDiv.show()
     }
     function mainMenu(){
-        //show new
-        create_button.show();
-        join_button.show();
-        // hide create
-        promptCreate.hide();
-        twoP.hide();
-        threeP.hide();
-        fourP.hide();
-        // hide join
-        promptJoin.hide();
-        roomInput.hide();
-
-
-        back.hide();
+        JoinCreateDiv.show();
+        CreateDiv.hide();
+        JoinDiv.hide();
     }
     function joinMenu(){
-        create_button.hide();
-        join_button.hide();
-        promptJoin.show();
-        roomInput.show();
-        back.show();
-
+        JoinCreateDiv.hide();
+        JoinDiv.show();
     }
     
 
