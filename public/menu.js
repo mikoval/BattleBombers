@@ -10,7 +10,33 @@ function startMenu(){
     title.center();
     title.position(null, height/5);
 
-    
+    //menu for picking name
+    var NameDiv = createElement("div");
+    NameDiv.class("menu-div");
+
+    var promptJoin = createElement("h2", 'Enter your name');
+    promptJoin.class("title")
+    promptJoin.parent(NameDiv)
+
+    var nameInputDiv = createElement("div")
+    nameInputDiv.class("center-div");
+    var nameInput = createInput();
+    nameInput.class('input-large')
+    nameInput.attribute("placeholder", "Enter name")
+    nameInput.parent(nameInputDiv);
+    nameInputDiv.parent(NameDiv);
+   
+    var nameSubmitDiv = createElement("div")
+    nameSubmitDiv.class("center-div");
+    var nameSubmit = createButton('Submit');
+    nameSubmit.class("button-small button");
+    nameSubmit.mousePressed(submitName);
+    nameSubmit.parent(nameSubmitDiv);
+    nameSubmitDiv.parent(NameDiv);
+
+    NameDiv.center();
+    NameDiv.hide()
+
 
     
     //menu for choosing to join or create
@@ -25,7 +51,7 @@ function startMenu(){
     create_button.class("button button-lg")
     create_button.parent(JoinCreateDiv);
     JoinCreateDiv.center();
-
+    JoinCreateDiv.hide();
     
     create_button.mousePressed(createMenu);
     join_button.mousePressed(joinMenu);
@@ -42,16 +68,17 @@ function startMenu(){
     var twoP = createButton('Two Player');
     twoP.class("button-small button");
     twoP.parent(CreateDiv);
-    
+    twoP.mousePressed(createTwoP);
 
     var threeP = createButton('Three Player');
     threeP.class("button-small button");
     threeP.parent(CreateDiv);
-
+    threeP.mousePressed(createThreeP);
 
     var fourP = createButton('Four Player');
     fourP.class("button-small button");
     fourP.parent(CreateDiv);
+    fourP.mousePressed(createFourP);
     
 
     var createBack = createButton('Back');
@@ -81,6 +108,15 @@ function startMenu(){
     roomInput.parent(roomInputDiv);
     roomInputDiv.parent(JoinDiv);
    
+    var roomSubmitDiv = createElement("div")
+    roomSubmitDiv.class("center-div");
+    var roomSubmit = createButton('Submit');
+    roomSubmit.class("button-small button");
+    roomSubmit.mousePressed(submitJoin);
+    roomSubmit.parent(roomSubmitDiv);
+    roomSubmitDiv.parent(JoinDiv);
+
+
     var backDiv = createElement("div")
     backDiv.class("center-div");
     var joinBack = createButton('Back');
@@ -105,8 +141,28 @@ function startMenu(){
         JoinCreateDiv.hide();
         JoinDiv.show();
     }
-    
-
+    function createTwoP(){createRoom(2); CreateDiv.hide();}
+    function createThreeP(){createRoom(3); CreateDiv.hide();}
+    function createFourP(){createRoom(4); CreateDiv.hide();}
+    function submitName(){
+        var input_name = nameInput.value();
+        if(checkName(input_name)){
+            name = input_name;
+            NameDiv.hide();
+            JoinCreateDiv.show();
+        }
+    }
+    function submitJoin(){
+        var room_id = roomInput.value();
+        joinRoom(room_id);
+        
+    }
+    if(name == ""){
+        NameDiv.show();
+    }
+    else{
+        JoinCreateDiv.show();
+    }
 }
 
 function startMenuAnimation(){
@@ -160,4 +216,7 @@ function menuExplode(x,y){
             grid[x][y-i].fireTimer = 1;
     }
 
+}
+function checkName(name){
+    return true;
 }

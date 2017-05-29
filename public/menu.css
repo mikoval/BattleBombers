@@ -45,10 +45,14 @@
     width: 300px;
 }
 .button-small{
-    margin:15px;
+
+    margin-top:15px;
+    margin-left:auto;
+    margin-bottom:15px;
+    margin-right:auto;
     font-size: 16px;
     width:200px;
-    padding: 10px 30px;
+    padding: 12px 24px;
 }
 
 .button-error {
@@ -120,6 +124,20 @@
   text-align: center
 }
 .center-div{
+  text-align: center;
   margin:0, auto;
+}
+.image-small{
+  display:inline-block;
+}
+.waiting-div{
+  background-color: gray;
+  padding:30px;
+  border-radius: 10px;
+}
+.text-wrapper{
+  font-size: 20px;
+  text-align: center;
+  color:white;
 }
         
