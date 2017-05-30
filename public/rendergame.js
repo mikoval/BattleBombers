@@ -5,7 +5,6 @@ function drawGame(){
     var centerY = height/2;
     var startX = centerX - grid.length/2 * squareSize;
     var startY = centerY - grid[0].length/2 * squareSize;
-    console.log(grid);
     for(var i = 0; i < grid.length; i++){
         for (var j = 0; j < grid[0].length; j++){
             var x = startX+i*squareSize;

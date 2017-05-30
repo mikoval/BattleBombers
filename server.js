@@ -152,7 +152,7 @@ function updateGames(){
         for(var x = 0; x  < grid.length; x++){
             for(var y = 0; y < grid[0].length; y++){
                 if(grid[x][y].bomb != undefined){
-                    grid[x][y].bomb.timer -= 0.01;
+                    grid[x][y].bomb.timer -= 0.02;
                     if(grid[x][y].bomb.timer <= 0 || grid[x][y].fireTimer > 0){
                         grid[x][y].bomb.player.bombCount -= 1;
                         grid[x][y].bomb = undefined;
