@@ -57,3 +57,21 @@ function waitingRoom(data){
     inviteDiv.parent(WaitingDiv);
     WaitingDiv.center();
 }
+function startGame(data){
+    console.log(data);
+    removeElements();
+    background(51);
+    state = "Current Game";
+    grid = data.game.grid;
+    squareSize = height/grid.length;
+    players = data.players;
+
+    directionLoop = setInterval(updatePosition, 30);
+}
+function updateGame(data){
+    players = data.players;
+    grid = data.game.grid;
+}
+function updatePosition(){
+    socket.emit('update-input', direction);
+}
