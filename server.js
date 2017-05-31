@@ -78,6 +78,7 @@ function newConnection(socket){
     function updateInput(data){
         var roomnum = socket.room;
         var room = rooms[roomnum];
+        if(room==undefined){return;}
         var players = room.players;
         for(var i = 0; i < players.length; i++){
             if(players[i].id == socket.id){
@@ -96,7 +97,7 @@ function createGrid(width, height){
     {   
         arr.push([])
         for(var j = 0; j < height; j++){
-            if(i == 0 || i == width-1 || j == 0 || j == height-1){
+            if(i == 0 || i == width-1 || j == 0 || j == height-1 || (i%2 == 0) && (j%2 == 0)){
                 arr[i].push({wall : true, fireTimer: -1})
             }
             else{
@@ -107,9 +108,67 @@ function createGrid(width, height){
     }
     return arr;
 }
-setInterval(updateGames, 30)
+setInterval(updatePosition, 30)
+setInterval(updateBombs, 100)
 
-function updateGames(){
+function updateBombs(){
+
+    
+    for(var i = 0; i < active.length; i++){
+        var room = rooms[active[i]]
+        var players = room.players
+        var grid = room.game.grid;
+        for(var x = 0; x  < grid.length; x++){
+            for(var y = 0; y < grid[0].length; y++){
+                if(grid[x][y].fireTimer >= 0){
+                    grid[x][y].fireTimer -= .2;
+                }
+                
+            }
+        }
+        for(var x = 0; x  < grid.length; x++){
+            for(var y = 0; y < grid[0].length; y++){
+                 if(grid[x][y].bomb != undefined){
+                    grid[x][y].bomb.timer -= 0.05;
+                    if(grid[x][y].bomb.timer <= 0 || grid[x][y].fireTimer >= 0){
+                        grid[x][y].bomb.player.bombCount -= 1;
+                        grid[x][y].bomb = undefined;
+                        for(var k = 0; k < 3; k++){
+                            if(grid[x + k][y].wall)
+                                break; 
+                            grid[x+k][y].fireTimer = 1;  
+                        }
+                        for(var k = 0; k < 3; k++){
+                            if(grid[x - k][y].wall)
+                                break; 
+                            grid[x-k][y].fireTimer = 1;  
+                        }
+                        for(var k = 0; k < 3; k++){
+                            if(grid[x][y + k].wall)
+                                break; 
+                            grid[x][y + k].fireTimer = 1;  
+                        }
+                        for(var k = 0; k < 3; k++){
+                            if(grid[x][y -k].wall)
+                                break; 
+                            grid[x][y-k].fireTimer = 1;  
+                        }
+
+                       
+                    }
+                    
+                }
+                
+            }
+        }
+
+        io.sockets.in(active[i]).emit('game-update', room);
+    }
+    
+
+ 
+}
+function updatePosition(){
     for(var i = 0; i < active.length; i++){
         var room = rooms[active[i]]
         var players = room.players
@@ -149,31 +208,7 @@ function updateGames(){
                 }
             }
         }
-        for(var x = 0; x  < grid.length; x++){
-            for(var y = 0; y < grid[0].length; y++){
-                if(grid[x][y].bomb != undefined){
-                    grid[x][y].bomb.timer -= 0.02;
-                    if(grid[x][y].bomb.timer <= 0 || grid[x][y].fireTimer > 0){
-                        grid[x][y].bomb.player.bombCount -= 1;
-                        grid[x][y].bomb = undefined;
-                        for(var k = 0; k < 3; k++){
-                            if(grid.length  > x + k) 
-                                grid[x+k][y].fireTimer = 1;
-                            if(0 <= x- k) 
-                                grid[x-k][y].fireTimer = 1;
-                            if(grid[0].length  > y + k) 
-                                grid[x][y+k].fireTimer = 1;
-                            if(0 <= y- k) 
-                                grid[x][y-k].fireTimer = 1;
-                        }
-
-                    }
-                }
-                if(grid[x][y].fireTimer > 0){
-                    grid[x][y].fireTimer -= 0.1;
-                }
-            }
-        }
+        
         io.sockets.in(active[i]).emit('game-update', room);
     }
     
