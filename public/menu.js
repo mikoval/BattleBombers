@@ -1,6 +1,8 @@
 var grid = createGrid(8,8);
 var squareSize = 80;
 function startMenu(){
+
+
     state = "Start Menu";
     textSize(30);
     textAlign(CENTER);

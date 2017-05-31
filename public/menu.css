@@ -127,6 +127,12 @@
   text-align: center;
   margin:0, auto;
 }
+.left-div{
+  position: fixed;
+  top:0%;
+  height:100%;
+  background-color:gray;
+}
 .image-small{
   display:inline-block;
 }
@@ -140,4 +146,23 @@
   text-align: center;
   color:white;
 }
+.score-item{
+  width:80%;
+  margin: 10%;
+  height:200px;
+  background-color:white;
+  border:solid;
+  border-width:1px;
+  border-radius:10px;
+}
+.player-name{
+  font-weight: bold;
+  color:black;
+  text-align: center;
+}
+.player-score{
+  color:black;
+  text-align: center;
+}
+
         

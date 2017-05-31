@@ -53,17 +53,19 @@ function newConnection(socket){
         var room = rooms[roomid]
         players.push({name: playerName, id:socket.id});
         if(players.length == room.size){
-            room.game = {grid: createGrid(16,16) }
+            room.game = {grid: createGrid(17,17) }
             for(var i = 0; i < players.length; i++){
                 var location;
                 if (i == 0){location = {x: 1.5, y :1.5}}
-                else if (i == 1){location = {x: 13.5, y : 13.5}}
-                else if (i == 2){location = {x: 1.5, y : 13.5}}
-                else if (i == 3){location = {x: 13.5, y : 1.5}}
+                else if (i == 1){location = {x: 15.5, y : 15.5}}
+                else if (i == 2){location = {x: 1.5, y : 15.5}}
+                else if (i == 3){location = {x: 15.5, y : 1.5}}
                 players[i].position = location;
                 players[i].direction = {up: false, down: false, left: false, right: false, bomb: false};
                 players[i].bombCount = 0;
                 players[i].bombMax = 2;
+                players[i].lives = 3;
+                players[i].invulnerable = -1;
                 
             }
             active.push(roomid);
@@ -174,9 +176,17 @@ function updatePosition(){
         var players = room.players
         var grid = room.game.grid;
         for(var j = 0; j < players.length; j++){
+           
             var player = players[j]
             var position = player.position;
             var direction = player.direction;
+            if(player.invulnerable >= 0){ player.invulnerable -= 0.01;}
+            if(grid[Math.floor(position.x)][Math.floor(position.y)].fireTimer >= 0 && player.invulnerable < 0){
+                player.lives -= 1;
+                
+                player.invulnerable = 1;
+                io.sockets.in(active[i]).emit('score-update', room);
+            }
             if(direction.up){
                 var ny = Math.floor(position.y -.1);
                 var nx = Math.floor(position.x);
