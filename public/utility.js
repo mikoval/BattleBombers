@@ -52,10 +52,11 @@ function waitingRoom(data){
 
     var inviteDiv = createElement("div");
     inviteDiv.class("text-wrapper")
-    var inviteMsg = createElement("p", "Invite others by using the code: " + code);
+    var inviteMsg = createElement("p", "Invite others by using the code: " + location.host + "/" + code);
     inviteMsg.parent(inviteDiv);
     inviteDiv.parent(WaitingDiv);
     WaitingDiv.center();
+
 }
 function startGame(data){
     removeElements();

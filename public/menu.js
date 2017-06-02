@@ -135,6 +135,7 @@ function startMenu(){
         CreateDiv.show()
     }
     function mainMenu(){
+
         JoinCreateDiv.show();
         CreateDiv.hide();
         JoinDiv.hide();
@@ -150,6 +151,11 @@ function startMenu(){
         var input_name = nameInput.value();
         if(checkName(input_name)){
             name = input_name;
+            if(window.location.pathname.length >  1){
+                console.log(window.location.pathname.split("/")[1])
+                joinRoom(window.location.pathname.split("/")[1]);
+            }
+            
             NameDiv.hide();
             JoinCreateDiv.show();
         }

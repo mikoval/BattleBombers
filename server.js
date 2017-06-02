@@ -13,6 +13,9 @@ app.use(express.static(__dirname + '/public'));
 app.get('/', function (req, res) {
   res.render('index.ejs', { title: 'Hey', message: 'Hello there!' })
 })
+app.get('/:room', function (req, res) {
+  res.render('index.ejs', { title: 'Hey', message: 'Hello there!' })
+})
 
 
 var socket = require('socket.io');
