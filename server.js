@@ -32,6 +32,7 @@ function newConnection(socket){
     socket.on('update-input', updateInput)
 
     function createGame(data){
+        active = [];
         var playerName = data.name;
         var size = data.size;
         var room = generateRoomID();
