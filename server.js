@@ -130,7 +130,7 @@ setInterval(updateBombs, 100)
 
 function updateBombs(){
 
-    
+    console.time('someFunctionbombs');
     for(var i = 0; i < active.length; i++){
         var room = rooms[active[i]]
         var players = room.players
@@ -201,11 +201,12 @@ function updateBombs(){
 
         io.sockets.in(active[i]).emit('game-update', room);
     }
-    
+    console.timeEnd('someFunctionbombs');
 
  
 }
 function updatePosition(){
+    console.time('someFunction');
     for(var i = 0; i < active.length; i++){
         var room = rooms[active[i]]
         var players = room.players
@@ -259,5 +260,5 @@ function updatePosition(){
         
         io.sockets.in(active[i]).emit('game-update', room);
     }
-    
+    console.timeEnd('someFunction');
 }
