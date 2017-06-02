@@ -4,6 +4,7 @@ var height;
 var state;
 var bomb_img;
 var wall_img;
+var wood_img;
 var name = "";
 var grid;
 var squareSize;
@@ -22,6 +23,7 @@ function setup() {
 
     bomb_img = loadImage("/Bomb.png"); 
     wall_img = loadImage("/Wall.png"); 
+    wood_img = loadImage("/Wood.jpg"); 
     width = document.body.clientWidth;
     height = document.body.clientHeight;
 
@@ -40,8 +42,10 @@ function draw(){
     }
 }
 function keyPressed(e) {
-    console.log(e);
+
     if(state != "Current Game"){return;}
+    console.log("preventDefault")
+    e.preventDefault();
     var key  = e.key;
     if(key == "w" || key == "ArrowUp"){direction.up = true;}
     if(key == "d" || key == "ArrowRight"){direction.right = true;}
@@ -51,6 +55,8 @@ function keyPressed(e) {
 }
 function keyReleased(e) {
     if(state != "Current Game"){return;}
+    e.preventDefault();
+
     var key  = e.key;
     if(key == "w" || key == "ArrowUp"){direction.up = false;}
     if(key == "d" || key == "ArrowRight"){direction.right = false;}
@@ -58,7 +64,14 @@ function keyReleased(e) {
     if(key == "a" || key == "ArrowLeft"){direction.left = false;}
     if(key == " "){direction.bomb = false;}
 }
+window.addEventListener('keydown', function (event) {
 
+    
+       // event.preventDefault();
+
+
+
+});
 
 
 

@@ -74,6 +74,7 @@ function updateGame(data){
 }
 function updatePosition(){
     socket.emit('update-input', direction);
+    direction.bomb = false;
 }
 function updateScore(data){
     console.log("updating score");

@@ -100,10 +100,21 @@ function createGrid(width, height){
         arr.push([])
         for(var j = 0; j < height; j++){
             if(i == 0 || i == width-1 || j == 0 || j == height-1 || (i%2 == 0) && (j%2 == 0)){
-                arr[i].push({wall : true, fireTimer: -1})
+                arr[i].push({wall : true, fireTimer: -1, box: false})
             }
             else{
-                arr[i].push({fireTimer: -1});
+                arr[i].push({fireTimer: -1, box:false});
+            }
+            
+        }
+    }
+    for(var i = 1; i < width-1; i++)
+    {   
+        for(var j = 1; j < height -1; j++){
+            if((i == width-2 && j == height-2) || (i == width-2 && j == height-3) || (i == width-3 && j == height-2)) {continue}
+            if((i == 1 && j == 1) || (i ==1 && j ==2) || (i == 2 && j == 1)) {continue;}
+            if(Math.random() < .8 && !arr[i][j].wall){
+                arr[i][j].box = true;
             }
             
         }
@@ -136,21 +147,41 @@ function updateBombs(){
                         grid[x][y].bomb.player.bombCount -= 1;
                         grid[x][y].bomb = undefined;
                         for(var k = 0; k < 3; k++){
+                            if(grid[x + k][y].box)
+                            {
+                                grid[x + k][y].box = false;
+                                break;
+                            }
                             if(grid[x + k][y].wall)
                                 break; 
                             grid[x+k][y].fireTimer = 1;  
                         }
                         for(var k = 0; k < 3; k++){
+                            if(grid[x - k][y].box)
+                            {
+                                grid[x - k][y].box = false;
+                                break;
+                            }
                             if(grid[x - k][y].wall)
                                 break; 
                             grid[x-k][y].fireTimer = 1;  
                         }
                         for(var k = 0; k < 3; k++){
+                            if(grid[x ][y+ k].box)
+                            {
+                                grid[x ][y + k].box = false;
+                                break;
+                            }
                             if(grid[x][y + k].wall)
                                 break; 
                             grid[x][y + k].fireTimer = 1;  
                         }
                         for(var k = 0; k < 3; k++){
+                            if(grid[x ][y -k].box)
+                            {
+                                grid[x][y-k].box = false;
+                                break
+                            }
                             if(grid[x][y -k].wall)
                                 break; 
                             grid[x][y-k].fireTimer = 1;  
@@ -180,6 +211,9 @@ function updatePosition(){
             var player = players[j]
             var position = player.position;
             var direction = player.direction;
+            var x = Math.floor(position.x);
+            var y = Math.floor(position.y);
+
             if(player.invulnerable >= 0){ player.invulnerable -= 0.01;}
             if(grid[Math.floor(position.x)][Math.floor(position.y)].fireTimer >= 0 && player.invulnerable < 0){
                 player.lives -= 1;
@@ -190,25 +224,25 @@ function updatePosition(){
             if(direction.up){
                 var ny = Math.floor(position.y -.1);
                 var nx = Math.floor(position.x);
-                if(!grid[nx][ny].wall)
+                if(!grid[nx][ny].wall && !grid[nx][ny].box && !(grid[nx][ny].bomb && !grid[x][y].bomb))
                     position.y = position.y - .1
             }
             if(direction.down){
                 var ny = Math.floor(position.y +.1);
                 var nx = Math.floor(position.x);
-                if(!grid[nx][ny].wall)
+                if(!grid[nx][ny].wall && !grid[nx][ny].box && !(grid[nx][ny].bomb && !grid[x][y].bomb))
                     position.y = position.y + .1
             }
             if(direction.right){
                 var ny = Math.floor(position.y);
                 var nx = Math.floor(position.x + .1);
-                if(!grid[nx][ny].wall)
+                if(!grid[nx][ny].wall && !grid[nx][ny].box && !(grid[nx][ny].bomb && !grid[x][y].bomb))
                     position.x = position.x + .1
             }
             if(direction.left){
                 var ny = Math.floor(position.y);
                 var nx = Math.floor(position.x -.1);
-                if(!grid[nx][ny].wall)
+                if(!grid[nx][ny].wall && !grid[nx][ny].box && !(grid[nx][ny].bomb && !grid[x][y].bomb))
                     position.x = position.x  - .1
             }
             if(direction.bomb){

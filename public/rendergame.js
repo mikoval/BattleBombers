@@ -45,6 +45,9 @@ function drawGame(){
             if(grid[i][j].wall){
                 image(wall_img, x, y, squareSize,squareSize);
             }
+            if(grid[i][j].box){
+                image(wood_img, x, y, squareSize,squareSize);
+            }
         }
     }
     for(var i = 0; i < players.length; i++){
