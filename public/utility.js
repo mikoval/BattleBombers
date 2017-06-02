@@ -52,8 +52,11 @@ function waitingRoom(data){
 
     var inviteDiv = createElement("div");
     inviteDiv.class("text-wrapper")
-    var inviteMsg = createElement("p", "Invite others by using the code: " + location.host + "/" + code);
+    var inviteMsg = createElement("p", "Invite others by using the code: " );
+    var inviteCode = createElement("p", location.host + "/" + code );
+  
     inviteMsg.parent(inviteDiv);
+    inviteCode.parent(inviteDiv);
     inviteDiv.parent(WaitingDiv);
     WaitingDiv.center();
 
