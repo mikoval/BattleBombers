@@ -125,12 +125,12 @@ function createGrid(width, height){
     }
     return arr;
 }
-setInterval(updatePosition, 50)
-//setInterval(updateBombs, 100)
+setInterval(updatePosition, 30)
+setInterval(updateBombs, 100)
 
 function updateBombs(){
 
-    console.time('someFunctionbombs');
+    console.timeEnd('someFunctionbombs');
     for(var i = 0; i < active.length; i++){
         var room = rooms[active[i]]
         var players = room.players
@@ -201,7 +201,7 @@ function updateBombs(){
 
         io.sockets.in(active[i]).emit('game-update', room);
     }
-    console.timeEnd('someFunctionbombs');
+    
 
  
 }
@@ -219,42 +219,42 @@ function updatePosition(){
             var x = Math.floor(position.x);
             var y = Math.floor(position.y);
 
-            //if(player.invulnerable >= 0){ player.invulnerable -= 0.01;}
-            /*if(grid[Math.floor(position.x)][Math.floor(position.y)].fireTimer >= 0 && player.invulnerable < 0){
+            if(player.invulnerable >= 0){ player.invulnerable -= 0.01;}
+            if(grid[Math.floor(position.x)][Math.floor(position.y)].fireTimer >= 0 && player.invulnerable < 0){
                 player.lives -= 1;
                 
                 player.invulnerable = 1;
                 io.sockets.in(active[i]).emit('score-update', room);
-            }*/
+            }
             if(direction.up){
-                //var ny = Math.floor(position.y -.1);
-                //var nx = Math.floor(position.x);
-                //if(!grid[nx][ny].wall && !grid[nx][ny].box && !(grid[nx][ny].bomb && !grid[x][y].bomb))
+                var ny = Math.floor(position.y -.1);
+                var nx = Math.floor(position.x);
+                if(!grid[nx][ny].wall && !grid[nx][ny].box && !(grid[nx][ny].bomb && !grid[x][y].bomb))
                     position.y = position.y - .1
             }
             if(direction.down){
-                //var ny = Math.floor(position.y +.1);
-                //var nx = Math.floor(position.x);
-                //if(!grid[nx][ny].wall && !grid[nx][ny].box && !(grid[nx][ny].bomb && !grid[x][y].bomb))
+                var ny = Math.floor(position.y +.1);
+                var nx = Math.floor(position.x);
+                if(!grid[nx][ny].wall && !grid[nx][ny].box && !(grid[nx][ny].bomb && !grid[x][y].bomb))
                     position.y = position.y + .1
             }
             if(direction.right){
-                //var ny = Math.floor(position.y);
-                //var nx = Math.floor(position.x + .1);
-                //if(!grid[nx][ny].wall && !grid[nx][ny].box && !(grid[nx][ny].bomb && !grid[x][y].bomb))
+                var ny = Math.floor(position.y);
+                var nx = Math.floor(position.x + .1);
+                if(!grid[nx][ny].wall && !grid[nx][ny].box && !(grid[nx][ny].bomb && !grid[x][y].bomb))
                     position.x = position.x + .1
             }
             if(direction.left){
-                //var ny = Math.floor(position.y);
-                //var nx = Math.floor(position.x -.1);
-                //if(!grid[nx][ny].wall && !grid[nx][ny].box && !(grid[nx][ny].bomb && !grid[x][y].bomb))
+                var ny = Math.floor(position.y);
+                var nx = Math.floor(position.x -.1);
+                if(!grid[nx][ny].wall && !grid[nx][ny].box && !(grid[nx][ny].bomb && !grid[x][y].bomb))
                     position.x = position.x  - .1
             }
             if(direction.bomb){
-                //if(player.bombCount < player.bombMax  &&  grid[Math.floor(position.x)][Math.floor(position.y)].bomb == undefined){
-                //    grid[Math.floor(position.x)][Math.floor(position.y)].bomb = {player: player, timer: 1, active: true}
-                //    player.bombCount +=1;
-                //}
+                if(player.bombCount < player.bombMax  &&  grid[Math.floor(position.x)][Math.floor(position.y)].bomb == undefined){
+                    grid[Math.floor(position.x)][Math.floor(position.y)].bomb = {player: player, timer: 1, active: true}
+                    player.bombCount +=1;
+                }
             }
         }
         
