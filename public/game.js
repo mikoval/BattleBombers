@@ -62,7 +62,7 @@ function keyReleased(e) {
     if(key == "d" || key == "ArrowRight"){direction.right = false;}
     if(key == "s" || key == "ArrowDown"){direction.down = false;}
     if(key == "a" || key == "ArrowLeft"){direction.left = false;}
-    if(key == " "){direction.bomb = false;}
+    //if(key == " "){direction.bomb = false;}
 }
 window.addEventListener('keydown', function (event) {
 
