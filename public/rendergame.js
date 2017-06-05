@@ -24,6 +24,7 @@ function drawScore(){
 
 }
 function drawGame(){
+    /*
     var rand = Math.random();
     
     var centerX = width/2;
@@ -50,6 +51,7 @@ function drawGame(){
             }
         }
     }
+    */
     for(var i = 0; i < players.length; i++){
         if(players[i].lives <= 0){}
         else{
