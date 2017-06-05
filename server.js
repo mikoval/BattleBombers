@@ -21,10 +21,7 @@ app.get('/:room', function (req, res) {
 var socket = require('socket.io');
 
 var io = socket(server);
-io.configure(function () { 
-  io.set("transports", ["xhr-polling"]); 
-  io.set("polling duration", 10); 
-});
+
 
 io.sockets.on('connection', newConnection);
 var rooms = {};
@@ -134,7 +131,6 @@ setInterval(updateBombs, 100)
 
 function updateBombs(){
 
-    console.timeEnd('someFunctionbombs');
     for(var i = 0; i < active.length; i++){
         var room = rooms[active[i]]
         var players = room.players
@@ -210,7 +206,6 @@ function updateBombs(){
  
 }
 function updatePosition(){
-    console.time('someFunction');
     for(var i = 0; i < active.length; i++){
         var room = rooms[active[i]]
         var players = room.players
@@ -264,5 +259,4 @@ function updatePosition(){
         
         io.sockets.in(active[i]).emit('game-update', room);
     }
-    console.timeEnd('someFunction');
 }
