@@ -75,10 +75,10 @@ function newConnection(socket){
                 
             }
             active.push(roomid);
-            io.sockets.in(roomid).emit('game-start', room);
+            io.sockets.in(roomid).volatile.emit('game-start', room);
         }
         else{
-            io.sockets.in(roomid).emit('game-pending', room);
+            io.sockets.in(roomid).volatile.emit('game-pending', room);
         }
         
 
@@ -206,7 +206,7 @@ function updateBombs(){
             }
         }
 
-        io.sockets.in(active[i]).emit('game-update', room);
+        io.sockets.in(active[i]).volatile.emit('game-update', room);
     }
     
 
@@ -324,7 +324,7 @@ function updatePosition(){
                 player.lives -= 1;
                 
                 player.invulnerable = 1;
-                io.sockets.in(active[i]).emit('score-update', room);
+                io.sockets.in(active[i]).volatile.emit('score-update', room);
             }
             if(direction.up){
 
@@ -360,6 +360,6 @@ function updatePosition(){
 
         }
         
-        io.sockets.in(active[i]).emit('game-update', room);
+        io.sockets.in(active[i]).volatile.emit('game-update', room);
     }
 }
