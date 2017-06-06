@@ -58,13 +58,13 @@ function newConnection(socket){
         var room = rooms[roomid]
         players.push({name: playerName, id:socket.id});
         if(players.length == room.size){
-            room.game = {grid: createGrid(17,17) }
+            room.game = {grid: createGrid(13,13) }
             for(var i = 0; i < players.length; i++){
                 var location;
                 if (i == 0){location = {x: 1.5, y :1.5}}
-                else if (i == 1){location = {x: 15.5, y : 15.5}}
-                else if (i == 2){location = {x: 1.5, y : 15.5}}
-                else if (i == 3){location = {x: 15.5, y : 1.5}}
+                else if (i == 1){location = {x: 11.5, y : 11.5}}
+                else if (i == 2){location = {x: 1.5, y : 11.5}}
+                else if (i == 3){location = {x: 11.5, y : 1.5}}
                 players[i].position = location;
                 players[i].direction = {up: false, down: false, left: false, right: false, bomb: false};
                 players[i].bombCount = 0;

@@ -24,7 +24,6 @@ function drawScore(){
 
 }
 function drawGame(){
-    
     var rand = Math.random();
     
     var centerX = width/2;
@@ -83,4 +82,5 @@ function drawGame(){
 
 
     }
+
 }
