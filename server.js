@@ -120,12 +120,12 @@ function createGrid(width, height){
         for(var j = 1; j < height -1; j++){
             if((i == width-2 && j == height-2) || (i == width-2 && j == height-3) || (i == width-3 && j == height-2)) {continue}
             if((i == 1 && j == 1) || (i ==1 && j ==2) || (i == 2 && j == 1)) {continue;}
-            if(Math.random() < .8 && !arr[i][j].wall){
+            if(Math.random() < .4 && !arr[i][j].wall){
                 var rand = Math.random();
                 arr[i][j].box = true;
-                if(rand < 0.2)
+                if(rand < 0.1)
                     arr[i][j].boots = true;
-                else if (rand < 0.4)
+                else if (rand < 0.2)
                     arr[i][j].bombP = true;
             }
             
