@@ -48,7 +48,19 @@ function drawGame(){
                 image(wall_img, x, y, squareSize,squareSize);
             }
             if(grid[i][j].box){
+
                 image(wood_img, x, y, squareSize,squareSize);
+            }
+            else{
+
+                if(grid[i][j].bombP){
+                    console.log("boots");
+                    image(bomb_p_img, x, y, squareSize,squareSize);
+                }
+                if(grid[i][j].boots){
+                    console.log("bombs");
+                    image(boots_img, x, y, squareSize,squareSize);
+                }
             }
         }
     }

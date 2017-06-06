@@ -5,6 +5,8 @@ var state;
 var bomb_img;
 var wall_img;
 var wood_img;
+var bomb_p_img;
+var boots_img;
 var name = "";
 var grid;
 var squareSize;
@@ -24,6 +26,8 @@ function setup() {
     bomb_img = loadImage("/Bomb.png"); 
     wall_img = loadImage("/Wall.png"); 
     wood_img = loadImage("/Wood.jpg"); 
+    bomb_p_img = loadImage("/Bomb+.png"); 
+    boots_img = loadImage("/Boots.png"); 
     width = document.body.clientWidth;
     height = document.body.clientHeight;
 
