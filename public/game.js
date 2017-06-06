@@ -14,7 +14,7 @@ var players;
 var direction = {up: false, down: false, left: false, right: false};
 var directionLoop;
 function setup() {
-    console.log(frameRate(30));
+
     socket = io()
     socket.on('game-pending', waitingRoom);
     socket.on('game-start', startGame);
