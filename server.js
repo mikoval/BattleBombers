@@ -206,7 +206,7 @@ function updateBombs(){
             }
         }
 
-        io.sockets.in(active[i]).volatile.emit('game-update', room);
+        io.sockets.in(active[i]).volatile.emit('game-update', compress(room));
     }
     
 
@@ -359,7 +359,30 @@ function updatePosition(){
             }
 
         }
-        
-        io.sockets.in(active[i]).volatile.emit('game-update', room);
+        var send = compress(room);
+        io.sockets.in(active[i]).volatile.emit('game-update', send);
     }
+}
+function compress(game){
+    var grid = game.game.grid;
+    var players = game.players;
+
+    var minGrid = createGrid(grid.length, grid[0].length);
+    var minPlayers = new Array(players.length);
+    for( var i = 0; i < players.length; i++){
+        minPlayers[i] = {position: players[i].position}
+    }
+    for( var i = 0; i < grid.length; i++){
+        for( var j = 0; j < grid[0].length; j++){
+            if(grid[i][j].bomb){minGrid[i][j] = "bomb"}
+            else if(grid[i][j].wall){minGrid[i][j] = "wall"}
+            else if(grid[i][j].box){minGrid[i][j] = "box"}
+            else if(grid[i][j].fireTimer >= 0){minGrid[i][j] = "fire"}
+            else if(!grid[i][j].box && grid[i][j].bombP){minGrid[i][j] = "bomb-boost"}
+            else if(!grid[i][j].box && grid[i][j].boots){minGrid[i][j] = "speed-boost"}
+            else {minGrid[i][j] = "_"}
+        }
+    }
+     return {grid: minGrid, players: minPlayers};
+
 }

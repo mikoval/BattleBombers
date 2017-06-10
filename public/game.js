@@ -11,7 +11,7 @@ var name = "";
 var grid;
 var squareSize;
 var players;
-var direction = {up: false, down: false, left: false, right: false};
+var input = {up: false, down: false, left: false, right: false, bomb : false};
 var directionLoop;
 function setup() {
     frameRate(25);
@@ -51,31 +51,23 @@ function keyPressed(e) {
     console.log("preventDefault")
     e.preventDefault();
     var key  = e.key;
-    if(key == "w" || key == "ArrowUp"){direction.up = true;}
-    if(key == "d" || key == "ArrowRight"){direction.right = true;}
-    if(key == "s" || key == "ArrowDown"){direction.down = true;}
-    if(key == "a" || key == "ArrowLeft"){direction.left = true;}
-    if(key == " "){direction.bomb = true;}
+    if(key == "w" || key == "ArrowUp"){input.up = true;}
+    if(key == "d" || key == "ArrowRight"){input.right = true;}
+    if(key == "s" || key == "ArrowDown"){input.down = true;}
+    if(key == "a" || key == "ArrowLeft"){input.left = true;}
+    if(key == " "){input.bomb = true;}
 }
 function keyReleased(e) {
     if(state != "Current Game"){return;}
     e.preventDefault();
 
     var key  = e.key;
-    if(key == "w" || key == "ArrowUp"){direction.up = false;}
-    if(key == "d" || key == "ArrowRight"){direction.right = false;}
-    if(key == "s" || key == "ArrowDown"){direction.down = false;}
-    if(key == "a" || key == "ArrowLeft"){direction.left = false;}
+    if(key == "w" || key == "ArrowUp"){input.up = false;}
+    if(key == "d" || key == "ArrowRight"){input.right = false;}
+    if(key == "s" || key == "ArrowDown"){input.down = false;}
+    if(key == "a" || key == "ArrowLeft"){input.left = false;}
     //if(key == " "){direction.bomb = false;}
 }
-window.addEventListener('keydown', function (event) {
-
-    
-       // event.preventDefault();
-
-
-
-});
 
 
 

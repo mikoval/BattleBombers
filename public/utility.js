@@ -74,11 +74,11 @@ function startGame(data){
 }
 function updateGame(data){
     players = data.players;
-    grid = data.game.grid;
+    grid = data.grid;
 }
 function updatePosition(){
-    socket.emit('update-input', direction);
-    direction.bomb = false;
+    socket.emit('update-input', input);
+    input.bomb = false;
 }
 function updateScore(data){
     console.log("updating score");

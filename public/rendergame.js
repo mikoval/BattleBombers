@@ -35,31 +35,40 @@ function drawGame(){
         for (var j = 0; j < grid[0].length; j++){
             var x = startX+i*squareSize;
             var y = startY + j * squareSize;
-            if(grid[i][j].fireTimer > 0){
+            if(grid[i][j] == "_"){
+                fill("#A0A0A0")
+                rect(x, y, squareSize, squareSize);
+            }
+            else if (grid[i][j] == "fire")
+            {
                 fill("#AA3030")
-            }
-            else{fill("#A0A0A0")}
-            rect(x, y, squareSize, squareSize);
-            if(grid[i][j].bomb != undefined){
-                image(bomb_img, x, y, squareSize,squareSize);
-            }
-            if(grid[i][j].wall){
+                rect(x, y, squareSize, squareSize);
+            }    
+            else if( grid[i][j] == "wall")
+            {
                 image(wall_img, x, y, squareSize,squareSize);
             }
-            if(grid[i][j].box){
-
+            else if( grid[i][j] == "box")
+            {
                 image(wood_img, x, y, squareSize,squareSize);
             }
-            else{
-
-                if(grid[i][j].bombP){
-                    console.log("boots");
-                    image(bomb_p_img, x, y, squareSize,squareSize);
-                }
-                if(grid[i][j].boots){
-                    console.log("bombs");
-                    image(boots_img, x, y, squareSize,squareSize);
-                }
+            else if( grid[i][j] == "speed-boost")
+            {
+                fill("#A0A0A0")
+                rect(x, y, squareSize, squareSize);
+                image(boots_img, x, y, squareSize,squareSize);
+            }
+            else if( grid[i][j] == "bomb-boost")
+            {
+                fill("#A0A0A0")
+                rect(x, y, squareSize, squareSize);
+                image(bomb_p_img, x, y, squareSize,squareSize);
+            }
+            else if( grid[i][j] == "bomb")
+            {
+                fill("#A0A0A0")
+                rect(x, y, squareSize, squareSize);
+                image(bomb_img, x, y, squareSize,squareSize);
             }
         }
     }
