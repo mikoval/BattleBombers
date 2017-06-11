@@ -26,7 +26,7 @@ var io = socket(server);
 io.sockets.on('connection', newConnection);
 var rooms = {};
 var active = [];
-var radius = 0.3;
+var radius = 0.5;
 function newConnection(socket){
     console.log("new socket connection: " + socket.id);
     socket.on('create-game', createGame);
@@ -123,9 +123,9 @@ function createGrid(width, height){
             if(Math.random() < .4 && !arr[i][j].wall){
                 var rand = Math.random();
                 arr[i][j].box = true;
-                if(rand < 0.1)
+                if(rand < 0.15)
                     arr[i][j].boots = true;
-                else if (rand < 0.2)
+                else if (rand < 0.3)
                     arr[i][j].bombP = true;
             }
             
@@ -153,7 +153,7 @@ function updateBombs(){
         for(var x = 0; x  < grid.length; x++){
             for(var y = 0; y < grid[0].length; y++){
                  if(grid[x][y].bomb != undefined){
-                    grid[x][y].bomb.timer -= 0.05;
+                    grid[x][y].bomb.timer -= 0.035;
                     if(grid[x][y].bomb.timer <= 0 || grid[x][y].fireTimer >= 0){
                         grid[x][y].bomb.player.bombCount -= 1;
                         grid[x][y].bomb = undefined;
@@ -213,81 +213,49 @@ function updateBombs(){
  
 }
 function canMove(nx, ny, x, y, grid){
-    var valid = true;
     var onBomb = false;
-    if(checkBomb(x-1, y-1, x, y, grid, onBomb)) { onBomb = true;}
-    if(checkBomb(x, y-1 , x, y, grid, onBomb)) { onBomb = true;}
-    if(checkBomb(x+1, y-1 , x, y, grid, onBomb)) { onBomb = true;}
 
-    if(checkBomb(x-1, y , x, y, grid, onBomb)) { onBomb = true;}
-    if(checkBomb(x,  y ,x, y, grid, onBomb)) { onBomb = true;}
-    if(checkBomb(x+1, y , x, y, grid, onBomb)) { onBomb = true;}
-
-    if(checkBomb(x-1, y+1 , x, y, grid, onBomb)) { onBomb = true;}
-    if(checkBomb(x, y+1 , x, y, grid, onBomb)) { onBomb = true;}
-    if(checkBomb(x+1, y+1 , x, y, grid, onBomb)) { onBomb = true;}
-
-
-    //
-
-    if(!checkBox(nx-1, ny-1, nx, ny, grid, onBomb)) { valid = false;}
-    if(!checkBox(nx, ny-1 , nx, ny, grid, onBomb)) { valid = false;}
-    if(!checkBox(nx+1, ny-1 , nx, ny, grid, onBomb)) { valid = false;}
-
-    if(!checkBox(nx-1, ny , nx, ny, grid, onBomb)) { valid = false;}
-    if(!checkBox(nx,  ny , nx, ny, grid, onBomb)) { valid = false;}
-    if(!checkBox(nx+1, ny , nx, ny, grid, onBomb)) { valid = false;}
-
-    if(!checkBox(nx-1, ny+1 , nx, ny, grid, onBomb)) { valid = false;}
-    if(!checkBox(nx, ny+1 , nx, ny, grid, onBomb)) { valid = false;}
-    if(!checkBox(nx+1, ny+1 , nx, ny, grid, onBomb)) { valid = false;}
-    
-    return valid;
-}
-function checkBomb(x,y, nx, ny, grid, onBomb){
-    var center1 = grid[Math.floor(x)][Math.floor(y)].center
-    var center2 = {x: nx, y:ny};
-    var pt = {x: center2.x, y : center2.y};
-    var bomb = grid[Math.floor(x)][Math.floor(y)].bomb
-    if(pt.x > center1.x + .5) pt.x = center1.x  + 0.5;
-    if(pt.x < center1.x - 0.5) pt.x = center1.x - 0.5;
-    if(pt.y > center1.y + .5) pt.y = center1.y + .5;
-    if(pt.y < center1.y - .5) pt.y = center1.y - .5;
-
-
-    //distance check, just use distance^2 for actual implementation
-
-    if(distance(pt, center2) < radius && bomb ) {
-
-        return true;
+    var current0 = grid[Math.floor(x)][Math.floor(y)]
+    var current1 = grid[Math.floor(x+ radius * 0.9)][Math.floor(y)]
+    var current2 = grid[Math.floor(x- radius * 0.9)][Math.floor(y)]
+    var current3 = grid[Math.floor(x)][Math.floor(y+ radius * 0.9)]
+    var current4 = grid[Math.floor(x)][Math.floor(y- radius * 0.9)]
+    if(current0.bomb){
+        onBomb = current0;
+    }
+    if(current1.bomb){
+        onBomb = current1;
+    }
+    if(current2.bomb){
+        onBomb = current2;
+    }
+    if(current3.bomb){
+        onBomb = current3;
+    }
+    if(current4.bomb){
+        onBomb = current4;
     }
 
-    return false; 
-}
-function checkBox(x,y, nx, ny, grid, onBomb){
-
-    var center1 = grid[Math.floor(x)][Math.floor(y)].center
-    var center2 = {x: nx, y:ny};
-    var wall = grid[Math.floor(x)][Math.floor(y)].wall
-    var box = grid[Math.floor(x)][Math.floor(y)].box
-    var bomb = grid[Math.floor(x)][Math.floor(y)].bomb
-
-    var pt = {x: center2.x, y : center2.y};
-    if(pt.x > center1.x + .5) pt.x = center1.x  + 0.5;
-    if(pt.x < center1.x - 0.5) pt.x = center1.x - 0.5;
-    if(pt.y > center1.y + .5) pt.y = center1.y + .5;
-    if(pt.y < center1.y - .5) pt.y = center1.y - .5;
-
-
-    //distance check, just use distance^2 for actual implementation
-
-    if(distance(pt, center2) < radius && ((wall||box) ||  (bomb && !onBomb))   ) {
-
+    var cell1 = grid[Math.floor(nx + radius * 0.9)][Math.floor(ny)]
+    var cell2 = grid[Math.floor(nx - radius * 0.9)][Math.floor(ny)]
+    var cell3 = grid[Math.floor(nx)][Math.floor(ny + radius * 0.9)]
+    var cell4 = grid[Math.floor(nx)][Math.floor(ny - radius * 0.9)]
+    if(cell1.wall || cell1.box || ( (cell1.bomb && !onBomb)  || (cell1.bomb && cell1 != onBomb)) ){
         return false;
     }
-
-    return true; 
+    if(cell2.wall || cell2.box ||  ( (cell2.bomb && !onBomb)  || (cell2.bomb && cell2 != onBomb))  ){
+        return false;
+    }
+    if(cell3.wall || cell3.box ||  ( (cell3.bomb && !onBomb)  || (cell3.bomb && cell3 != onBomb))  ){
+        return false;
+    }
+    if(cell4.wall || cell4.box ||  ( (cell4.bomb && !onBomb)  || (cell4.bomb && cell4 != onBomb))  ){
+        return false;
+    }
+    
+    return true;
 }
+
 function distance(c1, c2){
     return Math.pow(Math.pow((c1.x - c2.x),2) + Math.pow((c1.y - c2.y),2) , 0.5);
 }
@@ -327,29 +295,115 @@ function updatePosition(){
                 io.sockets.in(active[i]).volatile.emit('score-update', room);
             }
             if(direction.up){
+                var cx = position.x - Math.floor(position.x)
+                if(cx!= 0.5){
+                    if(cx < 0.5){
+                        if(cx + player.speed > 0.5){
+                            position.x = position.x + (0.5 - cx);
+                        }
+                        else{
+                            position.x = position.x +  player.speed;
+                        }
+                    }
+                    else{
+                        if(cx - player.speed < 0.5){
+                            position.x = position.x - (cx- 0.5);
+                        }
+                        else{
+                            position.x = position.x - player.speed;
+                        }
+                    }
+                }
+                else{
+                    var ny = position.y -player.speed;
+                    var nx = position.x;
+                    if(canMove(nx, ny ,  x ,y, grid))
+                        position.y = position.y - player.speed
+                }
+                
+            }
+            else if(direction.down){
+                var cx = position.x - Math.floor(position.x)
 
-                var ny = position.y -player.speed;
-                var nx = position.x;
-                if(canMove(nx, ny ,  x ,y, grid))
-                    position.y = position.y - player.speed
+                if(cx!= 0.5){
+                    if(cx < 0.5){
+                        if(cx + player.speed > 0.5){
+                            position.x = position.x + (0.5 - cx);
+                        }
+                        else{
+                            position.x = position.x +  player.speed;
+                        }
+                    }
+                    else{
+                        if(cx - player.speed < 0.5){
+                            position.x = position.x - (cx- 0.5);
+                        }
+                        else{
+                            position.x = position.x - player.speed;
+                        }
+                    }
+                }
+                else{
+                    var ny = position.y + player.speed;
+                    var nx = position.x;
+                    if(canMove(nx, ny ,  x ,y, grid))
+                        position.y = position.y + player.speed
+                }
             }
-            if(direction.down){
-                var ny = position.y +player.speed;
-                var nx = position.x;
-                if(canMove(nx, ny ,  x ,y , grid))
-                    position.y = position.y + player.speed
+            else if(direction.right){
+                var cy = position.y - Math.floor(position.y)
+
+                if(cy!= 0.5){
+                    if(cy < 0.5){
+                        if(cy + player.speed > 0.5){
+                            position.y = position.y + (0.5 - cy);
+                        }
+                        else{
+                            position.y = position.y +  player.speed;
+                        }
+                    }
+                    else{
+                        if(cy - player.speed < 0.5){
+                            position.y = position.y - (cy- 0.5);
+                        }
+                        else{
+                            position.y = position.y - player.speed;
+                        }
+                    }
+                }
+                else{
+                    var ny = position.y ;
+                    var nx = position.x + player.speed;
+                    if(canMove(nx, ny ,  x ,y, grid))
+                        position.x = position.x + player.speed
+                }
             }
-            if(direction.right){
-                var ny = position.y;
-                var nx = position.x + player.speed;
-                if(canMove(nx, ny ,  x ,y , grid))
-                    position.x = position.x + player.speed
-            }
-            if(direction.left){
-                var ny = position.y;
-                var nx = position.x -player.speed;
-                if(canMove(nx, ny ,  x ,y , grid))
-                    position.x = position.x  - player.speed
+            else if(direction.left){
+                var cy = position.y - Math.floor(position.y)
+                if(cy!= 0.5){
+                    if(cy < 0.5){
+                        if(cy + player.speed > 0.5){
+                            position.y = position.y + (0.5 - cy);
+                        }
+                        else{
+                            position.y = position.y +  player.speed;
+                        }
+                    }
+                    else{
+                        if(cy - player.speed < 0.5){
+                            position.y = position.y - (cy- 0.5);
+                        }
+                        else{
+                            position.y = position.y - player.speed;
+                        }
+                    }
+                }
+                else{
+                    var ny = position.y ;
+                    var nx = position.x - player.speed;
+                    if(canMove(nx, ny ,  x ,y, grid))
+                        position.x = position.x - player.speed
+                }
             }
             if(direction.bomb){
                 if(player.bombCount < player.bombMax  &&  grid[Math.floor(position.x)][Math.floor(position.y)].bomb == undefined){
@@ -370,19 +424,23 @@ function compress(game){
     var minGrid = createGrid(grid.length, grid[0].length);
     var minPlayers = new Array(players.length);
     for( var i = 0; i < players.length; i++){
-        minPlayers[i] = {position: players[i].position}
+        minPlayers[i] = {position: players[i].position, lives: players[i].lives }
     }
     for( var i = 0; i < grid.length; i++){
         for( var j = 0; j < grid[0].length; j++){
-            if(grid[i][j].bomb){minGrid[i][j] = "bomb"}
-            else if(grid[i][j].wall){minGrid[i][j] = "wall"}
-            else if(grid[i][j].box){minGrid[i][j] = "box"}
-            else if(grid[i][j].fireTimer >= 0){minGrid[i][j] = "fire"}
-            else if(!grid[i][j].box && grid[i][j].bombP){minGrid[i][j] = "bomb-boost"}
-            else if(!grid[i][j].box && grid[i][j].boots){minGrid[i][j] = "speed-boost"}
-            else {minGrid[i][j] = "_"}
+            minGrid[i][j] = {}
+            if(grid[i][j].fireTimer >= 0){minGrid[i][j].floor = "fire"}
+            else if(grid[i][j].wall)    {minGrid[i][j].floor = "wall"}
+            else if(grid[i][j].box)     {minGrid[i][j].floor = "box"}
+            else                        {minGrid[i][j].floor = "_"}
+
+            if(grid[i][j].bomb){minGrid[i][j].obj = "bomb"}
+    
+            else if(!grid[i][j].box && grid[i][j].bombP){minGrid[i][j].obj = "bomb-boost"}
+            else if(!grid[i][j].box && grid[i][j].boots){minGrid[i][j].obj = "speed-boost"}
+            else {minGrid[i][j].obj = ""}
         }
     }
-     return {grid: minGrid, players: minPlayers};
+    return {grid: minGrid, players: minPlayers};
 
 }

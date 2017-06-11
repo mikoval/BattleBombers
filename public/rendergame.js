@@ -35,36 +35,36 @@ function drawGame(){
         for (var j = 0; j < grid[0].length; j++){
             var x = startX+i*squareSize;
             var y = startY + j * squareSize;
-            if(grid[i][j] == "_"){
+            if(grid[i][j].floor == "_"){
                 fill("#A0A0A0")
                 rect(x, y, squareSize, squareSize);
             }
-            else if (grid[i][j] == "fire")
+            else if (grid[i][j].floor == "fire")
             {
                 fill("#AA3030")
                 rect(x, y, squareSize, squareSize);
             }    
-            else if( grid[i][j] == "wall")
+            else if( grid[i][j].floor == "wall")
             {
                 image(wall_img, x, y, squareSize,squareSize);
             }
-            else if( grid[i][j] == "box")
+            else if( grid[i][j].floor == "box")
             {
                 image(wood_img, x, y, squareSize,squareSize);
             }
-            else if( grid[i][j] == "speed-boost")
+            if( grid[i][j].obj == "speed-boost")
             {
                 fill("#A0A0A0")
                 rect(x, y, squareSize, squareSize);
                 image(boots_img, x, y, squareSize,squareSize);
             }
-            else if( grid[i][j] == "bomb-boost")
+            else if( grid[i][j].obj == "bomb-boost")
             {
                 fill("#A0A0A0")
                 rect(x, y, squareSize, squareSize);
                 image(bomb_p_img, x, y, squareSize,squareSize);
             }
-            else if( grid[i][j] == "bomb")
+            else if( grid[i][j].obj == "bomb")
             {
                 fill("#A0A0A0")
                 rect(x, y, squareSize, squareSize);
@@ -84,7 +84,7 @@ function drawGame(){
             var position = players[i].position
             var x = startX + position.x * squareSize;
             var y = startY + position.y * squareSize;
-            ellipse(x,y, squareSize*0.6, squareSize * 0.6);
+            ellipse(x,y, squareSize*1, squareSize * 1);
         }
         
 
