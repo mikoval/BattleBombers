@@ -137,6 +137,7 @@ setInterval(updatePosition, 20)
 setInterval(updateBombs, 100)
 
 function updateBombs(){
+    console.time('bombs');
 
     for(var i = 0; i < active.length; i++){
         var room = rooms[active[i]]
@@ -208,7 +209,8 @@ function updateBombs(){
 
         io.sockets.in(active[i]).volatile.emit('game-update', compress(room));
     }
-    
+    console.timeEnd('bombs');
+
 
  
 }
@@ -260,6 +262,8 @@ function distance(c1, c2){
     return Math.pow(Math.pow((c1.x - c2.x),2) + Math.pow((c1.y - c2.y),2) , 0.5);
 }
 function updatePosition(){
+    console.time('position');
+
     for(var i = 0; i < active.length; i++){
         var room = rooms[active[i]]
         var players = room.players
@@ -416,6 +420,8 @@ function updatePosition(){
         var send = compress(room);
         io.sockets.in(active[i]).volatile.emit('game-update', send);
     }
+    console.timeEnd('position');
+
 }
 function compress(game){
     var grid = game.game.grid;
