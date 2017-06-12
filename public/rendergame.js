@@ -9,6 +9,12 @@ function drawScore(){
     scoreBoard.class("left-div");
     scoreBoard.style("width", startX + "px");
 
+    var timeItem = createElement('div')
+    timeItem.class('time-item');
+    var timer = createElement('h3', "Time: " + formatTime(time));
+    timer.class("timer");
+    timer.parent(timeItem);
+    timeItem.parent(scoreBoard);
     for(var i =0; i < players.length; i++){
         var scoreItem = createElement('div')
         scoreItem.class('score-item');
@@ -24,12 +30,12 @@ function drawScore(){
 
 }
 function drawGame(){
-    var rand = Math.random();
-    
     var centerX = width/2;
     var centerY = height/2;
     var startX = centerX - grid.length/2 * squareSize;
     var startY = centerY - grid[0].length/2 * squareSize;
+
+    $(".timer").text( "Time: " + formatTime(time));
     
     for(var i = 0; i < grid.length; i++){
         for (var j = 0; j < grid[0].length; j++){

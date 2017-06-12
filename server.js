@@ -58,13 +58,14 @@ function newConnection(socket){
         var room = rooms[roomid]
         players.push({name: playerName, id:socket.id});
         if(players.length == room.size){
-            room.game = {grid: createGrid(13,13) }
+            var grid = createGrid(9 + 2 * players.length,9 + 2 * players.length)
+            room.game = {grid: grid,  startTime: new Date(), currentTime: 0 }
             for(var i = 0; i < players.length; i++){
                 var location;
                 if (i == 0){location = {x: 1.5, y :1.5}}
-                else if (i == 1){location = {x: 11.5, y : 11.5}}
-                else if (i == 2){location = {x: 1.5, y : 11.5}}
-                else if (i == 3){location = {x: 11.5, y : 1.5}}
+                else if (i == 1){location = {x: grid.length - 1.5, y : grid[0].length - 1.5}}
+                else if (i == 2){location = {x: 1.5, y : grid[0].length - 1.5}}
+                else if (i == 3){location = {x: grid.length - 1.5, y : 1.5}}
                 players[i].position = location;
                 players[i].direction = {up: false, down: false, left: false, right: false, bomb: false};
                 players[i].bombCount = 0;
@@ -75,10 +76,10 @@ function newConnection(socket){
                 
             }
             active.push(roomid);
-            io.sockets.in(roomid).volatile.emit('game-start', room);
+            io.sockets.in(roomid).emit('game-start', room);
         }
         else{
-            io.sockets.in(roomid).volatile.emit('game-pending', room);
+            io.sockets.in(roomid).emit('game-pending', room);
         }
         
 
@@ -118,14 +119,25 @@ function createGrid(width, height){
     for(var i = 1; i < width-1; i++)
     {   
         for(var j = 1; j < height -1; j++){
+            //bottom right
             if((i == width-2 && j == height-2) || (i == width-2 && j == height-3) || (i == width-3 && j == height-2)) {continue}
+
+            //top left
             if((i == 1 && j == 1) || (i ==1 && j ==2) || (i == 2 && j == 1)) {continue;}
-            if(Math.random() < .4 && !arr[i][j].wall){
+
+            //top right
+            if((i == 1 && j == height-2) || (i ==1 && j == height-3) || (i == 2 && j == height-2)) {continue;}
+
+            //bottom left
+            if((i ==  width-2 && j ==1) || (i ==width-3 && j ==  1) || (i == width-2 && j == 2)) {continue;}
+
+
+            if(Math.random() < .8 && !arr[i][j].wall){
                 var rand = Math.random();
                 arr[i][j].box = true;
-                if(rand < 0.15)
+                if(rand < 0.1)
                     arr[i][j].boots = true;
-                else if (rand < 0.3)
+                else if (rand < 0.2)
                     arr[i][j].bombP = true;
             }
             
@@ -137,7 +149,7 @@ setInterval(updatePosition, 20)
 setInterval(updateBombs, 100)
 
 function updateBombs(){
-    console.time('bombs');
+    
 
     for(var i = 0; i < active.length; i++){
         var room = rooms[active[i]]
@@ -156,7 +168,8 @@ function updateBombs(){
                  if(grid[x][y].bomb != undefined){
                     grid[x][y].bomb.timer -= 0.035;
                     if(grid[x][y].bomb.timer <= 0 || grid[x][y].fireTimer >= 0){
-                        grid[x][y].bomb.player.bombCount -= 1;
+                        if(grid[x][y].bomb.player)
+                            grid[x][y].bomb.player.bombCount -= 1;
                         grid[x][y].bomb = undefined;
                         for(var k = 0; k < 3; k++){
                             if(grid[x + k][y].box)
@@ -207,9 +220,8 @@ function updateBombs(){
             }
         }
 
-        io.sockets.in(active[i]).volatile.emit('game-update', compress(room));
+        io.sockets.in(active[i]).emit('game-update', compress(room));
     }
-    console.timeEnd('bombs');
 
 
  
@@ -262,12 +274,17 @@ function distance(c1, c2){
     return Math.pow(Math.pow((c1.x - c2.x),2) + Math.pow((c1.y - c2.y),2) , 0.5);
 }
 function updatePosition(){
-    console.time('position');
 
     for(var i = 0; i < active.length; i++){
         var room = rooms[active[i]]
         var players = room.players
         var grid = room.game.grid;
+        var time = (new Date()) - room.game.startTime ;
+        room.game.currentTime = time;
+        var timer = time /1000 / 60
+        if(timer > 4){
+            addBomb(grid, (timer -4 ) /10 + 1);
+        }
         for(var j = 0; j < players.length; j++){
            
             var player = players[j]
@@ -296,7 +313,7 @@ function updatePosition(){
                 player.lives -= 1;
                 
                 player.invulnerable = 1;
-                io.sockets.in(active[i]).volatile.emit('score-update', room);
+                io.sockets.in(active[i]).emit('score-update', compress(room));
             }
             if(direction.up){
                 var cx = position.x - Math.floor(position.x)
@@ -418,14 +435,14 @@ function updatePosition(){
 
         }
         var send = compress(room);
-        io.sockets.in(active[i]).volatile.emit('game-update', send);
+        io.sockets.in(active[i]).emit('game-update', send);
     }
-    console.timeEnd('position');
 
 }
 function compress(game){
     var grid = game.game.grid;
     var players = game.players;
+    var time = game.game.currentTime;
 
     var minGrid = createGrid(grid.length, grid[0].length);
     var minPlayers = new Array(players.length);
@@ -447,6 +464,19 @@ function compress(game){
             else {minGrid[i][j].obj = ""}
         }
     }
-    return {grid: minGrid, players: minPlayers};
+    return {grid: minGrid, players: minPlayers, time: time};
 
+}
+
+function addBomb(grid, timer){
+    var prob = Math.random();
+    if(prob > Math.log(timer) ) { return;}
+    var x = Math.floor(Math.random()*grid.length);
+    var y = Math.floor(Math.random()* grid[0].length);
+    if(grid[x][y].bomb || grid[x][y].wall || grid[x][y].box || grid[x][y].boots ||  grid[x][y].bombP){
+        addBomb(grid);
+    }
+    else{
+        grid[x][y].bomb = {player: undefined, timer: 1, active: true}
+    }
 }

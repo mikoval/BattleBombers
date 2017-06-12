@@ -154,6 +154,7 @@ function startMenu(){
             if(window.location.pathname.length >  1){
                 console.log(window.location.pathname.split("/")[1])
                 joinRoom(window.location.pathname.split("/")[1]);
+                window.history.pushState('Home', 'Home', '/');
             }
             
             NameDiv.hide();

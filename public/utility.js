@@ -75,6 +75,7 @@ function startGame(data){
 function updateGame(data){
     players = data.players;
     grid = data.grid;
+    time = data.time;
 }
 function updatePosition(){
     socket.emit('update-input', input);
@@ -84,4 +85,15 @@ function updateScore(data){
     console.log("updating score");
     players = data.players;
     drawScore();
+}
+
+function formatTime(rawTime){
+    var timeval = parseFloat(rawTime) / 1000;
+    ms = timeval - Math.floor(timeval)
+    s = Math.floor(timeval)%60
+    m = Math.floor(timeval)/60
+    s = ("0" + parseInt(s)).slice(-2);
+    m = ("0" + parseInt(m)).slice(-2);
+    ms = parseInt(ms * 100);
+    return (m + ":" + s + ":" + ms);
 }

@@ -13,6 +13,7 @@ var squareSize;
 var players;
 var input = {up: false, down: false, left: false, right: false, bomb : false};
 var directionLoop;
+var time = 0;
 function setup() {
     frameRate(25);
     socket = io()
@@ -38,6 +39,7 @@ function setup() {
     startMenu();
 }
 function draw(){
+
     if(state == "Start Menu"){
         startMenuAnimation();
     }
