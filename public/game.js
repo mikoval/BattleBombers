@@ -22,6 +22,7 @@ function setup() {
     socket.on('game-update', updateGame);
     socket.on('score-update', updateScore);
     socket.on("invalid-room", invalidRoom);
+    socket.on("game-over", gameOver);
     //socket.on('text', newText);
 
     bomb_img = loadImage("/Bomb.png"); 

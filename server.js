@@ -274,7 +274,6 @@ function distance(c1, c2){
     return Math.pow(Math.pow((c1.x - c2.x),2) + Math.pow((c1.y - c2.y),2) , 0.5);
 }
 function updatePosition(){
-
     for(var i = 0; i < active.length; i++){
         var room = rooms[active[i]]
         var players = room.players
@@ -285,9 +284,12 @@ function updatePosition(){
         if(timer > 4){
             addBomb(grid, (timer -4 ) /10 + 1);
         }
+        var alivePlayers = 0
         for(var j = 0; j < players.length; j++){
-           
+            
             var player = players[j]
+            if(player.lives <= 0){ continue;}
+            alivePlayers += 1;
             var position = player.position;
             var direction = player.direction;
             var x = Math.floor(position.x);
@@ -434,8 +436,31 @@ function updatePosition(){
             }
 
         }
-        var send = compress(room);
-        io.sockets.in(active[i]).volatile.emit('game-update', send);
+        
+        if(alivePlayers <= 1){
+
+            var winner = undefined;
+            for(var j = 0; j < players.length; j++){
+                if(players[j].lives >= 1){
+                    winner = players[j].name;
+                }
+            }
+            setTimeout(function(i){
+
+                active.splice(i, 1);
+                }, 0, i)
+            var code = generateRoomID();
+            var data = {winner: winner, newRoom: code}
+            rooms[code] = {id: code, players:[], size:players.length};
+
+            io.sockets.in(active[i]).volatile.emit('game-over', data);
+        }
+
+        else{
+            var send = compress(room);
+            io.sockets.in(active[i]).volatile.emit('game-update', send);
+        }
+        
     }
 
 }

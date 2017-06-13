@@ -61,6 +61,43 @@ function waitingRoom(data){
     WaitingDiv.center();
 
 }
+function gameOver(data){
+ 
+    var winner = data.winner
+    var code = data.newRoom;
+    var GameOverDiv = createElement("div");
+    GameOverDiv.class("waiting-div");
+
+    var prompt = createElement("h2", 'Game Over');
+    prompt.class("title")
+    prompt.parent(GameOverDiv)
+
+    var WinnerDiv = createElement("div");
+    WinnerDiv.class("text-wrapper")
+    
+    var winner = createElement("h3", winner + " has won the game");
+    winner.parent(WinnerDiv);
+
+    WinnerDiv.parent(GameOverDiv);
+
+    console.log(code);
+
+    
+    var playAgainBtn = createButton('Play Again');
+    playAgainBtn.class("button-small button");
+    playAgainBtn.mousePressed(playAgain);
+
+    playAgainBtn.parent(GameOverDiv);
+
+    function playAgain(){
+        joinRoom(code);
+    }
+
+
+    GameOverDiv.center();
+
+}
+
 function startGame(data){
     removeElements();
     background(51);
@@ -70,6 +107,7 @@ function startGame(data){
     players = data.players;
 
     drawScore();
+    clearInterval(directionLoop);
     directionLoop = setInterval(updatePosition, 30);
 }
 function updateGame(data){
