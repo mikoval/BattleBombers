@@ -105,6 +105,16 @@ function startGame(data){
     grid = data.game.grid;
     squareSize = height/grid.length;
     players = data.players;
+    p1  = createSprite(50, 50, squareSize, squareSize);
+    p1.addAnimation("front-true", forward_animation);
+    p1.addAnimation("right-true", right_animation);
+    p1.addAnimation("left-true", left_animation);
+    p1.addAnimation("back-true", back_animation);
+    p2  = createSprite(50, 100, squareSize, squareSize);
+    p2.addAnimation("front-true", forward_animation);
+    p2.addAnimation("right-true", right_animation);
+    p2.addAnimation("left-true", left_animation);
+    p2.addAnimation("back-true", back_animation);
 
     drawScore();
     clearInterval(directionLoop);

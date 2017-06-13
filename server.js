@@ -73,6 +73,8 @@ function newConnection(socket){
                 players[i].lives = 3;
                 players[i].invulnerable = -1;
                 players[i].speed = 0.1;
+                players[i].dir = "front";
+                players[i].moving = false;
                 
             }
             active.push(roomid);
@@ -318,6 +320,8 @@ function updatePosition(){
                 io.sockets.in(active[i]).volatile.emit('score-update', compress(room));
             }
             if(direction.up){
+                player.moving = true;
+                player.dir = "back"
                 var cx = position.x - Math.floor(position.x)
                 if(cx!= 0.5){
                     if(cx < 0.5){
@@ -346,6 +350,8 @@ function updatePosition(){
                 
             }
             else if(direction.down){
+                player.moving = true;
+                player.dir = "front"
                 var cx = position.x - Math.floor(position.x)
 
                 if(cx!= 0.5){
@@ -374,6 +380,8 @@ function updatePosition(){
                 }
             }
             else if(direction.right){
+                player.moving = true;
+                player.dir = "right"
                 var cy = position.y - Math.floor(position.y)
 
                 if(cy!= 0.5){
@@ -402,6 +410,8 @@ function updatePosition(){
                 }
             }
             else if(direction.left){
+                player.moving = true;
+                player.dir = "left"
                 var cy = position.y - Math.floor(position.y)
                 if(cy!= 0.5){
                     if(cy < 0.5){
@@ -427,6 +437,9 @@ function updatePosition(){
                     if(canMove(nx, ny ,  x ,y, grid))
                         position.x = position.x - player.speed
                 }
+            }
+            else{
+                player.moving = true;
             }
             if(direction.bomb){
                 if(player.bombCount < player.bombMax  &&  grid[Math.floor(position.x)][Math.floor(position.y)].bomb == undefined){
@@ -472,7 +485,7 @@ function compress(game){
     var minGrid = createGrid(grid.length, grid[0].length);
     var minPlayers = new Array(players.length);
     for( var i = 0; i < players.length; i++){
-        minPlayers[i] = {position: players[i].position, lives: players[i].lives }
+        minPlayers[i] = {position: players[i].position, lives: players[i].lives, direction:players[i].dir, moving: players[i].moving }
     }
     for( var i = 0; i < grid.length; i++){
         for( var j = 0; j < grid[0].length; j++){

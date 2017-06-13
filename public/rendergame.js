@@ -82,20 +82,36 @@ function drawGame(){
     for(var i = 0; i < players.length; i++){
         if(players[i].lives <= 0){}
         else{
-            if(i == 0){fill("#FF0000")}
-            else if(i == 1){fill("#00FF00")}
-            else if(i == 2){fill("#0000FF")}
-            else if(i == 3){fill("#FF00FF")}
-            else { fill("#000000")}
+            
             var position = players[i].position
             var x = startX + position.x * squareSize;
             var y = startY + position.y * squareSize;
-            ellipse(x,y, squareSize*1, squareSize * 1);
+            if(i == 0){
+                p1.position.x = x;
+                p1.position.y = y;
+                var dir = players[i].direction
+                var moving = players[i].moving
+                console.log(dir)
+                p1.changeAnimation(dir + "-" + moving);
+            }
+            else if(i == 1){
+                p2.position.x = x;
+                p2.position.y = y;
+                var dir = players[i].direction
+                var moving = players[i].moving
+                p2.changeAnimation(dir + "-" + moving);
+            }
+            else if(i == 2){fill("#0000FF")}
+            else if(i == 3){fill("#FF00FF")}
+            else { fill("#000000")}
+            
+
+            //ellipse(x,y, squareSize*1, squareSize * 1);
         }
         
 
 
-
+        
     }
-
+    drawSprites();
 }

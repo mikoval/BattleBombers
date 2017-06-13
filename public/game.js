@@ -14,8 +14,15 @@ var players;
 var input = {up: false, down: false, left: false, right: false, bomb : false};
 var directionLoop;
 var time = 0;
+var p1;
+var p2; 
+var p3;
+var p4;
+
+
+var forward_animation;
 function setup() {
-    frameRate(60);
+    frameRate(30);
     socket = io()
     socket.on('game-pending', waitingRoom);
     socket.on('game-start', startGame);
@@ -30,6 +37,15 @@ function setup() {
     wood_img = loadImage("/Wood.jpg"); 
     bomb_p_img = loadImage("/Bomb+.png"); 
     boots_img = loadImage("/Boots.png"); 
+
+    forward_animation = loadAnimation("swordpics/front1.png", "swordpics/front4.png");
+    right_animation = loadAnimation("swordpics/right1.png", "swordpics/right4.png")
+    left_animation = loadAnimation("swordpics/left1.png", "swordpics/left4.png")
+    back_animation = loadAnimation("swordpics/back1.png", "swordpics/back4.png")
+
+
+
+
     width = document.body.clientWidth;
     height = document.body.clientHeight;
 
@@ -37,10 +53,11 @@ function setup() {
     myCanvas.parent('myContainer');
     background(51);
 
+
+
     startMenu();
 }
 function draw(){
-
     if(state == "Start Menu"){
         startMenuAnimation();
     }
