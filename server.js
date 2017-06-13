@@ -145,7 +145,7 @@ function createGrid(width, height){
     }
     return arr;
 }
-setInterval(updatePosition, 20)
+setInterval(updatePosition, 10)
 setInterval(updateBombs, 100)
 
 function updateBombs(){

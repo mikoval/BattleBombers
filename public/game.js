@@ -15,7 +15,7 @@ var input = {up: false, down: false, left: false, right: false, bomb : false};
 var directionLoop;
 var time = 0;
 function setup() {
-    frameRate(25);
+    frameRate(60);
     socket = io()
     socket.on('game-pending', waitingRoom);
     socket.on('game-start', startGame);
