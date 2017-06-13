@@ -62,7 +62,10 @@ function waitingRoom(data){
 
 }
 function gameOver(data){
- 
+    p1.remove();
+    p2.remove();
+    p3.remove();
+    p4.remove();
     var winner = data.winner
     var code = data.newRoom;
     var GameOverDiv = createElement("div");
