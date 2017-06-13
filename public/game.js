@@ -42,7 +42,10 @@ function setup() {
     right_animation = loadAnimation("swordpics/right1.png", "swordpics/right4.png")
     left_animation = loadAnimation("swordpics/left1.png", "swordpics/left4.png")
     back_animation = loadAnimation("swordpics/back1.png", "swordpics/back4.png")
-
+    forward_stand = loadAnimation("swordpics/front1.png", "swordpics/front1.png");
+    right_stand = loadAnimation("swordpics/right1.png", "swordpics/right1.png")
+    left_stand = loadAnimation("swordpics/left1.png", "swordpics/left1.png")
+    back_stand = loadAnimation("swordpics/back1.png", "swordpics/back1.png")
 
 
 

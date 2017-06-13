@@ -110,11 +110,19 @@ function startGame(data){
     p1.addAnimation("right-true", right_animation);
     p1.addAnimation("left-true", left_animation);
     p1.addAnimation("back-true", back_animation);
+    p1.addAnimation("front-false", forward_stand);
+    p1.addAnimation("right-false", right_stand);
+    p1.addAnimation("left-false", left_stand);
+    p1.addAnimation("back-false", back_stand);
     p2  = createSprite(50, 100, squareSize, squareSize);
     p2.addAnimation("front-true", forward_animation);
     p2.addAnimation("right-true", right_animation);
     p2.addAnimation("left-true", left_animation);
     p2.addAnimation("back-true", back_animation);
+    p2.addAnimation("front-false", forward_stand);
+    p2.addAnimation("right-false", right_stand);
+    p2.addAnimation("left-false", left_stand);
+    p2.addAnimation("back-false", back_stand);
 
     drawScore();
     clearInterval(directionLoop);

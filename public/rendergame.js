@@ -60,20 +60,17 @@ function drawGame(){
             }
             if( grid[i][j].obj == "speed-boost")
             {
-                fill("#A0A0A0")
-                rect(x, y, squareSize, squareSize);
+                
                 image(boots_img, x, y, squareSize,squareSize);
             }
             else if( grid[i][j].obj == "bomb-boost")
             {
-                fill("#A0A0A0")
-                rect(x, y, squareSize, squareSize);
+                
                 image(bomb_p_img, x, y, squareSize,squareSize);
             }
             else if( grid[i][j].obj == "bomb")
             {
-                fill("#A0A0A0")
-                rect(x, y, squareSize, squareSize);
+                
                 image(bomb_img, x, y, squareSize,squareSize);
             }
         }

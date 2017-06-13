@@ -147,7 +147,7 @@ function createGrid(width, height){
     }
     return arr;
 }
-setInterval(updatePosition, 10)
+setInterval(updatePosition, 20)
 setInterval(updateBombs, 100)
 
 function updateBombs(){
@@ -439,7 +439,7 @@ function updatePosition(){
                 }
             }
             else{
-                player.moving = true;
+                player.moving = false;
             }
             if(direction.bomb){
                 if(player.bombCount < player.bombMax  &&  grid[Math.floor(position.x)][Math.floor(position.y)].bomb == undefined){
