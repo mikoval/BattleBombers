@@ -72,7 +72,7 @@ function newConnection(socket){
                 players[i].bombMax = 1;
                 players[i].lives = 3;
                 players[i].invulnerable = -1;
-                players[i].speed = 0.1;
+                players[i].speed = 0.05;
                 players[i].dir = "front";
                 players[i].moving = false;
                 
@@ -297,7 +297,7 @@ function updatePosition(){
             var x = Math.floor(position.x);
             var y = Math.floor(position.y);
             if(grid[x][y].boots){
-                player.speed += 0.01;
+                player.speed += 0.02;
                 if(player.speed > 2){
                     player.speed = 2;
                 }
@@ -325,7 +325,7 @@ function updatePosition(){
                 var cx = position.x - Math.floor(position.x)
                 if(cx!= 0.5){
                     if(cx < 0.5){
-                        if(cx + player.speed > 0.5){
+                        if(cx + player.speed > 0.6){
                             position.x = position.x + (0.5 - cx);
                         }
                         else{

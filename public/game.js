@@ -38,15 +38,32 @@ function setup() {
     bomb_p_img = loadImage("/Bomb+.png"); 
     boots_img = loadImage("/Boots.png"); 
 
-    forward_animation = loadAnimation("swordpics/front1.png", "swordpics/front4.png");
-    right_animation = loadAnimation("swordpics/right1.png", "swordpics/right4.png")
-    left_animation = loadAnimation("swordpics/left1.png", "swordpics/left4.png")
-    back_animation = loadAnimation("swordpics/back1.png", "swordpics/back4.png")
-    forward_stand = loadAnimation("swordpics/front1.png", "swordpics/front1.png");
-    right_stand = loadAnimation("swordpics/right1.png", "swordpics/right1.png")
-    left_stand = loadAnimation("swordpics/left1.png", "swordpics/left1.png")
-    back_stand = loadAnimation("swordpics/back1.png", "swordpics/back1.png")
+    sword_forward_animation = loadAnimation("swordpics/front1.png", "swordpics/front4.png");
+    sword_right_animation = loadAnimation("swordpics/right1.png", "swordpics/right4.png")
+    sword_left_animation = loadAnimation("swordpics/left1.png", "swordpics/left4.png")
+    sword_back_animation = loadAnimation("swordpics/back1.png", "swordpics/back4.png")
+    sword_forward_stand = loadAnimation("swordpics/front1.png", "swordpics/front1.png");
+    sword_right_stand = loadAnimation("swordpics/right1.png", "swordpics/right1.png")
+    sword_left_stand = loadAnimation("swordpics/left1.png", "swordpics/left1.png")
+    sword_back_stand = loadAnimation("swordpics/back1.png", "swordpics/back1.png")
 
+    man_forward_animation = loadAnimation("manpics/front1.png", "manpics/front4.png");
+    man_right_animation = loadAnimation("manpics/right1.png", "manpics/right4.png")
+    man_left_animation = loadAnimation("manpics/left1.png", "manpics/left4.png")
+    man_back_animation = loadAnimation("manpics/back1.png", "manpics/back4.png")
+    man_forward_stand = loadAnimation("manpics/front1.png", "manpics/front1.png");
+    man_right_stand = loadAnimation("manpics/right1.png", "manpics/right1.png")
+    man_left_stand = loadAnimation("manpics/left1.png", "manpics/left1.png")
+    man_back_stand = loadAnimation("manpics/back1.png", "manpics/back1.png")
+
+    girl_forward_animation = loadAnimation("girlpics/front1.png", "girlpics/front7.png");
+    girl_right_animation = loadAnimation("girlpics/right1.png", "girlpics/right7.png")
+    girl_left_animation = loadAnimation("girlpics/left1.png", "girlpics/left7.png")
+    girl_back_animation = loadAnimation("girlpics/back1.png", "girlpics/back7.png")
+    girl_forward_stand = loadAnimation("girlpics/front1.png", "girlpics/front1.png");
+    girl_right_stand = loadAnimation("girlpics/right1.png", "girlpics/right1.png")
+    girl_left_stand = loadAnimation("girlpics/left1.png", "girlpics/left1.png")
+    girl_back_stand = loadAnimation("girlpics/back1.png", "girlpics/back1.png")
 
 
     width = document.body.clientWidth;

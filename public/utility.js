@@ -62,10 +62,24 @@ function waitingRoom(data){
 
 }
 function gameOver(data){
-    p1.remove();
-    p2.remove();
-    p3.remove();
-    p4.remove();
+    for(var i = 0; i < players.length; i++){
+        if(i == 0){
+            p1.remove();
+        }
+        if(i == 1){
+            p2.remove();
+        }
+        if(i == 2){
+            p3.remove();
+        }
+        if(i == 3){
+            p4.remove();
+        }
+    }
+    
+    
+    
+    
     var winner = data.winner
     var code = data.newRoom;
     var GameOverDiv = createElement("div");
@@ -108,24 +122,59 @@ function startGame(data){
     grid = data.game.grid;
     squareSize = height/grid.length;
     players = data.players;
-    p1  = createSprite(50, 50, squareSize, squareSize);
-    p1.addAnimation("front-true", forward_animation);
-    p1.addAnimation("right-true", right_animation);
-    p1.addAnimation("left-true", left_animation);
-    p1.addAnimation("back-true", back_animation);
-    p1.addAnimation("front-false", forward_stand);
-    p1.addAnimation("right-false", right_stand);
-    p1.addAnimation("left-false", left_stand);
-    p1.addAnimation("back-false", back_stand);
-    p2  = createSprite(50, 100, squareSize, squareSize);
-    p2.addAnimation("front-true", forward_animation);
-    p2.addAnimation("right-true", right_animation);
-    p2.addAnimation("left-true", left_animation);
-    p2.addAnimation("back-true", back_animation);
-    p2.addAnimation("front-false", forward_stand);
-    p2.addAnimation("right-false", right_stand);
-    p2.addAnimation("left-false", left_stand);
-    p2.addAnimation("back-false", back_stand);
+    for(var i = 0; i < players.length; i++){
+        if(i==0){
+
+            p1  = createSprite(50, 50, squareSize, squareSize);
+            p1.addAnimation("front-true", sword_forward_animation);
+            p1.addAnimation("right-true", sword_right_animation);
+            p1.addAnimation("left-true", sword_left_animation);
+            p1.addAnimation("back-true", sword_back_animation);
+            p1.addAnimation("front-false", sword_forward_stand);
+            p1.addAnimation("right-false", sword_right_stand);
+            p1.addAnimation("left-false", sword_left_stand);
+            p1.addAnimation("back-false", sword_back_stand);
+        }
+        if(i ==1 ){
+            p2  = createSprite(50, 100, squareSize, squareSize);
+            p2.addAnimation("front-true", girl_forward_animation);
+            p2.addAnimation("right-true", girl_right_animation);
+            p2.addAnimation("left-true", girl_left_animation);
+            p2.addAnimation("back-true", girl_back_animation);
+            p2.addAnimation("front-false", girl_forward_stand);
+            p2.addAnimation("right-false", girl_right_stand);
+            p2.addAnimation("left-false", girl_left_stand);
+            p2.addAnimation("back-false", girl_back_stand);
+        }
+        if(i==2){
+            p3  = createSprite(50, 100, squareSize, squareSize);
+            p3.addAnimation("front-true", man_forward_animation);
+            p3.addAnimation("right-true", man_right_animation);
+            p3.addAnimation("left-true", man_left_animation);
+            p3.addAnimation("back-true", man_back_animation);
+            p3.addAnimation("front-false", man_forward_stand);
+            p3.addAnimation("right-false", man_right_stand);
+            p3.addAnimation("left-false", man_left_stand);
+            p3.addAnimation("back-false", man_back_stand);
+        }
+        if(i==3){
+            p4  = createSprite(50, 100, squareSize, squareSize);
+            p4.addAnimation("front-true", man_forward_animation);
+            p4.addAnimation("right-true", man_right_animation);
+            p4.addAnimation("left-true", man_left_animation);
+            p4.addAnimation("back-true", man_back_animation);
+            p4.addAnimation("front-false", man_forward_stand);
+            p4.addAnimation("right-false", man_right_stand);
+            p4.addAnimation("left-false", man_left_stand);
+            p4.addAnimation("back-false", man_back_stand);
+        }
+    }
+    
+
+    
+
+
+    
 
     drawScore();
     clearInterval(directionLoop);
