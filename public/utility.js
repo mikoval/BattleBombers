@@ -136,7 +136,7 @@ function startGame(data){
             p1.addAnimation("back-false", sword_back_stand);
         }
         if(i ==1 ){
-            p2  = createSprite(50, 100, squareSize, squareSize);
+            p2  = createSprite(50, 50, squareSize, squareSize);
             p2.addAnimation("front-true", girl_forward_animation);
             p2.addAnimation("right-true", girl_right_animation);
             p2.addAnimation("left-true", girl_left_animation);
@@ -147,7 +147,7 @@ function startGame(data){
             p2.addAnimation("back-false", girl_back_stand);
         }
         if(i==2){
-            p3  = createSprite(50, 100, squareSize, squareSize);
+            p3  = createSprite(50, 50, squareSize, squareSize);
             p3.addAnimation("front-true", man_forward_animation);
             p3.addAnimation("right-true", man_right_animation);
             p3.addAnimation("left-true", man_left_animation);
@@ -158,15 +158,15 @@ function startGame(data){
             p3.addAnimation("back-false", man_back_stand);
         }
         if(i==3){
-            p4  = createSprite(50, 100, squareSize, squareSize);
-            p4.addAnimation("front-true", man_forward_animation);
-            p4.addAnimation("right-true", man_right_animation);
-            p4.addAnimation("left-true", man_left_animation);
-            p4.addAnimation("back-true", man_back_animation);
-            p4.addAnimation("front-false", man_forward_stand);
-            p4.addAnimation("right-false", man_right_stand);
-            p4.addAnimation("left-false", man_left_stand);
-            p4.addAnimation("back-false", man_back_stand);
+            p4  = createSprite(50, 50, squareSize, squareSize);
+            p4.addAnimation("front-true", camel_forward_animation);
+            p4.addAnimation("right-true", camel_right_animation);
+            p4.addAnimation("left-true", camel_left_animation);
+            p4.addAnimation("back-true", camel_back_animation);
+            p4.addAnimation("front-false", camel_forward_stand);
+            p4.addAnimation("right-false", camel_right_stand);
+            p4.addAnimation("left-false", camel_left_stand);
+            p4.addAnimation("back-false", camel_back_stand);
         }
     }
     

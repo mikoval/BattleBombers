@@ -5,26 +5,59 @@ function drawScore(){
     var startX = centerX - grid.length/2 * squareSize;
     var startY = centerY - grid[0].length/2 * squareSize;
     
-    var scoreBoard = createElement('div');
-    scoreBoard.class("left-div");
-    scoreBoard.style("width", startX + "px");
+    var scoreBoardLeft = createElement('div');
+    scoreBoardLeft.class("left-div");
+    scoreBoardLeft.style("width", startX + "px");
+
+    var scoreBoardRight = createElement('div');
+    scoreBoardRight.class("right-div");
+    scoreBoardRight.style("width", startX + "px");
 
     var timeItem = createElement('div')
-    timeItem.class('time-item');
+    timeItem.class('time-item score-padding');
     var timer = createElement('h3', "Time: " + formatTime(time));
     timer.class("timer");
     timer.parent(timeItem);
-    timeItem.parent(scoreBoard);
+    timeItem.parent(scoreBoardLeft);
+
+    var rightItem = createElement('div')
+    rightItem.class('score-padding');
+    rightItem.parent(scoreBoardRight);
+
     for(var i =0; i < players.length; i++){
         var scoreItem = createElement('div')
         scoreItem.class('score-item');
-        var name = createElement('h3', players[i].name);
+        var playername = players[i].name;
+        if ( $.trim(playername) == '' )
+            playername = "N/A"
+        var name = createElement('h3', playername);
         var score = createElement('p', 'lives: ' + players[i].lives);
+        var imgContainer = createElement('div')
+        imgContainer.class('img-container')
+        var img;
+        if(i == 0)
+             img = createImg('/swordpics/front1.png');
+        else if(i == 1)
+             img = createImg('/girlpics/front1.png');
+        else if(i == 2)
+             img = createImg('/manpics/front1.png');
+        else if(i == 3)
+             img = createImg('/camelpics/front1.png');
+        img.class("score-img");
+        img.parent(imgContainer)
+
+
         name.class('player-name');
         score.class('player-score');
+
         name.parent(scoreItem);
         score.parent(scoreItem);
-        scoreItem.parent(scoreBoard);
+        
+        imgContainer.parent(scoreItem)
+        if(i == 0 || i == 1)
+            scoreItem.parent(scoreBoardLeft);
+        else
+            scoreItem.parent(scoreBoardRight);
     }
    
 
@@ -88,7 +121,7 @@ function drawGame(){
                 p1.position.y = y;
                 var dir = players[i].direction
                 var moving = players[i].moving
-                console.log(dir)
+               
                 p1.changeAnimation(dir + "-" + moving);
             }
             else if(i == 1){
@@ -98,12 +131,22 @@ function drawGame(){
                 var moving = players[i].moving
                 p2.changeAnimation(dir + "-" + moving);
             }
-            else if(i == 2){fill("#0000FF")}
-            else if(i == 3){fill("#FF00FF")}
-            else { fill("#000000")}
+            else if(i == 2){
+                p3.position.x = x;
+                p3.position.y = y;
+                var dir = players[i].direction
+                var moving = players[i].moving
+                p3.changeAnimation(dir + "-" + moving);
+            }
+            else if(i == 3){
+                p4.position.x = x;
+                p4.position.y = y;
+                var dir = players[i].direction
+                var moving = players[i].moving
+                p4.changeAnimation(dir + "-" + moving);
+            }
             
 
-            //ellipse(x,y, squareSize*1, squareSize * 1);
         }
         
 
@@ -111,4 +154,10 @@ function drawGame(){
         
     }
     drawSprites();
+    if(time/1000  < 3){
+        textSize(600);
+        fill("#FFFFFF")
+        textAlign(CENTER);
+        text(3 - Math.floor(time/1000), width/2, 2*height/3);
+    }
 }

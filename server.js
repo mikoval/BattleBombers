@@ -137,7 +137,7 @@ function createGrid(width, height){
             if(Math.random() < .8 && !arr[i][j].wall){
                 var rand = Math.random();
                 arr[i][j].box = true;
-                if(rand < 0.07)
+                if(rand < 0.08)
                     arr[i][j].boots = true;
                 else if (rand < 0.14)
                     arr[i][j].bombP = true;
@@ -229,7 +229,7 @@ function updateBombs(){
  
 }
 function canMove(nx, ny, x, y, grid){
-    var onBomb = false;
+    var onBomb = [];
 
     var current0 = grid[Math.floor(x)][Math.floor(y)]
     var current1 = grid[Math.floor(x+ radius * 0.9)][Math.floor(y)]
@@ -237,41 +237,53 @@ function canMove(nx, ny, x, y, grid){
     var current3 = grid[Math.floor(x)][Math.floor(y+ radius * 0.9)]
     var current4 = grid[Math.floor(x)][Math.floor(y- radius * 0.9)]
     if(current0.bomb){
-        onBomb = current0;
+        onBomb.push( current0);
     }
     if(current1.bomb){
-        onBomb = current1;
+        onBomb.push( current1);
     }
     if(current2.bomb){
-        onBomb = current2;
+        onBomb.push( current2);
     }
     if(current3.bomb){
-        onBomb = current3;
+        onBomb.push( current3);
     }
     if(current4.bomb){
-        onBomb = current4;
+        onBomb.push( current4);
     }
+    
 
     var cell1 = grid[Math.floor(nx + radius * 0.9)][Math.floor(ny)]
     var cell2 = grid[Math.floor(nx - radius * 0.9)][Math.floor(ny)]
     var cell3 = grid[Math.floor(nx)][Math.floor(ny + radius * 0.9)]
     var cell4 = grid[Math.floor(nx)][Math.floor(ny - radius * 0.9)]
-    if(cell1.wall || cell1.box || ( (cell1.bomb && !onBomb)  || (cell1.bomb && cell1 != onBomb)) ){
+    var current = false
+
+    if(cell1.wall || cell1.box || ( (cell1.bomb && onBomb.length == 0)  || (cell1.bomb && !containsObject(cell1, onBomb))) ){
         return false;
     }
-    if(cell2.wall || cell2.box ||  ( (cell2.bomb && !onBomb)  || (cell2.bomb && cell2 != onBomb))  ){
+    if(cell2.wall || cell2.box ||  ( (cell2.bomb && onBomb.length == 0)  || (cell2.bomb && !containsObject(cell2, onBomb)))  ){
         return false;
     }
-    if(cell3.wall || cell3.box ||  ( (cell3.bomb && !onBomb)  || (cell3.bomb && cell3 != onBomb))  ){
+    if(cell3.wall || cell3.box ||  ( (cell3.bomb && onBomb.length == 0)  || (cell3.bomb && !containsObject(cell3, onBomb)))  ){
         return false;
     }
-    if(cell4.wall || cell4.box ||  ( (cell4.bomb && !onBomb)  || (cell4.bomb && cell4 != onBomb))  ){
+    if(cell4.wall || cell4.box ||  ( (cell4.bomb && onBomb.length == 0)  || (cell4.bomb && !containsObject(cell4, onBomb)))  ){
         return false;
     }
     
     return true;
 }
+function containsObject(obj, list) {
+    var i;
+    for (i = 0; i < list.length; i++) {
+        if (list[i] === obj) {
+            return true;
+        }
+    }
 
+    return false;
+}
 function distance(c1, c2){
     return Math.pow(Math.pow((c1.x - c2.x),2) + Math.pow((c1.y - c2.y),2) , 0.5);
 }
@@ -282,7 +294,9 @@ function updatePosition(){
         var grid = room.game.grid;
         var time = (new Date()) - room.game.startTime ;
         room.game.currentTime = time;
-        var timer = time /1000 / 60
+        var timer = time /1000
+        if(timer < 3){continue;}
+        timer  = timer / 60
         if(timer > 4){
             addBomb(grid, (timer -4 ) /10 + 1);
         }

@@ -133,6 +133,13 @@
   height:100%;
   background-color:gray;
 }
+.right-div{
+  position: fixed;
+  top:0%;
+  right:0px;
+  height:100%;
+  background-color:gray;
+}
 .image-small{
   display:inline-block;
 }
@@ -155,6 +162,7 @@
   border-width:1px;
   border-radius:10px;
 }
+
 .time-item{
   width:80%;
   margin: 10%;
@@ -169,5 +177,17 @@
   color:black;
   text-align: center;
 }
+.score-padding{
+  height:5%;
+  margin:10%;
+}
+.img-container{
+  width:100px;
+  height:100px;
 
+  margin:auto;
+}
+.score-img{
+  height:100px;
+}
         

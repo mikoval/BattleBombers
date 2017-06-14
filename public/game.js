@@ -37,6 +37,7 @@ function setup() {
     wood_img = loadImage("/Wood.jpg"); 
     bomb_p_img = loadImage("/Bomb+.png"); 
     boots_img = loadImage("/Boots.png"); 
+    fire_img = loadImage("/Fire.jpg")
 
     sword_forward_animation = loadAnimation("swordpics/front1.png", "swordpics/front4.png");
     sword_right_animation = loadAnimation("swordpics/right1.png", "swordpics/right4.png")
@@ -65,6 +66,14 @@ function setup() {
     girl_left_stand = loadAnimation("girlpics/left1.png", "girlpics/left1.png")
     girl_back_stand = loadAnimation("girlpics/back1.png", "girlpics/back1.png")
 
+    camel_forward_animation = loadAnimation("camelpics/front1.png", "camelpics/front3.png");
+    camel_right_animation = loadAnimation("camelpics/right1.png", "camelpics/right3.png")
+    camel_left_animation = loadAnimation("camelpics/left1.png", "camelpics/left3.png")
+    camel_back_animation = loadAnimation("camelpics/back1.png", "camelpics/back3.png")
+    camel_forward_stand = loadAnimation("camelpics/front1.png", "camelpics/front1.png");
+    camel_right_stand = loadAnimation("camelpics/right1.png", "camelpics/right1.png")
+    camel_left_stand = loadAnimation("camelpics/left1.png", "camelpics/left1.png")
+    camel_back_stand = loadAnimation("camelpics/back1.png", "camelpics/back1.png")
 
     width = document.body.clientWidth;
     height = document.body.clientHeight;
