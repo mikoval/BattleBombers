@@ -137,9 +137,9 @@ function createGrid(width, height){
             if(Math.random() < .8 && !arr[i][j].wall){
                 var rand = Math.random();
                 arr[i][j].box = true;
-                if(rand < 0.1)
+                if(rand < 0.05)
                     arr[i][j].boots = true;
-                else if (rand < 0.2)
+                else if (rand < 0.1)
                     arr[i][j].bombP = true;
             }
             
