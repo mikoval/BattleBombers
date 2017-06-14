@@ -29,7 +29,7 @@ function drawScore(){
         scoreItem.class('score-item');
         var playername = players[i].name;
         if ( $.trim(playername) == '' )
-            playername = "N/A"
+            playername = "Player " + (i + 1)
         var name = createElement('h3', playername);
         var score = createElement('p', 'lives: ' + players[i].lives);
         var imgContainer = createElement('div')
