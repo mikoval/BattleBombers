@@ -222,8 +222,7 @@ function updateBombs(){
             }
         }
             var send = compress(room);
-            io.sockets.in(active[i]).volatile.emit('player-update', {players: send.players, time: send.time});
-            io.sockets.in(active[i]).volatile.emit('game-update', {grid: send.grid, time:send.time});
+            io.sockets.in(active[i]).volatile.emit('game-update', send);
             
     }
 
@@ -489,7 +488,6 @@ function updatePosition(){
             
             
             var send = compress(room);
-            io.sockets.in(active[i]).volatile.emit('player-update', {players: send.players, time: send.time});
             io.sockets.in(active[i]).volatile.emit('game-update', {grid: send.grid, time:send.time});
             
         }
