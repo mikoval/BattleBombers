@@ -137,14 +137,14 @@ function startGame(data){
         }
         if(i ==1 ){
             p2  = createSprite(50, 50, squareSize, squareSize);
-            p2.addAnimation("front-true", girl_forward_animation);
-            p2.addAnimation("right-true", girl_right_animation);
-            p2.addAnimation("left-true", girl_left_animation);
-            p2.addAnimation("back-true", girl_back_animation);
-            p2.addAnimation("front-false", girl_forward_stand);
-            p2.addAnimation("right-false", girl_right_stand);
-            p2.addAnimation("left-false", girl_left_stand);
-            p2.addAnimation("back-false", girl_back_stand);
+            p2.addAnimation("front-true", bun_forward_animation);
+            p2.addAnimation("right-true", bun_right_animation);
+            p2.addAnimation("left-true", bun_left_animation);
+            p2.addAnimation("back-true", bun_back_animation);
+            p2.addAnimation("front-false", bun_forward_stand);
+            p2.addAnimation("right-false", bun_right_stand);
+            p2.addAnimation("left-false", bun_left_stand);
+            p2.addAnimation("back-false", bun_back_stand);
         }
         if(i==2){
             p3  = createSprite(50, 50, squareSize, squareSize);
