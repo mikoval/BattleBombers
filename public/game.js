@@ -75,6 +75,15 @@ function setup() {
     camel_left_stand = loadAnimation("camelpics/left1.png", "camelpics/left1.png")
     camel_back_stand = loadAnimation("camelpics/back1.png", "camelpics/back1.png")
 
+    fox_forward_animation = loadAnimation("FoxPics/front1.png", "FoxPics/front6.png");
+    fox_right_animation = loadAnimation("FoxPics/right1.png", "FoxPics/right6.png")
+    fox_left_animation = loadAnimation("FoxPics/left1.png", "FoxPics/left6.png")
+    fox_back_animation = loadAnimation("FoxPics/back1.png", "FoxPics/back6.png")
+    fox_forward_stand = loadAnimation("FoxPics/front1.png", "FoxPics/front1.png");
+    fox_right_stand = loadAnimation("FoxPics/right1.png", "FoxPics/right1.png")
+    fox_left_stand = loadAnimation("FoxPics/left1.png", "FoxPics/left1.png")
+    fox_back_stand = loadAnimation("FoxPics/back1.png", "FoxPics/back1.png")
+
     width = document.body.clientWidth;
     height = document.body.clientHeight;
 

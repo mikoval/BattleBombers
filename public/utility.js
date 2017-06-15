@@ -126,14 +126,14 @@ function startGame(data){
         if(i==0){
 
             p1  = createSprite(50, 50, squareSize, squareSize);
-            p1.addAnimation("front-true", sword_forward_animation);
-            p1.addAnimation("right-true", sword_right_animation);
-            p1.addAnimation("left-true", sword_left_animation);
-            p1.addAnimation("back-true", sword_back_animation);
-            p1.addAnimation("front-false", sword_forward_stand);
-            p1.addAnimation("right-false", sword_right_stand);
-            p1.addAnimation("left-false", sword_left_stand);
-            p1.addAnimation("back-false", sword_back_stand);
+            p1.addAnimation("front-true", fox_forward_animation);
+            p1.addAnimation("right-true", fox_right_animation);
+            p1.addAnimation("left-true", fox_left_animation);
+            p1.addAnimation("back-true", fox_back_animation);
+            p1.addAnimation("front-false", fox_forward_stand);
+            p1.addAnimation("right-false", fox_right_stand);
+            p1.addAnimation("left-false", fox_left_stand);
+            p1.addAnimation("back-false", fox_back_stand);
         }
         if(i ==1 ){
             p2  = createSprite(50, 50, squareSize, squareSize);
