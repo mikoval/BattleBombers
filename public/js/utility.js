@@ -181,7 +181,6 @@ function startGame(data){
     directionLoop = setInterval(updatePosition, 30);
 }
 function updateGame(data){
-    players = data.players;
     grid = data.grid;
     time = data.time;
     drawn = false;
