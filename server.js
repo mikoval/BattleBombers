@@ -507,7 +507,7 @@ function compress(game){
     var minPlayers = new Array(players.length);
     for( var i = 0; i < players.length; i++){
         minPlayers[i] = {
-            position: players[i].position, lives: players[i].lives, direction:players[i].dir, moving: players[i].moving, name: players[i].name,
+            position: players[i].position, lives: players[i].lives, dir:players[i].dir, moving: players[i].moving, name: players[i].name,
         }
     }
     for( var i = 0; i < grid.length; i++){

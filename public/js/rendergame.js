@@ -130,7 +130,7 @@ function drawGame(){
             if(i == 0){
                 p1.position.x = x;
                 p1.position.y = y;
-                var dir = players[i].direction
+                var dir = players[i].dir
                 var moving = players[i].moving
                
                 p1.changeAnimation(dir + "-" + moving);
@@ -138,21 +138,21 @@ function drawGame(){
             else if(i == 1){
                 p2.position.x = x;
                 p2.position.y = y;
-                var dir = players[i].direction
+                var dir = players[i].dir
                 var moving = players[i].moving
                 p2.changeAnimation(dir + "-" + moving);
             }
             else if(i == 2){
                 p3.position.x = x;
                 p3.position.y = y;
-                var dir = players[i].direction
+                var dir = players[i].dir
                 var moving = players[i].moving
                 p3.changeAnimation(dir + "-" + moving);
             }
             else if(i == 3){
                 p4.position.x = x;
                 p4.position.y = y;
-                var dir = players[i].direction
+                var dir = players[i].dir
                 var moving = players[i].moving
                 p4.changeAnimation(dir + "-" + moving);
             }
