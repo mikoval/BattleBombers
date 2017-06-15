@@ -488,7 +488,7 @@ function updatePosition(){
             
             
             var send = compress(room);
-            io.sockets.in(active[i]).volatile.emit('game-update', {grid: send.grid, time:send.time});
+            io.sockets.in(active[i]).volatile.emit('game-update', send);
             
         }
         
