@@ -36,9 +36,9 @@ function drawScore(){
         imgContainer.class('img-container')
         var img;
         if(i == 0)
-             img = createImg('/swordpics/front1.png');
+             img = createImg('/FoxPics/front1.png');
         else if(i == 1)
-             img = createImg('/girlpics/front1.png');
+             img = createImg('/bunPics/front1.png');
         else if(i == 2)
              img = createImg('/manpics/front1.png');
         else if(i == 3)
