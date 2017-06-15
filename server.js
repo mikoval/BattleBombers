@@ -499,7 +499,14 @@ function compress(game){
     var minGrid = createGrid(grid.length, grid[0].length);
     var minPlayers = new Array(players.length);
     for( var i = 0; i < players.length; i++){
-        minPlayers[i] = {position: players[i].position, lives: players[i].lives, direction:players[i].dir, moving: players[i].moving, name:players[i].name }
+        minPlayers[i] = {
+            position: players[i].position,
+            lives: players[i].lives, 
+            direction:players[i].dir, 
+            moving: players[i].moving, 
+            name: players[i].name,
+            speed: players[i].speed
+        }
     }
     for( var i = 0; i < grid.length; i++){
         for( var j = 0; j < grid[0].length; j++){

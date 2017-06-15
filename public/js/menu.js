@@ -7,7 +7,7 @@ function startMenu(){
     textSize(30);
     textAlign(CENTER);
     fill("White")
-    var title = createElement("h1", 'Temporary Game Title');
+    var title = createElement("h1", 'Battle Bombers');
     title.class("title")
     title.center();
     title.position(null, height/5);

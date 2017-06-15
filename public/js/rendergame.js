@@ -36,13 +36,13 @@ function drawScore(){
         imgContainer.class('img-container')
         var img;
         if(i == 0)
-             img = createImg('/FoxPics/front1.png');
+             img = createImg('/Images/FoxPics/front1.png');
         else if(i == 1)
-             img = createImg('/bunpics/front1.png');
+             img = createImg('/Images/bunpics/front1.png');
         else if(i == 2)
-             img = createImg('/jonespics/front1.png');
+             img = createImg('/Images/jonespics/front1.png');
         else if(i == 3)
-             img = createImg('/camelpics/front1.png');
+             img = createImg('/Images/spearpics/front1.png');
         img.class("score-img");
         img.parent(imgContainer)
 
@@ -63,10 +63,12 @@ function drawScore(){
 
 }
 function drawGame(){
+
     var centerX = width/2;
     var centerY = height/2;
     var startX = centerX - grid.length/2 * squareSize;
     var startY = centerY - grid[0].length/2 * squareSize;
+
 
     $(".timer").text( "Time: " + formatTime(time));
     
@@ -110,6 +112,7 @@ function drawGame(){
     }
     
     for(var i = 0; i < players.length; i++){
+
         if(players[i].lives <= 0){
             if(i == 0){p1.remove()}
             if(i == 1){p2.remove()}
@@ -119,8 +122,27 @@ function drawGame(){
         else{
             
             var position = players[i].position
+
+            if(drawn && time/1000 > 3 && players[i].moving){
+                console.log("lag")
+                if(players[i].direction == "front"){
+                    players[i].position.y += players[i].speed
+                }
+                if(players[i].direction == "back"){
+                    players[i].position.y -= players[i].speed
+                }
+                if(players[i].direction == "left"){
+                    players[i].position.x -= players[i].speed
+                }
+                if(players[i].direction == "right"){
+                    players[i].position.x += players[i].speed
+                }
+            }
+
+
             var x = startX + position.x * squareSize;
             var y = startY + position.y * squareSize;
+            
             if(i == 0){
                 p1.position.x = x;
                 p1.position.y = y;
@@ -165,4 +187,5 @@ function drawGame(){
         textAlign(CENTER);
         text(3 - Math.floor(time/1000), width/2, 2*height/3);
     }
+    drawn = true;
 }

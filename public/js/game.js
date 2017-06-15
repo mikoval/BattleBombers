@@ -18,6 +18,7 @@ var p1;
 var p2; 
 var p3;
 var p4;
+var drawn = false;
 
 
 var forward_animation;
@@ -30,12 +31,16 @@ function setup() {
     socket.on('score-update', updateScore);
     socket.on("invalid-room", invalidRoom);
     socket.on("game-over", gameOver);
+    //socket.on('text', newText);
 
+    bomb_img = loadImage("/Bomb.png"); 
+    wall_img = loadImage("/Wall.png"); 
+    wood_img = loadImage("/Wood.jpg"); 
+    bomb_p_img = loadImage("/Bomb+.png"); 
+    boots_img = loadImage("/Boots.png"); 
+    fire_img = loadImage("/Fire.jpg")
 
-    console.log("test")
     loadImages();
-    
-
     width = document.body.clientWidth;
     height = document.body.clientHeight;
 
