@@ -63,7 +63,6 @@ function draw(){
 function keyPressed(e) {
 
     if(state != "Current Game"){return;}
-    console.log("preventDefault")
     e.preventDefault();
     var key  = e.key;
     if(key == "w" || key == "ArrowUp"){input.up = true;}

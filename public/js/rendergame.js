@@ -123,7 +123,7 @@ function drawGame(){
             
             var position = players[i].position
 
-            if(drawn && time/1000 > 3 && players[i].moving){
+            if(drawn && time/1000 > 3 && players[i].moving && false){
                 console.log("lag")
                 if(players[i].direction == "front"){
                     players[i].position.y += players[i].speed
