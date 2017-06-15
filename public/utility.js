@@ -126,6 +126,7 @@ function startGame(data){
         if(i==0){
 
             p1  = createSprite(50, 50, squareSize, squareSize);
+
             p1.addAnimation("front-true", fox_forward_animation);
             p1.addAnimation("right-true", fox_right_animation);
             p1.addAnimation("left-true", fox_left_animation);
@@ -134,6 +135,7 @@ function startGame(data){
             p1.addAnimation("right-false", fox_right_stand);
             p1.addAnimation("left-false", fox_left_stand);
             p1.addAnimation("back-false", fox_back_stand);
+            
         }
         if(i ==1 ){
             p2  = createSprite(50, 50, squareSize, squareSize);
@@ -145,6 +147,7 @@ function startGame(data){
             p2.addAnimation("right-false", bun_right_stand);
             p2.addAnimation("left-false", bun_left_stand);
             p2.addAnimation("back-false", bun_back_stand);
+           
         }
         if(i==2){
             p3  = createSprite(50, 50, squareSize, squareSize);
@@ -156,6 +159,7 @@ function startGame(data){
             p3.addAnimation("right-false", jones_right_stand);
             p3.addAnimation("left-false", jones_left_stand);
             p3.addAnimation("back-false", jones_back_stand);
+            
         }
         if(i==3){
             p4  = createSprite(50, 50, squareSize, squareSize);
@@ -167,6 +171,7 @@ function startGame(data){
             p4.addAnimation("right-false", spear_right_stand);
             p4.addAnimation("left-false", spear_left_stand);
             p4.addAnimation("back-false", spear_back_stand);
+           
         }
     }
     
