@@ -137,9 +137,9 @@ function createGrid(width, height){
             if(Math.random() < .8 && !arr[i][j].wall){
                 var rand = Math.random();
                 arr[i][j].box = true;
-                if(rand < 0.08)
+                if(rand < 0.1)
                     arr[i][j].boots = true;
-                else if (rand < 0.14)
+                else if (rand < 0.2)
                     arr[i][j].bombP = true;
             }
             
@@ -297,7 +297,7 @@ function updatePosition(){
         var timer = time /1000
         if(timer < 3){continue;}
         timer  = timer / 60
-        if(timer > 4){
+        if(timer > 2){
             addBomb(grid, (timer -4 ) /10 + 1);
         }
         var alivePlayers = 0
