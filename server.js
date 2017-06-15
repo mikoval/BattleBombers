@@ -222,9 +222,9 @@ function updateBombs(){
             }
         }
             var send = compress(room);
-            
-            io.sockets.in(active[i]).volatile.emit('game-update', {grid: send.grid, time:send.time});
             io.sockets.in(active[i]).volatile.emit('player-update', {players: send.players, time: send.time});
+            io.sockets.in(active[i]).volatile.emit('game-update', {grid: send.grid, time:send.time});
+            
     }
 
 
@@ -485,14 +485,13 @@ function updatePosition(){
             io.sockets.in(active[i]).volatile.emit('game-over', data);
         }
 
-        else{var send = compress(room);
+        else{
             
-            io.sockets.in(active[i]).volatile.emit('game-update', {grid: send.grid, time:send.time});
-            io.sockets.in(active[i]).volatile.emit('player-update', {players: send.players, time: send.time});
+            
             var send = compress(room);
-            
-            io.sockets.in(active[i]).volatile.emit('game-update', {grid: send.grid, time:send.time});
             io.sockets.in(active[i]).volatile.emit('player-update', {players: send.players, time: send.time});
+            io.sockets.in(active[i]).volatile.emit('game-update', {grid: send.grid, time:send.time});
+            
         }
         
     }
