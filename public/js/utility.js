@@ -186,6 +186,10 @@ function updateGame(data){
     time = data.time;
     drawn = false;
 }
+function updatePlayers(data){
+    players = data.players;
+    time = data.time;
+}
 function updatePosition(){
     socket.emit('update-input', input);
     input.bomb = false;

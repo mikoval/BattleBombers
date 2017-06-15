@@ -123,22 +123,6 @@ function drawGame(){
             
             var position = players[i].position
 
-            if(drawn && time/1000 > 3 && players[i].moving && false){
-                console.log("lag")
-                if(players[i].direction == "front"){
-                    players[i].position.y += players[i].speed
-                }
-                if(players[i].direction == "back"){
-                    players[i].position.y -= players[i].speed
-                }
-                if(players[i].direction == "left"){
-                    players[i].position.x -= players[i].speed
-                }
-                if(players[i].direction == "right"){
-                    players[i].position.x += players[i].speed
-                }
-            }
-
 
             var x = startX + position.x * squareSize;
             var y = startY + position.y * squareSize;

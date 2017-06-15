@@ -485,7 +485,9 @@ function updatePosition(){
 
         else{
             var send = compress(room);
-            io.sockets.in(active[i]).volatile.emit('game-update', send);
+            
+            io.sockets.in(active[i]).volatile.emit('game-update', {grid: send.grid, time:send.time});
+            io.sockets.in(active[i]).volatile.emit('player-update', {players: send.players, time: send.time});
         }
         
     }
@@ -500,12 +502,7 @@ function compress(game){
     var minPlayers = new Array(players.length);
     for( var i = 0; i < players.length; i++){
         minPlayers[i] = {
-            position: players[i].position,
-            lives: players[i].lives, 
-            direction:players[i].dir, 
-            moving: players[i].moving, 
-            name: players[i].name,
-            speed: players[i].speed
+            position: players[i].position, lives: players[i].lives, direction:players[i].dir, moving: players[i].moving, name: players[i].name,
         }
     }
     for( var i = 0; i < grid.length; i++){
