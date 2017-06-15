@@ -84,14 +84,14 @@ function setup() {
     fox_left_stand = loadAnimation("FoxPics/left1.png", "FoxPics/left1.png")
     fox_back_stand = loadAnimation("FoxPics/back1.png", "FoxPics/back1.png")
 
-    bun_forward_animation = loadAnimation("bunPics/front1.png", "bunPics/front6.png");
-    bun_right_animation = loadAnimation("bunPics/right1.png", "bunPics/right6.png")
-    bun_left_animation = loadAnimation("bunPics/left1.png", "bunPics/left6.png")
-    bun_back_animation = loadAnimation("bunPics/back1.png", "bunPics/back6.png")
-    bun_forward_stand = loadAnimation("bunPics/front1.png", "bunPics/front1.png");
-    bun_right_stand = loadAnimation("bunPics/right1.png", "bunPics/right1.png")
-    bun_left_stand = loadAnimation("bunPics/left1.png", "bunPics/left1.png")
-    bun_back_stand = loadAnimation("bunPics/back1.png", "bunPics/back1.png")
+    bun_forward_animation = loadAnimation("bunpics/front1.png", "bunpics/front6.png");
+    bun_right_animation = loadAnimation("bunpics/right1.png", "bunpics/right6.png")
+    bun_left_animation = loadAnimation("bunpics/left1.png", "bunpics/left6.png")
+    bun_back_animation = loadAnimation("bunpics/back1.png", "bunpics/back6.png")
+    bun_forward_stand = loadAnimation("bunpics/front1.png", "bunpics/front1.png");
+    bun_right_stand = loadAnimation("bunpics/right1.png", "bunpics/right1.png")
+    bun_left_stand = loadAnimation("bunpics/left1.png", "bunpics/left1.png")
+    bun_back_stand = loadAnimation("bunpics/back1.png", "bunpics/back1.png")
 
     width = document.body.clientWidth;
     height = document.body.clientHeight;
