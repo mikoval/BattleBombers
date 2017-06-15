@@ -298,7 +298,7 @@ function updatePosition(){
         if(timer < 3){continue;}
         timer  = timer / 60
         if(timer > 2){
-            addBomb(grid, (timer -4 ) /10 + 1);
+            addBomb(grid, (timer -2 ) /10 + 1);
         }
         var alivePlayers = 0
         for(var j = 0; j < players.length; j++){
@@ -499,7 +499,7 @@ function compress(game){
     var minGrid = createGrid(grid.length, grid[0].length);
     var minPlayers = new Array(players.length);
     for( var i = 0; i < players.length; i++){
-        minPlayers[i] = {position: players[i].position, lives: players[i].lives, direction:players[i].dir, moving: players[i].moving }
+        minPlayers[i] = {position: players[i].position, lives: players[i].lives, direction:players[i].dir, moving: players[i].moving, name:players[i].playerName }
     }
     for( var i = 0; i < grid.length; i++){
         for( var j = 0; j < grid[0].length; j++){
