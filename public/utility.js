@@ -148,14 +148,14 @@ function startGame(data){
         }
         if(i==2){
             p3  = createSprite(50, 50, squareSize, squareSize);
-            p3.addAnimation("front-true", man_forward_animation);
-            p3.addAnimation("right-true", man_right_animation);
-            p3.addAnimation("left-true", man_left_animation);
-            p3.addAnimation("back-true", man_back_animation);
-            p3.addAnimation("front-false", man_forward_stand);
-            p3.addAnimation("right-false", man_right_stand);
-            p3.addAnimation("left-false", man_left_stand);
-            p3.addAnimation("back-false", man_back_stand);
+            p3.addAnimation("front-true", jones_forward_animation);
+            p3.addAnimation("right-true", jones_right_animation);
+            p3.addAnimation("left-true", jones_left_animation);
+            p3.addAnimation("back-true", jones_back_animation);
+            p3.addAnimation("front-false", jones_forward_stand);
+            p3.addAnimation("right-false", jones_right_stand);
+            p3.addAnimation("left-false", jones_left_stand);
+            p3.addAnimation("back-false", jones_back_stand);
         }
         if(i==3){
             p4  = createSprite(50, 50, squareSize, squareSize);

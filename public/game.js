@@ -93,6 +93,15 @@ function setup() {
     bun_left_stand = loadAnimation("bunpics/left1.png", "bunpics/left1.png")
     bun_back_stand = loadAnimation("bunpics/back1.png", "bunpics/back1.png")
 
+    jones_forward_animation = loadAnimation("jonespics/front1.png", "jonespics/front6.png");
+    jones_right_animation = loadAnimation("jonespics/right1.png", "jonespics/right6.png")
+    jones_left_animation = loadAnimation("jonespics/left1.png", "jonespics/left6.png")
+    jones_back_animation = loadAnimation("jonespics/back1.png", "jonespics/back6.png")
+    jones_forward_stand = loadAnimation("jonespics/front1.png", "jonespics/front1.png");
+    jones_right_stand = loadAnimation("jonespics/right1.png", "jonespics/right1.png")
+    jones_left_stand = loadAnimation("jonespics/left1.png", "jonespics/left1.png")
+    jones_back_stand = loadAnimation("jonespics/back1.png", "jonespics/back1.png")
+
     width = document.body.clientWidth;
     height = document.body.clientHeight;
 

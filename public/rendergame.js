@@ -110,7 +110,12 @@ function drawGame(){
     }
     
     for(var i = 0; i < players.length; i++){
-        if(players[i].lives <= 0){}
+        if(players[i].lives <= 0){
+            if(i == 0){p1.remove()}
+            if(i == 1){p2.remove()}
+            if(i == 2){p3.remove()}
+            if(i == 3){p4.remove()}
+        }
         else{
             
             var position = players[i].position
