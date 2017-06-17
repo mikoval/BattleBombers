@@ -103,48 +103,153 @@ function generateRoomID(){
     return Math.floor(Math.random() * 1000000000)
 }
 function createGrid(width, height){
+    var type = Math.floor(Math.random()  * 3);
+
     var arr = []
-    for(var i = 0; i < width; i++)
-    {   
-        arr.push([])
-        for(var j = 0; j < height; j++){
-            if(i == 0 || i == width-1 || j == 0 || j == height-1 || (i%2 == 0) && (j%2 == 0)){
-                arr[i].push({wall : true, fireTimer: -1, box: false,  center : {x: i + 0.5, y: j+0.5}, innerRadius: 1, outerRadius:  1.4142})
-            }
-            else{
-                arr[i].push({fireTimer: -1, box:false,  center : {x: i + 0.5, y: j+0.5}, innerRadius: 1, outerRadius:  1.4142});
-            }
+    if(type == 0 || true){
+        for(var i = 0; i < width; i++)
+        {   
+            arr.push([])
+            for(var j = 0; j < height; j++){
+                if(i == 0 || i == width-1 || j == 0 || j == height-1 || (Math.round(Math.random()*10)%4 == 0)) {
+                    arr[i].push({wall : true, fireTimer: -1, box: false,  center : {x: i + 0.5, y: j+0.5}, innerRadius: 1, outerRadius:  1.4142})
+                }
+                else{
+                    arr[i].push({fireTimer: -1, box:false,  center : {x: i + 0.5, y: j+0.5}, innerRadius: 1, outerRadius:  1.4142});
+                }
 
-            
+                
+            }
+        }
+        for(var i = 1; i < width-1; i++)
+        {   
+            for(var j = 1; j < height -1; j++){
+                //bottom right
+                if((i == width-2 && j == height-2) || (i == width-2 && j == height-3) || (i == width-3 && j == height-2)) {
+                    arr[i][j].wall = false;
+                    continue;
+                }
+
+                //top left
+                if((i == 1 && j == 1) || (i ==1 && j ==2) || (i == 2 && j == 1)) {
+                    arr[i][j].wall = false;
+                    continue;
+                }
+
+                //top right
+                if((i == 1 && j == height-2) || (i ==1 && j == height-3) || (i == 2 && j == height-2)) {
+                    arr[i][j].wall = false;
+                    continue;
+                }
+
+                //bottom left
+                if((i ==  width-2 && j ==1) || (i ==width-3 && j ==  1) || (i == width-2 && j == 2)) {
+                    arr[i][j].wall = false;
+                    continue;
+                }
+
+
+                if(Math.random() < .8 && !arr[i][j].wall){
+                    var rand = Math.random();
+                    arr[i][j].box = true;
+                    if(rand < 0.1)
+                        arr[i][j].boots = true;
+                    else if (rand < 0.2)
+                        arr[i][j].bombP = true;
+                }
+                
+            }
         }
     }
-    for(var i = 1; i < width-1; i++)
-    {   
-        for(var j = 1; j < height -1; j++){
-            //bottom right
-            if((i == width-2 && j == height-2) || (i == width-2 && j == height-3) || (i == width-3 && j == height-2)) {continue}
+    else if(type == 1){
+        for(var i = 0; i < width; i++)
+        {   
+            arr.push([])
+            for(var j = 0; j < height; j++){
+                if(i == 0 || i == width-1 || j == 0 || j == height-1 || (i%2 == 0) && (j%2 == 0)){
+                    arr[i].push({wall : true, fireTimer: -1, box: false,  center : {x: i + 0.5, y: j+0.5}, innerRadius: 1, outerRadius:  1.4142})
+                }
+                else{
+                    arr[i].push({fireTimer: -1, box:false,  center : {x: i + 0.5, y: j+0.5}, innerRadius: 1, outerRadius:  1.4142});
+                }
 
-            //top left
-            if((i == 1 && j == 1) || (i ==1 && j ==2) || (i == 2 && j == 1)) {continue;}
-
-            //top right
-            if((i == 1 && j == height-2) || (i ==1 && j == height-3) || (i == 2 && j == height-2)) {continue;}
-
-            //bottom left
-            if((i ==  width-2 && j ==1) || (i ==width-3 && j ==  1) || (i == width-2 && j == 2)) {continue;}
-
-
-            if(Math.random() < .8 && !arr[i][j].wall){
-                var rand = Math.random();
-                arr[i][j].box = true;
-                if(rand < 0.1)
-                    arr[i][j].boots = true;
-                else if (rand < 0.2)
-                    arr[i][j].bombP = true;
+                
             }
-            
+        }
+        for(var i = 1; i < width-1; i++)
+        {   
+            for(var j = 1; j < height -1; j++){
+                //bottom right
+                if((i == width-2 && j == height-2) || (i == width-2 && j == height-3) || (i == width-3 && j == height-2)) {continue}
+
+                //top left
+                if((i == 1 && j == 1) || (i ==1 && j ==2) || (i == 2 && j == 1)) {continue;}
+
+                //top right
+                if((i == 1 && j == height-2) || (i ==1 && j == height-3) || (i == 2 && j == height-2)) {continue;}
+
+                //bottom left
+                if((i ==  width-2 && j ==1) || (i ==width-3 && j ==  1) || (i == width-2 && j == 2)) {continue;}
+
+
+                if(Math.random() < .8 && !arr[i][j].wall){
+                    var rand = Math.random();
+                    arr[i][j].box = true;
+                    if(rand < 0.1)
+                        arr[i][j].boots = true;
+                    else if (rand < 0.2)
+                        arr[i][j].bombP = true;
+                }
+                
+            }
         }
     }
+    else if (type == 2){
+        for(var i = 0; i < width; i++)
+        {   
+            arr.push([])
+            for(var j = 0; j < height; j++){
+                if(i == 0 || i == width-1 || j == 0 || j == height-1 ){
+                    arr[i].push({wall : true, fireTimer: -1, box: false,  center : {x: i + 0.5, y: j+0.5}, innerRadius: 1, outerRadius:  1.4142})
+                }
+                else{
+                    arr[i].push({fireTimer: -1, box:false,  center : {x: i + 0.5, y: j+0.5}, innerRadius: 1, outerRadius:  1.4142});
+                }
+
+                
+
+                
+            }
+        }
+        for(var i = 1; i < width-1; i++)
+        {   
+            for(var j = 1; j < height -1; j++){
+                //bottom right
+                if((i == width-2 && j == height-2) || (i == width-2 && j == height-3) || (i == width-3 && j == height-2)) {continue}
+
+                //top left
+                if((i == 1 && j == 1) || (i ==1 && j ==2) || (i == 2 && j == 1)) {continue;}
+
+                //top right
+                if((i == 1 && j == height-2) || (i ==1 && j == height-3) || (i == 2 && j == height-2)) {continue;}
+
+                //bottom left
+                if((i ==  width-2 && j ==1) || (i ==width-3 && j ==  1) || (i == width-2 && j == 2)) {continue;}
+
+
+                if(Math.random() < .8 && !arr[i][j].wall){
+                    var rand = Math.random();
+                    arr[i][j].box = true;
+                    if(rand < 0.3)
+                        arr[i][j].boots = true;
+                    else if (rand < 0.6)
+                        arr[i][j].bombP = true;
+                }
+                
+            }
+        }
+    }
+    
     return arr;
 }
 setInterval(updatePosition, 20)
