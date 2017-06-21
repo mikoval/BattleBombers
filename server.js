@@ -106,7 +106,7 @@ function createGrid(width, height){
     var type = Math.floor(Math.random()  * 3);
 
     var arr = []
-    if(type == 0 || true){
+    if(type == 0){
         for(var i = 0; i < width; i++)
         {   
             arr.push([])
