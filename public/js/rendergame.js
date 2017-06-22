@@ -103,6 +103,11 @@ function drawGame(){
                 
                 image(bomb_p_img, x, y, squareSize,squareSize);
             }
+            else if( grid[i][j].obj == "bomb-strength")
+            {
+                
+                image(bomb_s_img, x, y, squareSize,squareSize);
+            }
             else if( grid[i][j].obj == "bomb")
             {
                 

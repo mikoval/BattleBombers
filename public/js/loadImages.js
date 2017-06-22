@@ -6,6 +6,7 @@ function loadImages(){
     bomb_p_img = loadImage("/Images/Bomb+.png"); 
     boots_img = loadImage("/Images/Boots.png"); 
     fire_img = loadImage("/Images/Fire.jpg")
+    bomb_s_img = loadImage("/Images/BombS.png")
 
     
     /*

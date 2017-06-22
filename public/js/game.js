@@ -65,10 +65,10 @@ function keyPressed(e) {
     if(state != "Current Game"){return;}
     e.preventDefault();
     var key  = e.key;
-    if(key == "w" || key == "ArrowUp"){input.up = true;}
-    if(key == "d" || key == "ArrowRight"){input.right = true;}
-    if(key == "s" || key == "ArrowDown"){input.down = true;}
-    if(key == "a" || key == "ArrowLeft"){input.left = true;}
+    if(key == "w" || key == "ArrowUp"){input.up = true; input.down = false; input.right = false; input.left = false}
+    if(key == "d" || key == "ArrowRight"){input.up = false; input.down = false; input.right = true; input.left = false}
+    if(key == "s" || key == "ArrowDown"){input.up = false; input.down = true; input.right = false; input.left = false}
+    if(key == "a" || key == "ArrowLeft"){input.left =input.up = false; input.down = false; input.right = false; input.left = true}
     if(key == " "){input.bomb = true;}
 }
 function keyReleased(e) {

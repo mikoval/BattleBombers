@@ -75,6 +75,7 @@ function newConnection(socket){
                 players[i].speed = 0.05;
                 players[i].dir = "front";
                 players[i].moving = false;
+                players[i].bombStrength = 2;
                 
             }
             active.push(roomid);
@@ -93,7 +94,10 @@ function newConnection(socket){
         var players = room.players;
         for(var i = 0; i < players.length; i++){
             if(players[i].id == socket.id){
+                var bomb = players[i].direction.bomb;
                 players[i].direction = data;
+                if(!players[i].direction.bomb && bomb)
+                    players[i].direction.bomb = bomb;
             }
         }
     }
@@ -152,10 +156,12 @@ function createGrid(width, height){
                 if(Math.random() < .8 && !arr[i][j].wall){
                     var rand = Math.random();
                     arr[i][j].box = true;
-                    if(rand < 0.1)
+                    if(rand < 0.15)
                         arr[i][j].boots = true;
-                    else if (rand < 0.2)
+                    else if (rand < 0.3)
                         arr[i][j].bombP = true;
+                    else if (rand < 0.45)
+                        arr[i][j].bombS = true;
                 }
                 
             }
@@ -195,10 +201,12 @@ function createGrid(width, height){
                 if(Math.random() < .8 && !arr[i][j].wall){
                     var rand = Math.random();
                     arr[i][j].box = true;
-                    if(rand < 0.1)
+                    if(rand < 0.15)
                         arr[i][j].boots = true;
-                    else if (rand < 0.2)
+                    else if (rand < 0.3)
                         arr[i][j].bombP = true;
+                    else if (rand < 0.45)
+                        arr[i][j].bombS = true;
                 }
                 
             }
@@ -240,10 +248,12 @@ function createGrid(width, height){
                 if(Math.random() < .8 && !arr[i][j].wall){
                     var rand = Math.random();
                     arr[i][j].box = true;
-                    if(rand < 0.3)
+                    if(rand < 0.2)
                         arr[i][j].boots = true;
-                    else if (rand < 0.6)
+                    else if (rand < 0.4)
                         arr[i][j].bombP = true;
+                    else if (rand < 0.6)
+                        arr[i][j].bombS = true;
                 }
                 
             }
@@ -274,65 +284,85 @@ function updateBombs(){
             for(var y = 0; y < grid[0].length; y++){
                  if(grid[x][y].bomb != undefined){
                     grid[x][y].bomb.timer -= 0.035;
-                    if(grid[x][y].bomb.timer <= 0 || grid[x][y].fireTimer >= 0){
-                        if(grid[x][y].bomb.player)
-                            grid[x][y].bomb.player.bombCount -= 1;
-                        grid[x][y].bomb = undefined;
-                        for(var k = 0; k < 3; k++){
-                            if(grid[x + k][y].box)
-                            {
-                                grid[x + k][y].box = false;
-                                break;
-                            }
-                            if(grid[x + k][y].wall)
-                                break; 
-                            grid[x+k][y].fireTimer = 1;  
-                        }
-                        for(var k = 0; k < 3; k++){
-                            if(grid[x - k][y].box)
-                            {
-                                grid[x - k][y].box = false;
-                                break;
-                            }
-                            if(grid[x - k][y].wall)
-                                break; 
-                            grid[x-k][y].fireTimer = 1;  
-                        }
-                        for(var k = 0; k < 3; k++){
-                            if(grid[x ][y+ k].box)
-                            {
-                                grid[x ][y + k].box = false;
-                                break;
-                            }
-                            if(grid[x][y + k].wall)
-                                break; 
-                            grid[x][y + k].fireTimer = 1;  
-                        }
-                        for(var k = 0; k < 3; k++){
-                            if(grid[x ][y -k].box)
-                            {
-                                grid[x][y-k].box = false;
-                                break
-                            }
-                            if(grid[x][y -k].wall)
-                                break; 
-                            grid[x][y-k].fireTimer = 1;  
-                        }
-
-                       
+                    if(grid[x][y].bomb.timer <= 0 ){
+                        explodeBomb(grid, x, y) 
                     }
                     
                 }
                 
             }
         }
-            var send = compress(room);
-            io.sockets.in(active[i]).volatile.emit('game-update', send);
+        for(var x = 0; x  < grid.length; x++){
+            for(var y = 0; y < grid[0].length; y++){
+                if(grid[x][y].box && grid[x][y].fireTimer > 0){
+                    grid[x][y].box = false;
+                    grid[x][y].fireTimer = -1
+                }
+            }
+        }
+        var send = compress(room);
+        io.sockets.in(active[i]).volatile.emit('game-update', send);
             
     }
 
 
  
+}
+function explodeBomb(grid, x, y){
+    var bomb = grid[x][y].bomb
+    if(bomb.player)
+        grid[x][y].bomb.player.bombCount -= 1;
+    grid[x][y].bomb = undefined;
+    for(var k = 0; k <= bomb.strength; k++){
+        
+        if(grid[x + k][y].wall)
+            break; 
+         
+        if(grid[x+k][y].bomb){
+            explodeBomb(grid, x+k, y);
+            break;
+        }
+        grid[x+k][y].fireTimer = 1;  
+        if(grid[x + k][y].box)
+            break;
+    }
+    for(var k = 0; k <= bomb.strength; k++){
+        
+        if(grid[x - k][y].wall)
+            break; 
+        
+        if(grid[x-k][y].bomb){
+            explodeBomb(grid, x-k, y);
+        }
+        grid[x-k][y].fireTimer = 1; 
+        if(grid[x - k][y].box)
+            break;  
+    }
+    for(var k = 0; k <= bomb.strength; k++){
+        
+        if(grid[x][y + k].wall)
+            break; 
+        
+        if(grid[x][y+k].bomb){
+            explodeBomb(grid, x, y+k);
+        }
+        grid[x][y + k].fireTimer = 1;  
+        if(grid[x ][y+k].box)
+            break; 
+    }
+    for(var k = 0; k <= bomb.strength; k++){
+        
+        if(grid[x][y -k].wall)
+            break;
+        
+        if(grid[x][y-k].bomb){
+            explodeBomb(grid, x, y-k);
+        } 
+        grid[x][y-k].fireTimer = 1; 
+        if(grid[x ][y-k].box)
+            break;  
+    }
+
 }
 function canMove(nx, ny, x, y, grid){
     var onBomb = [];
@@ -426,6 +456,10 @@ function updatePosition(){
             if(grid[x][y].bombP){
                 player.bombMax += 1;
                 grid[x][y].bombP = false;
+            }
+            if(grid[x][y].bombS){
+                player.bombStrength += 1;
+                grid[x][y].bombS = false;
             }
 
             x = position.x;
@@ -563,9 +597,10 @@ function updatePosition(){
             }
             if(direction.bomb){
                 if(player.bombCount < player.bombMax  &&  grid[Math.floor(position.x)][Math.floor(position.y)].bomb == undefined){
-                    grid[Math.floor(position.x)][Math.floor(position.y)].bomb = {player: player, timer: 1, active: true}
+                    grid[Math.floor(position.x)][Math.floor(position.y)].bomb = {player: player, timer: 1, active: true, strength: player.bombStrength}
                     player.bombCount +=1;
                 }
+                direction.bomb = false;
             }
 
         }
@@ -624,6 +659,7 @@ function compress(game){
     
             else if(!grid[i][j].box && grid[i][j].bombP){minGrid[i][j].obj = "bomb-boost"}
             else if(!grid[i][j].box && grid[i][j].boots){minGrid[i][j].obj = "speed-boost"}
+            else if(!grid[i][j].box && grid[i][j].bombS){minGrid[i][j].obj = "bomb-strength"}
             else {minGrid[i][j].obj = ""}
         }
     }
@@ -640,6 +676,6 @@ function addBomb(grid, timer){
         addBomb(grid);
     }
     else{
-        grid[x][y].bomb = {player: undefined, timer: 1, active: true}
+        grid[x][y].bomb = {player: undefined, timer: 1, active: true, strength:2}
     }
 }

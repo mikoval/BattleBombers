@@ -26,6 +26,7 @@ function waitingRoom(data){
     var players = data.players;
     var size = data.size;
     var code = data.id;
+    
     var WaitingDiv = createElement("div");
     WaitingDiv.class("waiting-div");
 
@@ -178,7 +179,7 @@ function startGame(data){
 
     drawScore();
     clearInterval(directionLoop);
-    directionLoop = setInterval(updatePosition, 30);
+    directionLoop = setInterval(updatePosition, 5);
 }
 function updateGame(data){
     grid = data.grid;
