@@ -94,10 +94,13 @@ function newConnection(socket){
         var players = room.players;
         for(var i = 0; i < players.length; i++){
             if(players[i].id == socket.id){
-                var bomb = players[i].direction.bomb;
-                players[i].direction = data;
-                if(!players[i].direction.bomb && bomb)
-                    players[i].direction.bomb = bomb;
+                if(players[i].direction){
+                    var bomb = players[i].direction.bomb;
+                    players[i].direction = data;
+                    if(!players[i].direction.bomb && bomb)
+                        players[i].direction.bomb = bomb;
+                }
+                
             }
         }
     }
