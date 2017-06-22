@@ -179,7 +179,7 @@ function startGame(data){
 
     drawScore();
     clearInterval(directionLoop);
-    directionLoop = setInterval(updatePosition, 5);
+    directionLoop = setInterval(updatePosition, 20);
 }
 function updateGame(data){
     grid = data.grid;
