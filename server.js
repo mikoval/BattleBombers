@@ -58,7 +58,11 @@ function newConnection(socket){
         var room = rooms[roomid]
         players.push({name: playerName, id:socket.id});
         if(players.length == room.size){
-            var grid = createGrid(9 + 2 * players.length,9 + 2 * players.length)
+            var grid = createGrid(9 + 2 * players.length,9 + 2 * players.length);
+            while(!validGrid(grid)){
+                console.log("invalid");
+                grid = createGrid(9 + 2 * players.length,9 + 2 * players.length);
+            }
             room.game = {grid: grid,  startTime: new Date(), currentTime: 0 }
             for(var i = 0; i < players.length; i++){
                 var location;
@@ -113,21 +117,120 @@ function createGrid(width, height){
     var type = Math.floor(Math.random()  * 3);
 
     var arr = []
+
+    for(var i = 0; i < width; i++)
+    {   
+        arr.push([])
+        for(var j = 0; j < height; j++){
+            if(i == 0 || i == width-1 || j == 0 || j == height-1 || (Math.round(Math.random()*10)%4 == 0)) {
+                arr[i].push({wall : true, fireTimer: -1, box: false,  center : {x: i + 0.5, y: j+0.5}, innerRadius: 1, outerRadius:  1.4142})
+            }
+            else{
+                arr[i].push({fireTimer: -1, box:false,  center : {x: i + 0.5, y: j+0.5}, innerRadius: 1, outerRadius:  1.4142});
+            }
+
+            
+        }
+    }
+
     if(type == 0){
-        for(var i = 0; i < width; i++)
+        for(var i = 1; i < width-1; i++)
         {   
-            arr.push([])
-            for(var j = 0; j < height; j++){
-                if(i == 0 || i == width-1 || j == 0 || j == height-1 || (Math.round(Math.random()*10)%4 == 0)) {
-                    arr[i].push({wall : true, fireTimer: -1, box: false,  center : {x: i + 0.5, y: j+0.5}, innerRadius: 1, outerRadius:  1.4142})
-                }
-                else{
-                    arr[i].push({fireTimer: -1, box:false,  center : {x: i + 0.5, y: j+0.5}, innerRadius: 1, outerRadius:  1.4142});
+            for(var j = 1; j < height -1; j++){
+                //bottom right
+                if((i == width-2 && j == height-2) || (i == width-2 && j == height-3) || (i == width-3 && j == height-2)) {
+                    arr[i][j].wall = false;
+                    continue;
                 }
 
+                //top left
+                if((i == 1 && j == 1) || (i ==1 && j ==2) || (i == 2 && j == 1)) {
+                    arr[i][j].wall = false;
+                    continue;
+                }
+
+                //top right
+                if((i == 1 && j == height-2) || (i ==1 && j == height-3) || (i == 2 && j == height-2)) {
+                    arr[i][j].wall = false;
+                    continue;
+                }
+
+                //bottom left
+                if((i ==  width-2 && j ==1) || (i ==width-3 && j ==  1) || (i == width-2 && j == 2)) {
+                    arr[i][j].wall = false;
+                    continue;
+                }
+                
+                if(Math.random() < .8 && !arr[i][j].wall){
+                    var rand = Math.random();
+                    arr[i][j].box = true;
+                    if(rand < 0.05)
+                        arr[i][j].lifeP = true;
+                    else if(rand < 0.15)
+                        arr[i][j].boots = true;
+                    else if (rand < 0.3)
+                        arr[i][j].bombP = true;
+                    else if (rand < 0.45)
+                        arr[i][j].bombS = true;
+                }
+            }
+        }
+    }
+    
+    
+
+
+                
+                
+    
+    else if(type == 1){
+        
+        for(var i = 1; i < width-1; i++)
+        {   
+            for(var j = 1; j < height -1; j++){
+               //bottom right
+                if((i == width-2 && j == height-2) || (i == width-2 && j == height-3) || (i == width-3 && j == height-2)) {
+                    arr[i][j].wall = false;
+                    continue;
+                }
+
+                //top left
+                if((i == 1 && j == 1) || (i ==1 && j ==2) || (i == 2 && j == 1)) {
+                    arr[i][j].wall = false;
+                    continue;
+                }
+
+                //top right
+                if((i == 1 && j == height-2) || (i ==1 && j == height-3) || (i == 2 && j == height-2)) {
+                    arr[i][j].wall = false;
+                    continue;
+                }
+
+                //bottom left
+                if((i ==  width-2 && j ==1) || (i ==width-3 && j ==  1) || (i == width-2 && j == 2)) {
+                    arr[i][j].wall = false;
+                    continue;
+                }
+
+
+                if(Math.random() < .8 && !arr[i][j].wall){
+                    var rand = Math.random();
+                    arr[i][j].box = true;
+                    if(rand < 0.05)
+                        arr[i][j].lifeP = true;
+                    else if(rand < 0.15)
+                        arr[i][j].boots = true;
+                    else if (rand < 0.3)
+                        arr[i][j].bombP = true;
+                    else if (rand < 0.45)
+                        arr[i][j].bombS = true;
+                }
                 
             }
         }
+    }
+    else if (type == 2){
+        
         for(var i = 1; i < width-1; i++)
         {   
             for(var j = 1; j < height -1; j++){
@@ -159,99 +262,9 @@ function createGrid(width, height){
                 if(Math.random() < .8 && !arr[i][j].wall){
                     var rand = Math.random();
                     arr[i][j].box = true;
-                    if(rand < 0.15)
-                        arr[i][j].boots = true;
-                    else if (rand < 0.3)
-                        arr[i][j].bombP = true;
-                    else if (rand < 0.45)
-                        arr[i][j].bombS = true;
-                }
-                
-            }
-        }
-    }
-    else if(type == 1){
-        for(var i = 0; i < width; i++)
-        {   
-            arr.push([])
-            for(var j = 0; j < height; j++){
-                if(i == 0 || i == width-1 || j == 0 || j == height-1 || (i%2 == 0) && (j%2 == 0)){
-                    arr[i].push({wall : true, fireTimer: -1, box: false,  center : {x: i + 0.5, y: j+0.5}, innerRadius: 1, outerRadius:  1.4142})
-                }
-                else{
-                    arr[i].push({fireTimer: -1, box:false,  center : {x: i + 0.5, y: j+0.5}, innerRadius: 1, outerRadius:  1.4142});
-                }
-
-                
-            }
-        }
-        for(var i = 1; i < width-1; i++)
-        {   
-            for(var j = 1; j < height -1; j++){
-                //bottom right
-                if((i == width-2 && j == height-2) || (i == width-2 && j == height-3) || (i == width-3 && j == height-2)) {continue}
-
-                //top left
-                if((i == 1 && j == 1) || (i ==1 && j ==2) || (i == 2 && j == 1)) {continue;}
-
-                //top right
-                if((i == 1 && j == height-2) || (i ==1 && j == height-3) || (i == 2 && j == height-2)) {continue;}
-
-                //bottom left
-                if((i ==  width-2 && j ==1) || (i ==width-3 && j ==  1) || (i == width-2 && j == 2)) {continue;}
-
-
-                if(Math.random() < .8 && !arr[i][j].wall){
-                    var rand = Math.random();
-                    arr[i][j].box = true;
-                    if(rand < 0.15)
-                        arr[i][j].boots = true;
-                    else if (rand < 0.3)
-                        arr[i][j].bombP = true;
-                    else if (rand < 0.45)
-                        arr[i][j].bombS = true;
-                }
-                
-            }
-        }
-    }
-    else if (type == 2){
-        for(var i = 0; i < width; i++)
-        {   
-            arr.push([])
-            for(var j = 0; j < height; j++){
-                if(i == 0 || i == width-1 || j == 0 || j == height-1 ){
-                    arr[i].push({wall : true, fireTimer: -1, box: false,  center : {x: i + 0.5, y: j+0.5}, innerRadius: 1, outerRadius:  1.4142})
-                }
-                else{
-                    arr[i].push({fireTimer: -1, box:false,  center : {x: i + 0.5, y: j+0.5}, innerRadius: 1, outerRadius:  1.4142});
-                }
-
-                
-
-                
-            }
-        }
-        for(var i = 1; i < width-1; i++)
-        {   
-            for(var j = 1; j < height -1; j++){
-                //bottom right
-                if((i == width-2 && j == height-2) || (i == width-2 && j == height-3) || (i == width-3 && j == height-2)) {continue}
-
-                //top left
-                if((i == 1 && j == 1) || (i ==1 && j ==2) || (i == 2 && j == 1)) {continue;}
-
-                //top right
-                if((i == 1 && j == height-2) || (i ==1 && j == height-3) || (i == 2 && j == height-2)) {continue;}
-
-                //bottom left
-                if((i ==  width-2 && j ==1) || (i ==width-3 && j ==  1) || (i == width-2 && j == 2)) {continue;}
-
-
-                if(Math.random() < .8 && !arr[i][j].wall){
-                    var rand = Math.random();
-                    arr[i][j].box = true;
-                    if(rand < 0.2)
+                    if(rand < 0.05)
+                        arr[i][j].lifeP = true;
+                    else if(rand < 0.2)
                         arr[i][j].boots = true;
                     else if (rand < 0.4)
                         arr[i][j].bombP = true;
@@ -440,6 +453,7 @@ function updatePosition(){
             addBomb(grid, (timer -2 ) /10 + 1);
         }
         var alivePlayers = 0
+        var updateLives = false;
         for(var j = 0; j < players.length; j++){
             
             var player = players[j]
@@ -451,8 +465,8 @@ function updatePosition(){
             var y = Math.floor(position.y);
             if(grid[x][y].boots){
                 player.speed += 0.02;
-                if(player.speed > 2){
-                    player.speed = 2;
+                if(player.speed > 0.2){
+                    player.speed = 0.2;
                 }
                 grid[x][y].boots = false;
             }
@@ -464,6 +478,10 @@ function updatePosition(){
                 player.bombStrength += 1;
                 grid[x][y].bombS = false;
             }
+            if(grid[x][y].lifeP){
+                player.lives += 1;
+                grid[x][y].lifeP = false;
+            }
 
             x = position.x;
             y = position.y;
@@ -474,7 +492,7 @@ function updatePosition(){
                 player.lives -= 1;
                 
                 player.invulnerable = 1;
-                io.sockets.in(active[i]).volatile.emit('score-update', compress(room));
+                updateLives= true;
             }
             if(direction.up){
                 player.moving = true;
@@ -607,7 +625,9 @@ function updatePosition(){
             }
 
         }
-        
+        if(updateLives){
+            io.sockets.in(active[i]).volatile.emit('score-update', compress(room));
+        }
         if(alivePlayers <= 1){
 
             var winner = undefined;
@@ -663,13 +683,38 @@ function compress(game){
             else if(!grid[i][j].box && grid[i][j].bombP){minGrid[i][j].obj = "bomb-boost"}
             else if(!grid[i][j].box && grid[i][j].boots){minGrid[i][j].obj = "speed-boost"}
             else if(!grid[i][j].box && grid[i][j].bombS){minGrid[i][j].obj = "bomb-strength"}
+            else if(!grid[i][j].box && grid[i][j].lifeP){minGrid[i][j].obj = "extra-life"}
             else {minGrid[i][j].obj = ""}
         }
     }
     return {grid: minGrid, players: minPlayers, time: time};
 
 }
+function validGrid(g){
+    var count = 0;
+    var arr = [{x:1, y:1}];
+    var width = g.length;
+    var height = g[0].length;
+    while(arr.length > 0){
+        var pos = arr.pop();
+        if(g[pos.x][pos.y].visited != undefined){continue;}
+        g[pos.x][pos.y].visited = true;
+        if(pos.x == width - 2 && pos.y == height-2){count++;}
+        if(pos.x == width - 2 && pos.y == 1){count++;}
+        if(pos.x == 1 && pos.y == height-2){count++;}
 
+        if(!g[pos.x + 1][pos.y].wall && !g[pos.x + 1][pos.y].visited){arr.push({x:pos.x+1, y:pos.y})}
+        if(!g[pos.x - 1][pos.y].wall && !g[pos.x - 1][pos.y].visited){arr.push({x:pos.x-1, y:pos.y})}
+        if(!g[pos.x][pos.y+1].wall && !g[pos.x][pos.y+1].visited){arr.push({x:pos.x, y:pos.y+1})}
+        if(!g[pos.x][pos.y-1].wall && !g[pos.x][pos.y-1].visited){arr.push({x:pos.x, y:pos.y-1})}
+    }
+    if(count == 3){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
 function addBomb(grid, timer){
     var prob = Math.random();
     if(prob > Math.log(timer) ) { return;}

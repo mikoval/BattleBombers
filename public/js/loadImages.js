@@ -8,6 +8,8 @@ function loadImages(){
     fire_img = loadImage("/Images/Fire.jpg")
     bomb_s_img = loadImage("/Images/BombS.png")
 
+    life_img = loadImage("/Images/Heart.png")
+
     
     /*
     sword_forward_animation = loadAnimation("swordpics/front1.png", "swordpics/front4.png");

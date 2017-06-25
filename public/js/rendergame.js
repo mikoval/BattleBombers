@@ -108,9 +108,12 @@ function drawGame(){
                 
                 image(bomb_s_img, x, y, squareSize,squareSize);
             }
+            else if( grid[i][j].obj == "extra-life")
+            {
+                image(life_img, x, y, squareSize,squareSize);
+            }
             else if( grid[i][j].obj == "bomb")
             {
-                
                 image(bomb_img, x, y, squareSize,squareSize);
             }
         }
