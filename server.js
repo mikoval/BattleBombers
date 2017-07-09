@@ -58,10 +58,10 @@ function newConnection(socket){
         var room = rooms[roomid]
         players.push({name: playerName, id:socket.id});
         if(players.length == room.size){
-            var grid = createGrid(9 + 2 * players.length,9 + 2 * players.length);
+            var grid = createGameBoard(9 + 2 * players.length,9 + 2 * players.length);
             while(!validGrid(grid)){
                 console.log("invalid");
-                grid = createGrid(9 + 2 * players.length,9 + 2 * players.length);
+                grid = createGameBoard(9 + 2 * players.length,9 + 2 * players.length);
             }
             room.game = {grid: grid,  startTime: new Date(), currentTime: 0 }
             for(var i = 0; i < players.length; i++){
@@ -113,16 +113,18 @@ function newConnection(socket){
 function generateRoomID(){
     return Math.floor(Math.random() * 1000000000)
 }
-function createGrid(width, height){
-    var type = Math.floor(Math.random()  * 3);
 
+//|| 
+function createGameBoard(width,height){
+     var type = Math.floor(Math.random()*3);
+    console.log(type);
     var arr = []
 
     for(var i = 0; i < width; i++)
     {   
         arr.push([])
         for(var j = 0; j < height; j++){
-            if(i == 0 || i == width-1 || j == 0 || j == height-1 || (Math.round(Math.random()*10)%4 == 0)) {
+            if(i == 0 || i == width-1 || j == 0 || j == height-1 ) {
                 arr[i].push({wall : true, fireTimer: -1, box: false,  center : {x: i + 0.5, y: j+0.5}, innerRadius: 1, outerRadius:  1.4142})
             }
             else{
@@ -137,6 +139,9 @@ function createGrid(width, height){
         for(var i = 1; i < width-1; i++)
         {   
             for(var j = 1; j < height -1; j++){
+                if( i %2 ==  0 && j %2 == 0 ){
+                    arr[i][j].wall = true;
+                }
                 //bottom right
                 if((i == width-2 && j == height-2) || (i == width-2 && j == height-3) || (i == width-3 && j == height-2)) {
                     arr[i][j].wall = false;
@@ -188,6 +193,10 @@ function createGrid(width, height){
         for(var i = 1; i < width-1; i++)
         {   
             for(var j = 1; j < height -1; j++){
+                if(Math.round(Math.random()*10)%4 == 0){
+                    arr[i][j] = {wall : true, fireTimer: -1, box: false,  center : {x: i + 0.5, y: j+0.5}, innerRadius: 1, outerRadius:  1.4142}
+                }
+
                //bottom right
                 if((i == width-2 && j == height-2) || (i == width-2 && j == height-3) || (i == width-3 && j == height-2)) {
                     arr[i][j].wall = false;
@@ -275,7 +284,24 @@ function createGrid(width, height){
             }
         }
     }
-    
+    console.log('returning array')
+    return arr;
+}
+function createGrid(width, height){
+   var arr = []
+
+    for(var i = 0; i < width; i++)
+    {   
+        arr.push([])
+        for(var j = 0; j < height; j++){
+           
+            arr[i].push({})
+            
+           
+
+            
+        }
+    }
     return arr;
 }
 setInterval(updatePosition, 20)
