@@ -116,11 +116,17 @@ function drawGame(){
             {
                 image(bomb_img, x, y, squareSize,squareSize);
             }
+            else if( grid[i][j].obj == "ghost")
+            {
+                image(ghost_img, x, y, squareSize,squareSize);
+            }
         }
     }
     
     for(var i = 0; i < players.length; i++){
-
+        if(players[i].ghost > 0 && players[i].id != socket.id){
+            players[i].position = {x:-1000, y:-1000};
+        }
         if(players[i].lives <= 0){
             if(i == 0){p1.remove()}
             if(i == 1){p2.remove()}

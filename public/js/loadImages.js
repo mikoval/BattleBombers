@@ -9,6 +9,7 @@ function loadImages(){
     bomb_s_img = loadImage("/Images/BombS.png")
 
     life_img = loadImage("/Images/Heart.png")
+    ghost_img = loadImage("/Images/ghost.png")
 
     
     /*

@@ -35,6 +35,9 @@ function newConnection(socket){
 
     function createGame(data){
         var playerName = data.name;
+
+        if ( (playerName.trim()) == '' )
+            playerName = "Player " + (1)
         var size = data.size;
         var room = generateRoomID();
         var players = []
@@ -48,7 +51,9 @@ function newConnection(socket){
         var playerName = data.name;
         var roomid = data.room;
         var players = rooms[roomid].players
-        
+        if ( (playerName.trim()) == '' )
+            playerName = "Player " + (players.length+ 1)
+
         if(rooms[roomid] == undefined || players.length >= rooms[roomid].size){
             io.sockets.in(socket.id).emit('invalid-room');
             return;
@@ -80,6 +85,7 @@ function newConnection(socket){
                 players[i].dir = "front";
                 players[i].moving = false;
                 players[i].bombStrength = 2;
+                players[i].ghost = -1.0;
                 
             }
             active.push(roomid);
@@ -169,7 +175,7 @@ function createGameBoard(width,height){
                 if(Math.random() < .8 && !arr[i][j].wall){
                     var rand = Math.random();
                     arr[i][j].box = true;
-                    if(rand < 0.05)
+                    if(rand < 0.02)
                         arr[i][j].lifeP = true;
                     else if(rand < 0.15)
                         arr[i][j].boots = true;
@@ -177,6 +183,8 @@ function createGameBoard(width,height){
                         arr[i][j].bombP = true;
                     else if (rand < 0.45)
                         arr[i][j].bombS = true;
+                    else if(rand < 0.5)
+                        arr[i][j].ghost = true;
                 }
             }
         }
@@ -233,6 +241,8 @@ function createGameBoard(width,height){
                         arr[i][j].bombP = true;
                     else if (rand < 0.45)
                         arr[i][j].bombS = true;
+                    else if(rand < 0.5)
+                        arr[i][j].ghost = true;
                 }
                 
             }
@@ -277,8 +287,10 @@ function createGameBoard(width,height){
                         arr[i][j].boots = true;
                     else if (rand < 0.4)
                         arr[i][j].bombP = true;
-                    else if (rand < 0.6)
+                    else if (rand < 0.55)
                         arr[i][j].bombS = true;
+                    else if(rand < 0.6)
+                        arr[i][j].ghost = true;
                 }
                 
             }
@@ -508,12 +520,17 @@ function updatePosition(){
                 player.lives += 1;
                 grid[x][y].lifeP = false;
             }
+            if(grid[x][y].ghost){
+                player.ghost = 3.0;
+                grid[x][y].ghost = false;
+            }
 
             x = position.x;
             y = position.y;
 
 
             if(player.invulnerable >= 0){ player.invulnerable -= 0.01;}
+            if(player.ghost >= 0){ player.ghost -= 0.01;}
             if(grid[Math.floor(position.x)][Math.floor(position.y)].fireTimer >= 0 && player.invulnerable < 0){
                 player.lives -= 1;
                 
@@ -693,7 +710,7 @@ function compress(game){
     var minPlayers = new Array(players.length);
     for( var i = 0; i < players.length; i++){
         minPlayers[i] = {
-            position: players[i].position, lives: players[i].lives, dir:players[i].dir, moving: players[i].moving, name: players[i].name,
+            position: players[i].position, lives: players[i].lives, dir:players[i].dir, moving: players[i].moving, name: players[i].name, ghost:players[i].ghost, id:players[i].id
         }
     }
     for( var i = 0; i < grid.length; i++){
@@ -710,6 +727,7 @@ function compress(game){
             else if(!grid[i][j].box && grid[i][j].boots){minGrid[i][j].obj = "speed-boost"}
             else if(!grid[i][j].box && grid[i][j].bombS){minGrid[i][j].obj = "bomb-strength"}
             else if(!grid[i][j].box && grid[i][j].lifeP){minGrid[i][j].obj = "extra-life"}
+            else if(!grid[i][j].box && grid[i][j].ghost){minGrid[i][j].obj = "ghost"}
             else {minGrid[i][j].obj = ""}
         }
     }
