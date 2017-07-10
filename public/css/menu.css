@@ -54,6 +54,16 @@
     width:200px;
     padding: 12px 24px;
 }
+.button-tiny{
+
+    margin-top:5px;
+    margin-left:auto;
+    margin-bottom:5px;
+    margin-right:auto;
+    font-size: 12px;
+    width:100px;
+    padding: 6px 12px;
+}
 
 .button-error {
     -moz-box-shadow:inset 0px 1px 0px 0px #cf866c;

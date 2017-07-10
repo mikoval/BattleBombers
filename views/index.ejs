@@ -10,7 +10,58 @@
         <script src="/js/menu.js"></script>
         <script src="/js/rendergame.js"></script>
         <script src="/js/loadImages.js"></script>
-         <script src="lib/p5.play.js"></script>
+        <script src="lib/p5.play.js"></script>
+        <script src="lib/three.js"></script>
+
+        <script type="x-shader/x-vertex" id="gridvs">
+        varying vec2 vUv;
+
+
+          void main() {
+
+              vUv = uv;
+              gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        </script>
+      <script type="x-shader/x-fragment" id="gridfs">
+        varying vec2 vUv;
+        uniform vec2 resolution;
+        uniform vec2 dimensions;
+        void main() {
+            float x = vUv.x * resolution.x;
+            float y = vUv.y * resolution.y;
+            float dx = resolution.x / dimensions.x;
+            float dy = resolution.y / dimensions.y;
+            for(int i = 0 ; i < 64; i++){
+              if(x < dx){
+                break;
+              }
+              x = x - dx;
+
+            }
+            for(int i = 0 ; i < 64; i++){
+              if(y < dy){
+                break;
+              }
+              y = y - dy;
+
+            }
+      
+
+
+
+            if(x < 0.5 || y < 0.5){
+                gl_FragColor = vec4(0.0,0.0 ,0.0, 1.0);
+
+            }
+            else{
+                gl_FragColor = vec4(0.5, 0.5, 0.5, 1.0);
+
+            }
+        }
+      </script>
+
+
         <script>
           (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
           (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -34,5 +85,6 @@
     </style>
     <body>
     <div id='myContainer' style = "display:inline"></div>
+    <div id='container2' style = "display:none"></div>
     </body>
 </html>

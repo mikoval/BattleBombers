@@ -20,6 +20,8 @@ var p2;
 var p3;
 var p4;
 var drawn = false;
+var mode = "2D";
+var renderer;
 
 
 var forward_animation;
@@ -48,10 +50,22 @@ function setup() {
 }
 function draw(){
     if(state == "Start Menu"){
-        startMenuAnimation();
+        if(mode=="3D"){
+            start3DMenuAnimation();
+        }
+        else{
+            startMenuAnimation();
+        }
+        
     }
     else if (state == "Current Game"){
-        drawGame();
+        if(mode=="3D"){
+             drawGame3D();
+        }
+        else{
+             drawGame();
+        }
+       
     }
 }
 function keyPressed(e) {

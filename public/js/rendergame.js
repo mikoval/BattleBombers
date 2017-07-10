@@ -187,3 +187,43 @@ function drawGame(){
     }
     drawn = true;
 }
+function drawGame3D(){
+
+    
+    for(var i = 0; i < players.length; i++){
+        if(i == 0){
+            
+            p1.position.x = grid.length/2 - players[i].position.x;
+            p1.position.y = -grid[0].length/2 + players[i].position.y;
+            p1.position.z = -10;
+
+
+       }
+       if(i == 1){
+            
+            p2.position.x = grid.length/2 - players[i].position.x;
+            p2.position.y = -grid[0].length/2 + players[i].position.y;
+            p2.position.z = -10;
+
+
+       }
+
+        
+
+
+        
+    }
+
+    $(".timer").text( "Time: " + formatTime(time));
+    
+    
+    renderer.render(scene, camera);
+    drawSprites();
+    if(time/1000  < 3){
+        textSize(600);
+        fill("#FFFFFF")
+        textAlign(CENTER);
+        text(3 - Math.floor(time/1000), width/2, 2*height/3);
+    }
+    drawn = true;
+}
