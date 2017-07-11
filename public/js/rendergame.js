@@ -60,8 +60,6 @@ function drawScore(){
         else
             scoreItem.parent(scoreBoardRight);
     }
-   
-
 }
 function drawGame(){
     draw2D();
@@ -69,4 +67,13 @@ function drawGame(){
 function drawGame3D(){
     draw3D();
     
+}
+function exists(item, arr){
+
+    for(var i =0; i < arr.length;  i++){
+        if (arr[i].x == item.x && arr[i].y == item.y){
+            return true;
+        }
+    }
+    return false;
 }

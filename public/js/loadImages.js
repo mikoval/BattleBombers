@@ -1,4 +1,5 @@
 function loadImages(){
+    //2d materials
     console.log("loading images")
     bomb_img = loadImage("/Images/Bomb.png"); 
     wall_img = loadImage("/Images/Wall.png"); 
@@ -11,6 +12,8 @@ function loadImages(){
     life_img = loadImage("/Images/Heart.png")
     ghost_img = loadImage("/Images/ghost.png")
 
+
+    //3d materials
     var texloader = new THREE.TextureLoader();
     woodtext=texloader.load("/Images/Wood.jpg");
     woodMaterial = new THREE.MeshPhongMaterial({ map: woodtext });
@@ -33,46 +36,7 @@ function loadImages(){
 
 
     
-
-    
-    /*
-    sword_forward_animation = loadAnimation("swordpics/front1.png", "swordpics/front4.png");
-    sword_right_animation = loadAnimation("swordpics/right1.png", "swordpics/right4.png")
-    sword_left_animation = loadAnimation("swordpics/left1.png", "swordpics/left4.png")
-    sword_back_animation = loadAnimation("swordpics/back1.png", "swordpics/back4.png")
-    sword_forward_stand = loadAnimation("swordpics/front1.png", "swordpics/front1.png");
-    sword_right_stand = loadAnimation("swordpics/right1.png", "swordpics/right1.png")
-    sword_left_stand = loadAnimation("swordpics/left1.png", "swordpics/left1.png")
-    sword_back_stand = loadAnimation("swordpics/back1.png", "swordpics/back1.png")
-
-    man_forward_animation = loadAnimation("manpics/front1.png", "manpics/front4.png");
-    man_right_animation = loadAnimation("manpics/right1.png", "manpics/right4.png")
-    man_left_animation = loadAnimation("manpics/left1.png", "manpics/left4.png")
-    man_back_animation = loadAnimation("manpics/back1.png", "manpics/back4.png")
-    man_forward_stand = loadAnimation("manpics/front1.png", "manpics/front1.png");
-    man_right_stand = loadAnimation("manpics/right1.png", "manpics/right1.png")
-    man_left_stand = loadAnimation("manpics/left1.png", "manpics/left1.png")
-    man_back_stand = loadAnimation("manpics/back1.png", "manpics/back1.png")
-
-    girl_forward_animation = loadAnimation("girlpics/front1.png", "girlpics/front7.png");
-    girl_right_animation = loadAnimation("girlpics/right1.png", "girlpics/right7.png")
-    girl_left_animation = loadAnimation("girlpics/left1.png", "girlpics/left7.png")
-    girl_back_animation = loadAnimation("girlpics/back1.png", "girlpics/back7.png")
-    girl_forward_stand = loadAnimation("girlpics/front1.png", "girlpics/front1.png");
-    girl_right_stand = loadAnimation("girlpics/right1.png", "girlpics/right1.png")
-    girl_left_stand = loadAnimation("girlpics/left1.png", "girlpics/left1.png")
-    girl_back_stand = loadAnimation("girlpics/back1.png", "girlpics/back1.png")
-
-    camel_forward_animation = loadAnimation("camelpics/front1.png", "camelpics/front3.png");
-    camel_right_animation = loadAnimation("camelpics/right1.png", "camelpics/right3.png")
-    camel_left_animation = loadAnimation("camelpics/left1.png", "camelpics/left3.png")
-    camel_back_animation = loadAnimation("camelpics/back1.png", "camelpics/back3.png")
-    camel_forward_stand = loadAnimation("camelpics/front1.png", "camelpics/front1.png");
-    camel_right_stand = loadAnimation("camelpics/right1.png", "camelpics/right1.png")
-    camel_left_stand = loadAnimation("camelpics/left1.png", "camelpics/left1.png")
-    camel_back_stand = loadAnimation("camelpics/back1.png", "camelpics/back1.png")
-    */
-
+    //animations
     fox_forward_animation = loadAnimation("/Images/FoxPics/front1.png", "/Images/FoxPics/front6.png");
     fox_right_animation = loadAnimation("/Images/FoxPics/right1.png", "/Images/FoxPics/right6.png")
     fox_left_animation = loadAnimation("/Images/FoxPics/left1.png", "/Images/FoxPics/left6.png")

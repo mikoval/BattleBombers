@@ -131,11 +131,6 @@ function startGame(data){
         startGame3D();
     }
 
-    
-
-
-        
-
     drawScore();
     clearInterval(directionLoop);
     directionLoop = setInterval(updatePosition, 20);
