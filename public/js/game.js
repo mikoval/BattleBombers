@@ -45,6 +45,7 @@ function setup() {
     socket.on('score-update', updateScore);
     socket.on("invalid-room", invalidRoom);
     socket.on("game-over", gameOver);
+    setInterval(function(){socket.emit('ping')}, 5000);
     //socket.on('text', newText);
 
     loadImages();
