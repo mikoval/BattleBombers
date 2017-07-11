@@ -331,9 +331,9 @@ function setup3DMenuAnimation(){
     const pointLight =new THREE.PointLight(0xFFFFFF);
 
     // set its position
-    pointLight.position.x = 10;
+    pointLight.position.x = 0;
     pointLight.position.y = 50;
-    pointLight.position.z = 130;
+    pointLight.position.z = 0;
 
     // add to the scene
     scene.add(pointLight);
@@ -344,24 +344,7 @@ function setup3DMenuAnimation(){
         }
     }
 }
-function bomb(x,y){
-    var bombGeometry = new THREE.SphereGeometry( 0.3, 32, 32 );
-    var bombMaterial = new THREE.MeshPhongMaterial( {color: 0x000000} );
-    var mesh =  new THREE.Mesh( bombGeometry, bombMaterial );
-    mesh.position.z = -9.7;
-    mesh.position.x = -grid.length/2 + x + 0.5 ;
-    mesh.position.y = -grid[0].length/2 + y + 0.5;
-    return mesh;
-}
-function fire(x,y){
-    var fireGeometry = new THREE.BoxGeometry( 1.0, 1.0, 0.01 );
-    var fireMaterial = new THREE.MeshPhongMaterial( {color: 0xFF0000} );
-    var mesh =  new THREE.Mesh( fireGeometry, fireMaterial );
-    mesh.position.z = -9.99;
-    mesh.position.x = -grid.length/2 + x + 0.5 ;
-    mesh.position.y = -grid[0].length/2 + y + 0.5;
-    return mesh;
-}
+
 function start3DMenuAnimation(){
     var rand = Math.random();
     if(rand < .01){

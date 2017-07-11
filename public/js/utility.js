@@ -181,32 +181,32 @@ function startGame(data){
             if(i==0){
 
                
-                var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+                var material = new THREE.MeshPhongMaterial( {color: 0x00ff00} );
                 p1 = new THREE.Mesh( geometry, material );
                 scene.add( p1 );
             }
             if(i ==1 ){
-                var material = new THREE.MeshBasicMaterial( {color: 0x0000FF} );
+                var material = new THREE.MeshPhongMaterial( {color: 0x0000FF} );
                 p2 = new THREE.Mesh( geometry, material );
                 scene.add( p2 );
             }
             if(i==2){
-                var material = new THREE.MeshBasicMaterial( {color: 0xFF00FF} );
+                var material = new THREE.MeshPhongMaterial( {color: 0xFF00FF} );
                 p3 = new THREE.Mesh( geometry, material );
                 scene.add( p3 );
             }
             if(i==3){
-                var material = new THREE.MeshBasicMaterial( {color: 0xFF0000} );
+                var material = new THREE.MeshPhongMaterial( {color: 0xFF0000} );
                 p4 = new THREE.Mesh( geometry, material );
                 scene.add( p4 );
             }
         }
         geometry = new THREE.PlaneGeometry( grid.length , grid[0].length, 10 );
-        camera.position.set(1,15,5);
+        camera.position.set(1,10,10);
         camera.up = new THREE.Vector3(0,0,1);
         camera.lookAt(new THREE.Vector3(0,0,-10));
 
-  
+    
 
         scene.add(camera);
         
@@ -226,12 +226,24 @@ function startGame(data){
 
         //plane.rotation.z = Math.PI / 2;
         scene.add( plane );
+        
+        var pointLight =new THREE.PointLight(0xFFFFFF);
+
+        // set its position
+        pointLight.position.x = 0;
+        pointLight.position.y = 20;
+        pointLight.position.z = 50;
+
+        // add to the scene
+        scene.add(pointLight);
+        
+
         }
 
     
 
 
-    
+        
 
     drawScore();
     clearInterval(directionLoop);

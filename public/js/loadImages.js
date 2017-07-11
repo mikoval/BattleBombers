@@ -11,6 +11,29 @@ function loadImages(){
     life_img = loadImage("/Images/Heart.png")
     ghost_img = loadImage("/Images/ghost.png")
 
+    var texloader = new THREE.TextureLoader();
+    woodtext=texloader.load("/Images/Wood.jpg");
+    woodMaterial = new THREE.MeshPhongMaterial({ map: woodtext });
+    walltext=texloader.load("/Images/Wall.png");
+    wallMaterial = new THREE.MeshPhongMaterial({ map: walltext });
+    firetext=texloader.load("/Images/Fire.jpg");
+    fireMaterial = new THREE.MeshPhongMaterial({ map: firetext });
+
+    lifetext=texloader.load("/Images/Heart.png");
+    lifeMaterial = new THREE.MeshPhongMaterial({ map: lifetext });
+    bootstext=texloader.load("/Images/boots2.png");
+    bootsMaterial = new THREE.MeshPhongMaterial({ map: bootstext });
+    bombstext=texloader.load("/Images/BombS.png");
+    bombsMaterial = new THREE.MeshPhongMaterial({ map: bombstext });
+    bombptext=texloader.load("/Images/Bomb+.png");
+    bombpMaterial = new THREE.MeshPhongMaterial({ map: bombptext });
+    ghosttext=texloader.load("/Images/ghost.png");
+    ghostMaterial = new THREE.MeshPhongMaterial({ map: ghosttext });
+
+
+
+    
+
     
     /*
     sword_forward_animation = loadAnimation("swordpics/front1.png", "swordpics/front4.png");

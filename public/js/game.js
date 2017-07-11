@@ -11,7 +11,12 @@ var life_img;
 var name = "";
 var grid;
 var squareSize;
-var players;
+var players=[];
+var bombs=[];
+var walls=[];
+var boxes=[];
+var fires = [];
+var powerups = [];
 var input = {up: false, down: false, left: false, right: false, bomb : false};
 var directionLoop;
 var time = 0;
@@ -22,6 +27,12 @@ var p4;
 var drawn = false;
 var mode = "2D";
 var renderer;
+var woodMaterial;
+var wallMaterial;
+var fireMaterial;
+var fireMaterial;
+
+
 
 
 var forward_animation;
