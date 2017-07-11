@@ -379,7 +379,7 @@ function start3DMenuAnimation(){
                 }
                 grid[i][j].bombTimer -= .005;
                 if(grid[i][j].bombTimer  < 0){
-                    menuExplode(i,j)
+                    menuExplode3D(i,j)
                 }
             }
         }
@@ -396,10 +396,9 @@ function start3DMenuAnimation(){
     renderer.render(scene, camera);
 }
 
-function menuExplode(x,y){
+function menuExplode3D(x,y){
     grid[x][y].bomb = false;
-    if(mode=="3D")
-        scene.remove(grid[x][y].bombObj);
+    scene.remove(grid[x][y].bombObj);
     
     scene.add(grid[x][y].fireObj);
     grid[x][y].fireTimer = 1;
@@ -436,6 +435,38 @@ function menuExplode(x,y){
             
     }
 
+}
+function menuExplode(x,y){
+    grid[x][y].bomb = false;
+    
+    grid[x][y].fireTimer = 1;
+    for(var i = 1; i < 3; i++){
+        if(grid.length  > x + i) {
+            grid[x+i][y].fireTimer = 1;
+                
+        }
+           
+        if(0 <= x- i)
+        {
+            grid[x-i][y].fireTimer = 1;
+            
+               
+        } 
+        if(grid[0].length  > y + i)
+        {
+            grid[x][y+i].fireTimer = 1;
+        
+                
+        } 
+        if(0 <= y- i) 
+        {
+            grid[x][y-i].fireTimer = 1;
+            
+                
+        } 
+        
+            
+    }
 }
 function checkName(name){
     return true;
