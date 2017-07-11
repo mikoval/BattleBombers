@@ -398,7 +398,8 @@ function start3DMenuAnimation(){
 
 function menuExplode(x,y){
     grid[x][y].bomb = false;
-    scene.remove(grid[x][y].bombObj);
+    if(mode=="3D")
+        scene.remove(grid[x][y].bombObj);
     
     scene.add(grid[x][y].fireObj);
     grid[x][y].fireTimer = 1;
