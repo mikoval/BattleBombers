@@ -124,121 +124,12 @@ function startGame(data){
     squareSize = height/grid.length;
     players = data.players;
     if(mode=="2D"){
-        for(var i = 0; i < players.length; i++){
-            if(i==0){
-
-                p1  = createSprite(50, 50, squareSize, squareSize);
-                p1.addAnimation("front-true", fox_forward_animation);
-                p1.addAnimation("right-true", fox_right_animation);
-                p1.addAnimation("left-true", fox_left_animation);
-                p1.addAnimation("back-true", fox_back_animation);
-                p1.addAnimation("front-false", fox_forward_stand);
-                p1.addAnimation("right-false", fox_right_stand);
-                p1.addAnimation("left-false", fox_left_stand);
-                p1.addAnimation("back-false", fox_back_stand);
-            }
-            if(i ==1 ){
-                p2  = createSprite(50, 50, squareSize, squareSize);
-                p2.addAnimation("front-true", bun_forward_animation);
-                p2.addAnimation("right-true", bun_right_animation);
-                p2.addAnimation("left-true", bun_left_animation);
-                p2.addAnimation("back-true", bun_back_animation);
-                p2.addAnimation("front-false", bun_forward_stand);
-                p2.addAnimation("right-false", bun_right_stand);
-                p2.addAnimation("left-false", bun_left_stand);
-                p2.addAnimation("back-false", bun_back_stand);
-            }
-            if(i==2){
-                p3  = createSprite(50, 50, squareSize, squareSize);
-                p3.addAnimation("front-true", jones_forward_animation);
-                p3.addAnimation("right-true", jones_right_animation);
-                p3.addAnimation("left-true", jones_left_animation);
-                p3.addAnimation("back-true", jones_back_animation);
-                p3.addAnimation("front-false", jones_forward_stand);
-                p3.addAnimation("right-false", jones_right_stand);
-                p3.addAnimation("left-false", jones_left_stand);
-                p3.addAnimation("back-false", jones_back_stand);
-            }
-            if(i==3){
-                p4  = createSprite(50, 50, squareSize, squareSize);
-                p4.addAnimation("front-true", spear_forward_animation);
-                p4.addAnimation("right-true", spear_right_animation);
-                p4.addAnimation("left-true", spear_left_animation);
-                p4.addAnimation("back-true", spear_back_animation);
-                p4.addAnimation("front-false", spear_forward_stand);
-                p4.addAnimation("right-false", spear_right_stand);
-                p4.addAnimation("left-false", spear_left_stand);
-                p4.addAnimation("back-false", spear_back_stand);
-            }
-        }
+        startGame2D();
     
     }
     else{
-        var geometry = new THREE.BoxGeometry( 0.5, 0.5, 1 );
-        scene = new THREE.Scene();
-        for(var i = 0; i < players.length; i++){
-
-            if(i==0){
-
-               
-                var material = new THREE.MeshPhongMaterial( {color: 0x00ff00} );
-                p1 = new THREE.Mesh( geometry, material );
-                scene.add( p1 );
-            }
-            if(i ==1 ){
-                var material = new THREE.MeshPhongMaterial( {color: 0x0000FF} );
-                p2 = new THREE.Mesh( geometry, material );
-                scene.add( p2 );
-            }
-            if(i==2){
-                var material = new THREE.MeshPhongMaterial( {color: 0xFF00FF} );
-                p3 = new THREE.Mesh( geometry, material );
-                scene.add( p3 );
-            }
-            if(i==3){
-                var material = new THREE.MeshPhongMaterial( {color: 0xFF0000} );
-                p4 = new THREE.Mesh( geometry, material );
-                scene.add( p4 );
-            }
-        }
-        geometry = new THREE.PlaneGeometry( grid.length , grid[0].length, 10 );
-        camera.position.set(1,10,10);
-        camera.up = new THREE.Vector3(0,0,1);
-        camera.lookAt(new THREE.Vector3(0,0,-10));
-
-    
-
-        scene.add(camera);
-        
-        var uniforms = {
-            resolution: { type: "v2", value: new THREE.Vector2(200, 200) },
-            dimensions: { type: "v2", value: new THREE.Vector2(grid.length, grid[0].length) },
-        };
-        var material = new THREE.ShaderMaterial( {
-            uniforms: uniforms,
-            vertexShader: document.getElementById( 'gridvs' ).textContent,
-            fragmentShader: document.getElementById( 'gridfs' ).textContent
-        });
-
-
-        var plane = new THREE.Mesh( geometry, material );
-        plane.position.z = -10;
-
-        //plane.rotation.z = Math.PI / 2;
-        scene.add( plane );
-        
-        var pointLight =new THREE.PointLight(0xFFFFFF);
-
-        // set its position
-        pointLight.position.x = 0;
-        pointLight.position.y = 20;
-        pointLight.position.z = 50;
-
-        // add to the scene
-        scene.add(pointLight);
-        
-
-        }
+        startGame3D();
+    }
 
     
 
