@@ -2,8 +2,8 @@ function loadImages(){
     //2d materials
     console.log("loading images")
     bomb_img = loadImage("/Images/Bomb.png"); 
-    wall_img = loadImage("/Images/Wall.png"); 
-    wood_img = loadImage("/Images/Wood.jpg"); 
+    wall_img = loadImage("/Images/Wall3.jpg"); 
+    wood_img = loadImage("/Images/Wood3.jpg"); 
     bomb_p_img = loadImage("/Images/Bomb+.png"); 
     boots_img = loadImage("/Images/Boots.png"); 
     fire_img = loadImage("/Images/Fire.jpg")
@@ -15,9 +15,9 @@ function loadImages(){
 
     //3d materials
     var texloader = new THREE.TextureLoader();
-    woodtext=texloader.load("/Images/Wood.jpg");
+    woodtext=texloader.load("/Images/Wood3.jpg");
     woodMaterial = new THREE.MeshPhongMaterial({ map: woodtext });
-    walltext=texloader.load("/Images/Wall.png");
+    walltext=texloader.load("/Images/Wall3.jpg");
     wallMaterial = new THREE.MeshPhongMaterial({ map: walltext });
     firetext=texloader.load("/Images/Fire.jpg");
     fireMaterial = new THREE.MeshPhongMaterial({ map: firetext });
@@ -32,6 +32,8 @@ function loadImages(){
     bombpMaterial = new THREE.MeshPhongMaterial({ map: bombptext });
     ghosttext=texloader.load("/Images/ghost.png");
     ghostMaterial = new THREE.MeshPhongMaterial({ map: ghosttext });
+    marbletext=texloader.load("/Images/grass.png");
+    marbleMaterial = new THREE.MeshPhongMaterial({ map: marbletext });
 
 
 
