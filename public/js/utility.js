@@ -11,8 +11,8 @@ function createGrid(width, height){
     return arr;
 }
 
-function createRoom(number){
-    socket.emit('create-game', {name: name, size:number});
+function createRoom(){
+    socket.emit('create-game', {name: name});
 
 }
 function joinRoom(id){
@@ -23,6 +23,8 @@ function invalidRoom(data){
 }
 function waitingRoom(data){
     removeElements(); 
+    var leader = data.leader;
+    data = data.room;
     var players = data.players;
     var size = data.size;
     var code = data.id;
@@ -40,9 +42,10 @@ function waitingRoom(data){
         var player = createElement("p", players[i].name);
         player.parent(PlayersDiv);
     }
-    var remaining = createElement("p", "Need " + (size - players.length) + " player(s) to start");
-    remaining.parent(PlayersDiv);
-
+    if(players.length < 2){
+        var remaining = createElement("p", "Need at least 2 players to start");
+        remaining.parent(PlayersDiv); 
+    }
     PlayersDiv.parent(WaitingDiv);
 
     var imageWrapper = createElement("div");
@@ -56,9 +59,30 @@ function waitingRoom(data){
     var inviteMsg = createElement("p", "Invite others by using the code: " );
     var inviteCode = createElement("p", location.host + "/" + code );
   
+    var button_leave = createButton('Leave Room');
+    button_leave.class("button button-tiny center-div")
+
+
+    button_leave.mousePressed(function(){
+        socket.emit('leave-room')
+        startMenu();
+    });
+    if(leader && players.length > 1){
+        var button_start = createButton('Start Game');
+        button_start.class("button center-div button-small")
+        button_start.mousePressed(function(){
+            socket.emit('start-room')
+        });
+    }
+   
+
+
     inviteMsg.parent(inviteDiv);
     inviteCode.parent(inviteDiv);
     inviteDiv.parent(WaitingDiv);
+    if(leader && players.length > 1){button_start.parent(WaitingDiv);}
+    button_leave.parent(WaitingDiv);
+    
     WaitingDiv.center();
 
 }

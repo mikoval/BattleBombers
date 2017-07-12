@@ -8,7 +8,7 @@ var wood_img;
 var bomb_p_img;
 var boots_img;
 var life_img;
-var name = "";
+var name = "undefined";
 var grid;
 var squareSize;
 var players=[];

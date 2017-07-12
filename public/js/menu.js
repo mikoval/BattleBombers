@@ -2,6 +2,7 @@ var grid = createGrid(8,8);
 var squareSize = 80;
 function startMenu(){
 
+    removeElements(); 
 
     state = "Start Menu";
     textSize(30);
@@ -83,7 +84,7 @@ function startMenu(){
     JoinCreateDiv.center();
     JoinCreateDiv.hide();
     
-    create_button.mousePressed(createMenu);
+    create_button.mousePressed(create);
     join_button.mousePressed(joinMenu);
 
     if(mode=="2D"){
@@ -93,38 +94,7 @@ function startMenu(){
         button_3D.hide();
     }
 
-    // code for creating game menu
-    var CreateDiv = createElement("div");
-    CreateDiv.class("menu-div");
-
-    var promptCreate = createElement("h2", 'Select Game Mode');
-    promptCreate.class("title")
-    promptCreate.parent(CreateDiv);
-  
-
-    var twoP = createButton('Two Player');
-    twoP.class("button-small button");
-    twoP.parent(CreateDiv);
-    twoP.mousePressed(createTwoP);
-
-    var threeP = createButton('Three Player');
-    threeP.class("button-small button");
-    threeP.parent(CreateDiv);
-    threeP.mousePressed(createThreeP);
-
-    var fourP = createButton('Four Player');
-    fourP.class("button-small button");
-    fourP.parent(CreateDiv);
-    fourP.mousePressed(createFourP);
-    
-
-    var createBack = createButton('Back');
-    createBack.class("button-small button-error");
-    createBack.mousePressed(mainMenu);
-    createBack.parent(CreateDiv);
-
-    CreateDiv.center();
-    CreateDiv.hide();
+   
 
 
     
@@ -165,9 +135,8 @@ function startMenu(){
     JoinDiv.center();
     JoinDiv.hide()
 
-    function createMenu(){
-        JoinCreateDiv.hide();
-        CreateDiv.show()
+    function create(){
+        createRoom()
     }
     function mainMenu(){
 
@@ -179,14 +148,12 @@ function startMenu(){
         JoinCreateDiv.hide();
         JoinDiv.show();
     }
-    function createTwoP(){createRoom(2); CreateDiv.hide();}
-    function createThreeP(){createRoom(3); CreateDiv.hide();}
-    function createFourP(){createRoom(4); CreateDiv.hide();}
     function submitName(){
         var input_name = nameInput.value();
         if(checkName(input_name)){
             name = input_name;
             if(window.location.pathname.length >  1){
+
                 console.log(window.location.pathname.split("/")[1])
                 joinRoom(window.location.pathname.split("/")[1]);
                 window.history.pushState('Home', 'Home', '/');
@@ -201,10 +168,12 @@ function startMenu(){
         joinRoom(room_id);
         
     }
-    if(name == ""){
+
+    if(name == "undefined"){
         NameDiv.show();
     }
     else{
+
         JoinCreateDiv.show();
     }
     function changeMode(){

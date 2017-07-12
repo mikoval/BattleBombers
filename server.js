@@ -31,21 +31,85 @@ function newConnection(socket){
     console.log("new socket connection: " + socket.id);
     socket.on('create-game', createGame);
     socket.on('join-game', joinGame);
+    socket.on('start-room', startGame);
     socket.on('update-input', updateInput)
+    socket.on('disconnect', function () {
+        if(socket.room){
+            var room = rooms[socket.room];
+            if(room.game != undefined)
+                return;
+            for(var i = 0; i < room.players.length; i++){
+                if(room.players[i].id == socket.id){
+                    room.players.splice(i,1);
+                    break;
+                }
+            }
+            waitingRoom(socket.room, room);
 
+        }
+        
+    });
+    socket.on('leave-room', function () {
+        if(socket.room){
+            var room = rooms[socket.room];
+            for(var i = 0; i < room.players.length; i++){
+                if(room.players[i].id == socket.id){
+                    room.players.splice(i,1);
+                    break;
+                }
+            }
+            socket.leave(socket.room);
+            waitingRoom(socket.room, room);
+
+
+        }
+        
+    });
+    function startGame(data){
+        var roomid = socket.room;
+        var players = rooms[roomid].players
+        var room = rooms[roomid]
+        var grid = createGameBoard(9 + 2 * players.length,9 + 2 * players.length);
+        while(!validGrid(grid)){
+            console.log("invalid");
+            grid = createGameBoard(9 + 2 * players.length,9 + 2 * players.length);
+        }
+        room.game = {grid: grid,  startTime: new Date(), currentTime: 0 }
+        for(var i = 0; i < players.length; i++){
+            var location;
+            if (i == 0){location = {x: 1.5, y :1.5}}
+            else if (i == 1){location = {x: grid.length - 1.5, y : grid[0].length - 1.5}}
+            else if (i == 2){location = {x: 1.5, y : grid[0].length - 1.5}}
+            else if (i == 3){location = {x: grid.length - 1.5, y : 1.5}}
+            players[i].position = location;
+            players[i].direction = {up: false, down: false, left: false, right: false, bomb: false};
+            players[i].bombCount = 0;
+            players[i].bombMax = 1;
+            players[i].lives = 3;
+            players[i].invulnerable = -1;
+            players[i].speed = 0.05;
+            players[i].dir = "front";
+            players[i].moving = false;
+            players[i].bombStrength = 2;
+            players[i].ghost = -1.0;
+            
+        }
+        active.push(roomid);
+        io.sockets.in(roomid).volatile.emit('game-start', room);
+    }
+    
     function createGame(data){
         var playerName = data.name;
 
         if ( (playerName.trim()) == '' )
             playerName = "Player " + (1)
-        var size = data.size;
         var room = generateRoomID();
         var players = []
         players.push({name: playerName, id:socket.id});
         socket.room = room;
         socket.join(room);
-        rooms[room] = {id: room, players:players, size:size};
-        io.sockets.in(room).emit('game-pending', rooms[room]);
+        rooms[room] = {id: room, players:players};
+        waitingRoom(socket.room, room);
     }
     function joinGame(data){
         var playerName = data.name;
@@ -54,7 +118,7 @@ function newConnection(socket){
         if ( (playerName.trim()) == '' )
             playerName = "Player " + (players.length+ 1)
 
-        if(rooms[roomid] == undefined || players.length >= rooms[roomid].size){
+        if(rooms[roomid] == undefined || players.length >= 4){
             io.sockets.in(socket.id).emit('invalid-room');
             return;
         }
@@ -62,38 +126,10 @@ function newConnection(socket){
         socket.join(roomid);
         var room = rooms[roomid]
         players.push({name: playerName, id:socket.id});
-        if(players.length == room.size){
-            var grid = createGameBoard(9 + 2 * players.length,9 + 2 * players.length);
-            while(!validGrid(grid)){
-                console.log("invalid");
-                grid = createGameBoard(9 + 2 * players.length,9 + 2 * players.length);
-            }
-            room.game = {grid: grid,  startTime: new Date(), currentTime: 0 }
-            for(var i = 0; i < players.length; i++){
-                var location;
-                if (i == 0){location = {x: 1.5, y :1.5}}
-                else if (i == 1){location = {x: grid.length - 1.5, y : grid[0].length - 1.5}}
-                else if (i == 2){location = {x: 1.5, y : grid[0].length - 1.5}}
-                else if (i == 3){location = {x: grid.length - 1.5, y : 1.5}}
-                players[i].position = location;
-                players[i].direction = {up: false, down: false, left: false, right: false, bomb: false};
-                players[i].bombCount = 0;
-                players[i].bombMax = 1;
-                players[i].lives = 3;
-                players[i].invulnerable = -1;
-                players[i].speed = 0.05;
-                players[i].dir = "front";
-                players[i].moving = false;
-                players[i].bombStrength = 2;
-                players[i].ghost = -1.0;
-                
-            }
-            active.push(roomid);
-            io.sockets.in(roomid).volatile.emit('game-start', room);
-        }
-        else{
-            io.sockets.in(roomid).volatile.emit('game-pending', room);
-        }
+        
+        
+        waitingRoom(socket.room, room);
+        
         
 
     }
@@ -120,11 +156,10 @@ function generateRoomID(){
     return Math.floor(Math.random() * 1000000000)
 }
 
-//|| 
 function createGameBoard(width,height){
      var type = Math.floor(Math.random()*3);
     console.log(type);
-    var arr = []
+    var arr = [];
 
     for(var i = 0; i < width; i++)
     {   
@@ -189,13 +224,7 @@ function createGameBoard(width,height){
             }
         }
     }
-    
-    
-
-
-                
-                
-    
+       
     else if(type == 1){
         
         for(var i = 1; i < width-1; i++)
@@ -296,7 +325,6 @@ function createGameBoard(width,height){
             }
         }
     }
-    console.log('returning array')
     return arr;
 }
 function createGrid(width, height){
@@ -770,4 +798,17 @@ function addBomb(grid, timer){
     else{
         grid[x][y].bomb = {player: undefined, timer: 1, active: true, strength:2}
     }
+}
+function waitingRoom(id){
+    
+    if(rooms[id].players.length > 0){
+        var s =  io.sockets.connected[rooms[id].players[0].id];
+
+        var data = {room:rooms[id], leader:false}
+        s.broadcast.to(id).emit('game-pending', data);
+        data.leader = true;
+        s.emit('game-pending', data);
+    }
+        
+
 }
