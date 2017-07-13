@@ -114,11 +114,18 @@ function newConnection(socket){
     function joinGame(data){
         var playerName = data.name;
         var roomid = data.room;
+        if(rooms[roomid] == undefined){
+            io.sockets.in(socket.id).emit('invalid-room');
+            return;
+        }
         var players = rooms[roomid].players
-        if ( (playerName.trim()) == '' )
-            playerName = "Player " + (players.length+ 1)
 
-        if(rooms[roomid] == undefined || players.length >= 4){
+        if ( (playerName.trim()) == '' ){
+            playerName = "Player " + (players.length+ 1)
+        }
+            
+
+        if(players.length >= 4){
             io.sockets.in(socket.id).emit('invalid-room');
             return;
         }
