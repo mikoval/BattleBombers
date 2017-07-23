@@ -154,13 +154,22 @@ function startGame(data){
     else{
         startGame3D();
     }
+    for(var i = 0; i < grid.length; i++){
+        for (var j = 0; j < grid[0].length; j++){
+            if(grid[i][j].wall){
+                walls.push({x:i, y:j});
+            }
+            
+            
+        }
+    }
 
     drawScore();
     clearInterval(directionLoop);
     directionLoop = setInterval(updatePosition, 10);
 }
 function updateGame(data){
-    walls = data.walls;
+  
     boxes = data.boxes;
     time = data.time;
     players = data.players;

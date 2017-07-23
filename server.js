@@ -95,6 +95,7 @@ function newConnection(socket){
             
         }
         active.push(roomid);
+
         io.sockets.in(roomid).volatile.emit('game-start', room);
     }
     
@@ -760,7 +761,7 @@ function compress(game){
         for( var j = 0; j < grid[0].length; j++){
       
             if(grid[i][j].fireTimer >= 0){fire.push({x:i, y:j})}
-            else if(grid[i][j].wall)    {walls.push({x:i, y:j})}
+     
             else if(grid[i][j].box)     {boxes.push({x:i, y:j})}
 
             if(grid[i][j].bomb){bombs.push({x:i, y:j})}
@@ -773,7 +774,7 @@ function compress(game){
             else if(!grid[i][j].box && grid[i][j].ghost){powerups.push({x:i, y:j, t:"ghost"})}
         }
     }
-    return {walls: walls,boxes: boxes,fire:fire, players: minPlayers,bombs:bombs, powerups:powerups, time: time};
+    return {boxes: boxes,fire:fire, players: minPlayers,bombs:bombs, powerups:powerups, time: time};
 
 }
 function validGrid(g){
