@@ -1,4 +1,4 @@
-var express = require('express');
+ var express = require('express');
 var app = express();
 var port = process.env.PORT || 8080;
 
@@ -114,7 +114,8 @@ function newConnection(socket){
     function joinGame(data){
         var playerName = data.name;
         var roomid = data.room;
-        if(rooms[roomid] == undefined){
+
+        if(rooms[roomid] == undefined || rooms[roomid].game != undefined){
             io.sockets.in(socket.id).emit('invalid-room');
             return;
         }
