@@ -31,6 +31,11 @@ var woodMaterial;
 var wallMaterial;
 var fireMaterial;
 var fireMaterial;
+var walls = [];
+var boxes = [];
+var fire = [];
+var bombs = [];
+var powerups =[];
 
 
 

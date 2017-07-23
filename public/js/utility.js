@@ -160,9 +160,13 @@ function startGame(data){
     directionLoop = setInterval(updatePosition, 20);
 }
 function updateGame(data){
-    grid = data.grid;
+    walls = data.walls;
+    boxes = data.boxes;
     time = data.time;
     players = data.players;
+    bombs = data.bombs;
+    powerups = data.powerups;
+    fires = data.fire;
 }
 
 function updatePosition(){

@@ -56,58 +56,58 @@ function draw2D(){
 
 
     $(".timer").text( "Time: " + formatTime(time));
-    
+    fill("#A0A0A0")
     for(var i = 0; i < grid.length; i++){
         for (var j = 0; j < grid[0].length; j++){
             var x = startX+i*squareSize;
             var y = startY + j * squareSize;
-            if(grid[i][j].floor == "_"){
-                fill("#A0A0A0")
-                rect(x, y, squareSize, squareSize);
-            }
-            else if (grid[i][j].floor == "fire")
-            {
-                fill("#AA3030")
-                rect(x, y, squareSize, squareSize);
-            }    
-            else if( grid[i][j].floor == "wall")
-            {
-                image(wall_img, x, y, squareSize,squareSize);
-            }
-            else if( grid[i][j].floor == "box")
-            {
-                image(wood_img, x, y, squareSize,squareSize);
-            }
-            if( grid[i][j].obj == "speed-boost")
-            {
-                
-                image(boots_img, x, y, squareSize,squareSize);
-            }
-            else if( grid[i][j].obj == "bomb-boost")
-            {
-                
-                image(bomb_p_img, x, y, squareSize,squareSize);
-            }
-            else if( grid[i][j].obj == "bomb-strength")
-            {
-                
-                image(bomb_s_img, x, y, squareSize,squareSize);
-            }
-            else if( grid[i][j].obj == "extra-life")
-            {
-                image(life_img, x, y, squareSize,squareSize);
-            }
-            else if( grid[i][j].obj == "bomb")
-            {
-                image(bomb_img, x, y, squareSize,squareSize);
-            }
-            else if( grid[i][j].obj == "ghost")
-            {
-                image(ghost_img, x, y, squareSize,squareSize);
-            }
+            rect(x, y, squareSize, squareSize);
+            
+            
         }
     }
+
     
+    for(var i = 0; i < walls.length; i++){
+        var x = startX+walls[i].x*squareSize;
+        var y = startY + walls[i].y * squareSize;
+        image(wall_img, x, y, squareSize,squareSize);
+    }
+    for(var i = 0; i < boxes.length; i++){
+        var x = startX+boxes[i].x*squareSize;
+        var y = startY + boxes[i].y * squareSize;
+        image(wood_img, x, y, squareSize,squareSize);
+    }
+  
+    for(var i = 0; i < fires.length; i++){
+        var x = startX+fires[i].x*squareSize;
+        var y = startY + fires[i].y * squareSize;
+        image(fire_img, x, y, squareSize,squareSize);
+    }
+    console.log(bombs);
+    for(var i = 0; i < bombs.length; i++){
+        var x = startX+bombs[i].x*squareSize;
+        var y = startY + bombs[i].y * squareSize;
+        image(bomb_img, x, y, squareSize,squareSize);
+    }
+    for(var i = 0; i < powerups.length; i++){
+        var x = startX+powerups[i].x*squareSize;
+        var y = startY + powerups[i].y * squareSize;
+        if(powerups[i].t ==  "bomb-boost")
+             image(bomb_p_img, x, y, squareSize,squareSize);
+        if(powerups[i].t ==  "speed-boost")
+            image(boots_img, x, y, squareSize,squareSize);
+        if(powerups[i].t ==  "bomb-strength")
+            image(bomb_s_img, x, y, squareSize,squareSize);
+        if(powerups[i].t ==  "extra-life")
+            image(life_img, x, y, squareSize,squareSize);
+        if(powerups[i].t ==  "ghost")
+            image(ghost_img, x, y, squareSize,squareSize);
+
+    }
+
+
+
     for(var i = 0; i < players.length; i++){
         if(players[i].ghost > 0 && players[i].id != socket.id){
             players[i].position = {x:-1000, y:-1000};

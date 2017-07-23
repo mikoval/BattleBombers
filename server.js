@@ -537,9 +537,9 @@ function updatePosition(){
             var x = Math.floor(position.x);
             var y = Math.floor(position.y);
             if(grid[x][y].boots){
-                player.speed += 0.02;
-                if(player.speed > 0.2){
-                    player.speed = 0.2;
+                player.speed += 0.01;
+                if(player.speed > 0.15){
+                    player.speed = 0.15;
                 }
                 grid[x][y].boots = false;
             }
@@ -748,25 +748,30 @@ function compress(game){
             position: players[i].position, lives: players[i].lives, dir:players[i].dir, moving: players[i].moving, name: players[i].name, ghost:players[i].ghost, id:players[i].id
         }
     }
+    var walls = [];
+    var boxes = [];
+    var fire = [];
+    var bombs = [];
+    var powerups = [];
+
     for( var i = 0; i < grid.length; i++){
         for( var j = 0; j < grid[0].length; j++){
-            minGrid[i][j] = {}
-            if(grid[i][j].fireTimer >= 0){minGrid[i][j].floor = "fire"}
-            else if(grid[i][j].wall)    {minGrid[i][j].floor = "wall"}
-            else if(grid[i][j].box)     {minGrid[i][j].floor = "box"}
-            else                        {minGrid[i][j].floor = "_"}
+      
+            if(grid[i][j].fireTimer >= 0){fire.push({x:i, y:j})}
+            else if(grid[i][j].wall)    {walls.push({x:i, y:j})}
+            else if(grid[i][j].box)     {boxes.push({x:i, y:j})}
 
-            if(grid[i][j].bomb){minGrid[i][j].obj = "bomb"}
+            if(grid[i][j].bomb){bombs.push({x:i, y:j})}
     
-            else if(!grid[i][j].box && grid[i][j].bombP){minGrid[i][j].obj = "bomb-boost"}
-            else if(!grid[i][j].box && grid[i][j].boots){minGrid[i][j].obj = "speed-boost"}
-            else if(!grid[i][j].box && grid[i][j].bombS){minGrid[i][j].obj = "bomb-strength"}
-            else if(!grid[i][j].box && grid[i][j].lifeP){minGrid[i][j].obj = "extra-life"}
-            else if(!grid[i][j].box && grid[i][j].ghost){minGrid[i][j].obj = "ghost"}
-            else {minGrid[i][j].obj = ""}
+
+            else if(!grid[i][j].box && grid[i][j].bombP){powerups.push({x:i, y:j, t:"bomb-boost"})}
+            else if(!grid[i][j].box && grid[i][j].boots){powerups.push({x:i, y:j, t:"speed-boost"})}
+            else if(!grid[i][j].box && grid[i][j].bombS){powerups.push({x:i, y:j, t:"bomb-strength"})}
+            else if(!grid[i][j].box && grid[i][j].lifeP){powerups.push({x:i, y:j, t:"extra-life"})}
+            else if(!grid[i][j].box && grid[i][j].ghost){powerups.push({x:i, y:j, t:"ghost"})}
         }
     }
-    return {grid: minGrid, players: minPlayers, time: time};
+    return {walls: walls,boxes: boxes,fire:fire, players: minPlayers,bombs:bombs, powerups:powerups, time: time};
 
 }
 function validGrid(g){
