@@ -732,13 +732,13 @@ function updatePosition(){
             io.sockets.in(active[i]).volatile.emit('game-over', data);
         }
 
-        else{
+        
             
             
-            var send = compress(room);
-            io.sockets.in(active[i]).volatile.emit('game-update', send);
+        var send = compress(room);
+        io.sockets.in(active[i]).volatile.emit('game-update', send);
             
-        }
+        
         
     }
 
