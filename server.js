@@ -554,6 +554,7 @@ function updatePosition(){
             if(grid[x][y].lifeP){
                 player.lives += 1;
                 grid[x][y].lifeP = false;
+                updateLives= true;
             }
             if(grid[x][y].ghost){
                 player.ghost = 3.0;
