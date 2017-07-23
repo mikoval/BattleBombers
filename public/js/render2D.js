@@ -172,8 +172,3 @@ function draw2D(){
     }
     drawn = true;
 }
-function animate(){
-    for(var i =0 ; i < powerups.length;i++){
-        powerups[i].rotation.z += 0.1;
-    }
-}

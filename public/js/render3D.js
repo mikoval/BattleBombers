@@ -76,139 +76,103 @@ function draw3D(){
     animate();
     
 
-    var walls2 = [];
-    var boxes2 = [];
-    var bombs2 = [];
-    var fires2 = [];
-    var powerups2 = [];
-    for(var i = 0; i < grid.length; i++){
-        for (var j = 0; j < grid[0].length; j++){
-            if(grid[i][j].floor=="wall"){
-                walls2.push({x:i, y:j});
-            }
-            if(grid[i][j].floor=="box"){
-                boxes2.push({x:i, y:j});
-            }
-            if(grid[i][j].floor=="fire"){
-                fires2.push({x:i, y:j});
-            }
-            if(grid[i][j].obj=="bomb"){
-                bombs2.push({x:i, y:j});
-            }
-            if(grid[i][j].obj=="extra-life"){
-                powerups2.push({x:i, y:j, type:"life"});
-            }
-            if(grid[i][j].obj=="speed-boost"){
-                powerups2.push({x:i, y:j, type:"boots"});
-            }
-            if(grid[i][j].obj=="bomb-strength"){
-                powerups2.push({x:i, y:j, type:"bombs"});
-            }
-            if(grid[i][j].obj=="bomb-boost"){
-                powerups2.push({x:i, y:j, type:"bombp"});
-            }
 
-            if(grid[i][j].obj=="ghost"){
-                console.log("ghost")
-                powerups2.push({x:i, y:j, type:"ghost"});
-            }
-        }
-    }
-
-    for(var i = 0; i < walls.length; i++){
-        if(!exists(walls[i], walls2)){
-            scene.remove(walls[i]);
-            walls.splice(i,1);
-        }
-    }
     for(var i = 0; i < walls2.length; i++){
         if(!exists(walls2[i], walls)){
-            var w = wall(walls2[i].x, walls2[i].y);
-            w.x = walls2[i].x;
-            w.y = walls2[i].y;
-            walls.push(w);
-            scene.add(walls[walls.length-1]);
+            scene.remove(walls2[i]);
+            walls2.splice(i,1);
+        }
+    }
+    for(var i = 0; i < walls.length; i++){
+        if(!exists(walls[i], walls2)){
+            var w = wall(walls[i].x, walls[i].y);
+            w.x = walls[i].x;
+            w.y = walls[i].y;
+            walls2.push(w);
+            scene.add(walls2[walls2.length-1]);
 
         }
     }
     //boxes check
-    for(var i = 0; i < boxes.length; i++){
-        if(!exists(boxes[i], boxes2)){
-            scene.remove(boxes[i]);
-            boxes.splice(i,1);
-        }
-    }
     for(var i = 0; i < boxes2.length; i++){
         if(!exists(boxes2[i], boxes)){
-            var b = createBox(boxes2[i].x, boxes2[i].y);
-            b.x = boxes2[i].x;
-            b.y = boxes2[i].y;
-            boxes.push(b);
-            scene.add(boxes[boxes.length-1]);
+            scene.remove(boxes2[i]);
+            boxes2.splice(i,1);
+        }
+    }
+    for(var i = 0; i < boxes.length; i++){
+        if(!exists(boxes[i], boxes2)){
+            var b = createBox(boxes[i].x, boxes[i].y);
+            b.x = boxes[i].x;
+            b.y = boxes[i].y;
+            boxes2.push(b);
+            scene.add(boxes2[boxes2.length-1]);
 
         }
     }
     //bombs check
-    for(var i = 0; i < bombs.length; i++){
-        if(!exists(bombs[i], bombs2)){
-            scene.remove(bombs[i]);
-            bombs.splice(i,1);
-        }
-    }
     for(var i = 0; i < bombs2.length; i++){
         if(!exists(bombs2[i], bombs)){
-            var b = bomb(bombs2[i].x, bombs2[i].y);
-            b.x = bombs2[i].x;
-            b.y = bombs2[i].y;
-            bombs.push(b);
-            scene.add(bombs[bombs.length-1]);
+            scene.remove(bombs2[i]);
+            bombs2.splice(i,1);
+        }
+    }
+    for(var i = 0; i < bombs.length; i++){
+        if(!exists(bombs[i], bombs2)){
+            var b = bomb(bombs[i].x, bombs[i].y);
+            b.x = bombs[i].x;
+            b.y = bombs[i].y;
+            bombs2.push(b);
+            scene.add(bombs2[bombs2.length-1]);
 
         }
     }
     //fire check
-    for(var i = 0; i < fires.length; i++){
-        if(!exists(fires[i], fires2)){
-            scene.remove(fires[i]);
-            fires.splice(i,1);
-        }
-    }
     for(var i = 0; i < fires2.length; i++){
         if(!exists(fires2[i], fires)){
-            var b = fire(fires2[i].x, fires2[i].y);
-            b.x = fires2[i].x;
-            b.y = fires2[i].y;
-            fires.push(b);
-            scene.add(fires[fires.length-1]);
+            scene.remove(fires2[i]);
+            fires2.splice(i,1);
+        }
+    }
+    for(var i = 0; i < fires.length; i++){
+        if(!exists(fires[i], fires2)){
+            var b = fire(fires[i].x, fires[i].y);
+            b.x = fires[i].x;
+            b.y = fires[i].y;
+            fires2.push(b);
+            scene.add(fires2[fires2.length-1]);
 
         }
     }
 
     //powerups
-    for(var i = 0; i < powerups.length; i++){
-        if(!exists(powerups[i], powerups2)){
-            scene.remove(powerups[i]);
-            powerups.splice(i,1);
-        }
-    }
     for(var i = 0; i < powerups2.length; i++){
         if(!exists(powerups2[i], powerups)){
+            scene.remove(powerups2[i]);
+            powerups2.splice(i,1);
+        }
+    }
+    for(var i = 0; i < powerups.length; i++){
+        if(!exists(powerups[i], powerups2)){
             var b;
-            console.log("addign powerup");
-            console.log(powerups2[i].type )
-            if(powerups2[i].type == "life")
-                b = createLives(powerups2[i].x, powerups2[i].y);
-            if(powerups2[i].type == "boots")
-                b = createBoots(powerups2[i].x, powerups2[i].y);
-            if(powerups2[i].type == "bombs")
-                b = createBombs(powerups2[i].x, powerups2[i].y);
-            if(powerups2[i].type == "bombp")
-                b = createBombp(powerups2[i].x, powerups2[i].y);
-            if(powerups2[i].type == "ghost")
-                b = createGhost(powerups2[i].x, powerups2[i].y);
-            b.x = powerups2[i].x;
-            b.y = powerups2[i].y;
-            powerups.push(b);
-            scene.add(powerups[powerups.length-1]);
+            console.log("adding powerup");
+            console.log(powerups[i].t )
+            if(powerups[i].t == "extra-life")
+                b = createLives(powerups[i].x, powerups[i].y);
+            if(powerups[i].t == "speed-boost")
+                b = createBoots(powerups[i].x, powerups[i].y);
+            if(powerups[i].t == "bomb-strength")
+                b = createBombs(powerups[i].x, powerups[i].y);
+            if(powerups[i].t == "bomb-boost")
+                b = createBombp(powerups[i].x, powerups[i].y);
+            if(powerups[i].t == "ghost")
+                b = createGhost(powerups[i].x, powerups[i].y);
+            console.log(b)
+            console.log(powerups[i].t );
+            b.x = powerups[i].x;
+            b.y = powerups[i].y;
+            powerups2.push(b);
+            scene.add(powerups2[powerups2.length-1]);
 
         }
     }
@@ -360,4 +324,9 @@ function exists(item, arr){
         }
     }
     return false;
+}
+function animate(){
+    for(var i =0 ; i < powerups2.length;i++){
+        powerups2[i].rotation.z += 0.1;
+    }
 }
