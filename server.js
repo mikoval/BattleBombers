@@ -392,7 +392,7 @@ function updateBombs(){
             }
         }
         var send = compress(room);
-        io.sockets.in(active[i]).volatile.emit('game-update', send);
+        //io.sockets.in(active[i]).volatile.emit('game-update', send);
             
     }
 
@@ -522,7 +522,11 @@ function updatePosition(){
         var time = (new Date()) - room.game.startTime ;
         room.game.currentTime = time;
         var timer = time /1000
-        if(timer < 3){continue;}
+        if(timer < 3){
+            var send = compress(room);
+            io.sockets.in(active[i]).volatile.emit('game-update', send);
+            continue;
+        }
         timer  = timer / 60
         if(timer > 2){
             addBomb(grid, (timer -2 ) /10 + 1);
