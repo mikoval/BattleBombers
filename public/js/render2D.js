@@ -84,7 +84,7 @@ function draw2D(){
         var y = startY + fires[i].y * squareSize;
         image(fire_img, x, y, squareSize,squareSize);
     }
-    console.log(bombs);
+
     for(var i = 0; i < bombs.length; i++){
         var x = startX+bombs[i].x*squareSize;
         var y = startY + bombs[i].y * squareSize;

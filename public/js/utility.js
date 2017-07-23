@@ -157,7 +157,7 @@ function startGame(data){
 
     drawScore();
     clearInterval(directionLoop);
-    directionLoop = setInterval(updatePosition, 20);
+    directionLoop = setInterval(updatePosition, 10);
 }
 function updateGame(data){
     walls = data.walls;
