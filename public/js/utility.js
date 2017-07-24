@@ -177,11 +177,13 @@ function updateGame(data){
     bombs = data.bombs;
     powerups = data.powerups;
     fires = data.fire;
+    glue = data.glue;
 }
 
 function updatePosition(){
     socket.emit('update-input', input);
     input.bomb = false;
+    input.glue = false;
 }
 function updateScore(data){
     console.log("updating score");

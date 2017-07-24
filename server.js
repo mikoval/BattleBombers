@@ -92,6 +92,7 @@ function newConnection(socket){
             players[i].moving = false;
             players[i].bombStrength = 2;
             players[i].ghost = -1.0;
+            players[i].glue = 0;
             
         }
         active.push(roomid);
@@ -221,14 +222,16 @@ function createGameBoard(width,height){
                     arr[i][j].box = true;
                     if(rand < 0.02)
                         arr[i][j].lifeP = true;
-                    else if(rand < 0.15)
+                    else if(rand < 0.07)
                         arr[i][j].boots = true;
-                    else if (rand < 0.3)
+                    else if (rand < 0.15)
                         arr[i][j].bombP = true;
-                    else if (rand < 0.45)
+                    else if (rand < 0.20)
                         arr[i][j].bombS = true;
-                    else if(rand < 0.5)
+                    else if(rand < 0.25)
                         arr[i][j].ghost = true;
+                    else if(rand < 0.30)
+                        arr[i][j].glueP = true;
                 }
             }
         }
@@ -271,16 +274,18 @@ function createGameBoard(width,height){
                 if(Math.random() < .8 && !arr[i][j].wall){
                     var rand = Math.random();
                     arr[i][j].box = true;
-                    if(rand < 0.05)
+                    if(rand < 0.02)
                         arr[i][j].lifeP = true;
-                    else if(rand < 0.15)
+                    else if(rand < 0.07)
                         arr[i][j].boots = true;
-                    else if (rand < 0.3)
+                    else if (rand < 0.15)
                         arr[i][j].bombP = true;
-                    else if (rand < 0.45)
+                    else if (rand < 0.20)
                         arr[i][j].bombS = true;
-                    else if(rand < 0.5)
+                    else if(rand < 0.25)
                         arr[i][j].ghost = true;
+                    else if(rand < 0.30)
+                        arr[i][j].glueP = true;
                 }
                 
             }
@@ -319,16 +324,18 @@ function createGameBoard(width,height){
                 if(Math.random() < .8 && !arr[i][j].wall){
                     var rand = Math.random();
                     arr[i][j].box = true;
-                    if(rand < 0.05)
+                    if(rand < 0.02)
                         arr[i][j].lifeP = true;
-                    else if(rand < 0.2)
+                    else if(rand < 0.07)
                         arr[i][j].boots = true;
-                    else if (rand < 0.4)
+                    else if (rand < 0.15)
                         arr[i][j].bombP = true;
-                    else if (rand < 0.55)
+                    else if (rand < 0.20)
                         arr[i][j].bombS = true;
-                    else if(rand < 0.6)
+                    else if(rand < 0.25)
                         arr[i][j].ghost = true;
+                    else if(rand < 0.30)
+                        arr[i][j].glueP = true;
                 }
                 
             }
@@ -566,6 +573,10 @@ function updatePosition(){
                 player.ghost = 3.0;
                 grid[x][y].ghost = false;
             }
+            if(grid[x][y].glueP){
+                player.glue = 3;
+                grid[x][y].glueP = false;
+            }
 
             x = position.x;
             y = position.y;
@@ -579,33 +590,40 @@ function updatePosition(){
                 player.invulnerable = 1;
                 updateLives= true;
             }
+            ///////////
+            var speed = player.speed;
+            if(grid[Math.floor(position.x)][Math.floor(position.y)].glue){
+                speed = 0.03;
+            }
+
+
             if(direction.up){
                 player.moving = true;
                 player.dir = "back"
                 var cx = position.x - Math.floor(position.x)
                 if(cx!= 0.5){
                     if(cx < 0.5){
-                        if(cx + player.speed > 0.6){
+                        if(cx + speed > 0.6){
                             position.x = position.x + (0.5 - cx);
                         }
                         else{
-                            position.x = position.x +  player.speed;
+                            position.x = position.x +  speed;
                         }
                     }
                     else{
-                        if(cx - player.speed < 0.5){
+                        if(cx - speed < 0.5){
                             position.x = position.x - (cx- 0.5);
                         }
                         else{
-                            position.x = position.x - player.speed;
+                            position.x = position.x - speed;
                         }
                     }
                 }
                 else{
-                    var ny = position.y -player.speed;
+                    var ny = position.y -speed;
                     var nx = position.x;
                     if(canMove(nx, ny ,  x ,y, grid))
-                        position.y = position.y - player.speed
+                        position.y = position.y - speed
                 }
                 
             }
@@ -616,27 +634,27 @@ function updatePosition(){
 
                 if(cx!= 0.5){
                     if(cx < 0.5){
-                        if(cx + player.speed > 0.5){
+                        if(cx + speed > 0.5){
                             position.x = position.x + (0.5 - cx);
                         }
                         else{
-                            position.x = position.x +  player.speed;
+                            position.x = position.x +  speed;
                         }
                     }
                     else{
-                        if(cx - player.speed < 0.5){
+                        if(cx - speed < 0.5){
                             position.x = position.x - (cx- 0.5);
                         }
                         else{
-                            position.x = position.x - player.speed;
+                            position.x = position.x -speed;
                         }
                     }
                 }
                 else{
-                    var ny = position.y + player.speed;
+                    var ny = position.y + speed;
                     var nx = position.x;
                     if(canMove(nx, ny ,  x ,y, grid))
-                        position.y = position.y + player.speed
+                        position.y = position.y + speed
                 }
             }
             else if(direction.right){
@@ -646,27 +664,27 @@ function updatePosition(){
 
                 if(cy!= 0.5){
                     if(cy < 0.5){
-                        if(cy + player.speed > 0.5){
+                        if(cy + speed > 0.5){
                             position.y = position.y + (0.5 - cy);
                         }
                         else{
-                            position.y = position.y +  player.speed;
+                            position.y = position.y +  speed;
                         }
                     }
                     else{
-                        if(cy - player.speed < 0.5){
+                        if(cy - speed < 0.5){
                             position.y = position.y - (cy- 0.5);
                         }
                         else{
-                            position.y = position.y - player.speed;
+                            position.y = position.y - speed;
                         }
                     }
                 }
                 else{
                     var ny = position.y ;
-                    var nx = position.x + player.speed;
+                    var nx = position.x + speed;
                     if(canMove(nx, ny ,  x ,y, grid))
-                        position.x = position.x + player.speed
+                        position.x = position.x + speed
                 }
             }
             else if(direction.left){
@@ -675,27 +693,27 @@ function updatePosition(){
                 var cy = position.y - Math.floor(position.y)
                 if(cy!= 0.5){
                     if(cy < 0.5){
-                        if(cy + player.speed > 0.5){
+                        if(cy + speed > 0.5){
                             position.y = position.y + (0.5 - cy);
                         }
                         else{
-                            position.y = position.y +  player.speed;
+                            position.y = position.y +  speed;
                         }
                     }
                     else{
-                        if(cy - player.speed < 0.5){
+                        if(cy - speed < 0.5){
                             position.y = position.y - (cy- 0.5);
                         }
                         else{
-                            position.y = position.y - player.speed;
+                            position.y = position.y - speed;
                         }
                     }
                 }
                 else{
                     var ny = position.y ;
-                    var nx = position.x - player.speed;
+                    var nx = position.x -speed;
                     if(canMove(nx, ny ,  x ,y, grid))
-                        position.x = position.x - player.speed
+                        position.x = position.x - speed
                 }
             }
             else{
@@ -707,6 +725,13 @@ function updatePosition(){
                     player.bombCount +=1;
                 }
                 direction.bomb = false;
+            }
+            if(direction.glue){
+                if(player.glue  > 0  &&  grid[Math.floor(position.x)][Math.floor(position.y)].glue == undefined){
+                    grid[Math.floor(position.x)][Math.floor(position.y)].glue = true;
+                    player.glue -=1;
+                }
+                direction.glue = false;
             }
 
         }
@@ -760,7 +785,7 @@ function compress(game){
     var fire = [];
     var bombs = [];
     var powerups = [];
-
+    var glue = [];
     for( var i = 0; i < grid.length; i++){
         for( var j = 0; j < grid[0].length; j++){
       
@@ -769,6 +794,8 @@ function compress(game){
             else if(grid[i][j].box)     {boxes.push({x:i, y:j})}
 
             if(grid[i][j].bomb){bombs.push({x:i, y:j})}
+
+            if(grid[i][j].glue){glue.push({x:i, y:j})}
     
 
             else if(!grid[i][j].box && grid[i][j].bombP){powerups.push({x:i, y:j, t:"bomb-boost"})}
@@ -776,9 +803,10 @@ function compress(game){
             else if(!grid[i][j].box && grid[i][j].bombS){powerups.push({x:i, y:j, t:"bomb-strength"})}
             else if(!grid[i][j].box && grid[i][j].lifeP){powerups.push({x:i, y:j, t:"extra-life"})}
             else if(!grid[i][j].box && grid[i][j].ghost){powerups.push({x:i, y:j, t:"ghost"})}
+            else if(!grid[i][j].box && grid[i][j].glueP){powerups.push({x:i, y:j, t:"glue"})}
         }
     }
-    return {boxes: boxes,fire:fire, players: minPlayers,bombs:bombs, powerups:powerups, time: time};
+    return {boxes: boxes,fire:fire, glue:glue, players: minPlayers,bombs:bombs, powerups:powerups, time: time};
 
 }
 function validGrid(g){

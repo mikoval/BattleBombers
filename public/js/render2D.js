@@ -85,6 +85,11 @@ function draw2D(){
         image(fire_img, x, y, squareSize,squareSize);
     }
 
+    for(var i = 0; i < glue.length; i++){
+        var x = startX+glue[i].x*squareSize;
+        var y = startY + glue[i].y * squareSize;
+        image(glue_img, x, y, squareSize,squareSize);
+    }
     for(var i = 0; i < bombs.length; i++){
         var x = startX+bombs[i].x*squareSize;
         var y = startY + bombs[i].y * squareSize;
@@ -103,6 +108,8 @@ function draw2D(){
             image(life_img, x, y, squareSize,squareSize);
         if(powerups[i].t ==  "ghost")
             image(ghost_img, x, y, squareSize,squareSize);
+        if(powerups[i].t ==  "glue")
+            image(glueP_img, x, y, squareSize,squareSize);
 
     }
 

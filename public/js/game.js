@@ -8,6 +8,8 @@ var wood_img;
 var bomb_p_img;
 var boots_img;
 var life_img;
+var glue_img;
+var glueP_img;
 var name = "undefined";
 var grid;
 var squareSize;
@@ -17,7 +19,7 @@ var walls2=[];
 var boxes2=[];
 var fires2 = [];
 var powerups2 = [];
-var input = {up: false, down: false, left: false, right: false, bomb : false};
+var input = {up: false, down: false, left: false, right: false, bomb : false, glue:false};
 var directionLoop;
 var time = 0;
 var p1;
@@ -36,6 +38,7 @@ var boxes = [];
 var fires = [];
 var bombs = [];
 var powerups =[];
+var glue = [];
 
 
 
@@ -95,6 +98,7 @@ function keyPressed(e) {
     if(key == "s" || key == "ArrowDown"){input.up = false; input.down = true; input.right = false; input.left = false}
     if(key == "a" || key == "ArrowLeft"){input.left =input.up = false; input.down = false; input.right = false; input.left = true}
     if(key == " "){input.bomb = true;}
+    if(key == "v"){input.glue = true;}
 }
 function keyReleased(e) {
     if(state != "Current Game"){return;}

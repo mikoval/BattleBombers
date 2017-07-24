@@ -11,6 +11,8 @@ function loadImages(){
 
     life_img = loadImage("/Images/Heart.png")
     ghost_img = loadImage("/Images/ghost.png")
+    glue_img = loadImage("/Images/glue.png")
+    glueP_img = loadImage("/Images/glue+.png")
 
 
     //3d materials
