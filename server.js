@@ -767,7 +767,7 @@ function updatePosition(){
             var data = {winner: winner, newRoom: code}
             rooms[code] = {id: code, players:[], size:players.length};
 
-            io.sockets.in(active[i]).volatile.emit('game-over', data);
+            io.sockets.in(active[i]).emit('game-over', data);
         }
 
         
