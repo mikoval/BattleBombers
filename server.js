@@ -82,7 +82,7 @@ function newConnection(socket){
             else if (i == 2){location = {x: 1.5, y : grid[0].length - 1.5}}
             else if (i == 3){location = {x: grid.length - 1.5, y : 1.5}}
             players[i].position = location;
-            players[i].direction = {up: false, down: false, left: false, right: false, bomb: false};
+            players[i].direction = {up: false, down: false, left: false, right: false, bomb: false, glue:false,};
             players[i].bombCount = 0;
             players[i].bombMax = 1;
             players[i].lives = 3;
@@ -152,10 +152,19 @@ function newConnection(socket){
             if(players[i].id == socket.id){
                 if(players[i].direction){
                     var bomb = players[i].direction.bomb;
+                    var glue = players[i].direction.glue;
+
                     players[i].direction = data;
                     if(!players[i].direction.bomb && bomb)
                         players[i].direction.bomb = bomb;
+                    if(!players[i].direction.glue && glue)
+                        players[i].direction.glue = glue;
+
+                    
+                     
+                    
                 }
+
                 
             }
         }
@@ -574,7 +583,7 @@ function updatePosition(){
                 grid[x][y].ghost = false;
             }
             if(grid[x][y].glueP){
-                player.glue = 3;
+                player.glue += 3;
                 grid[x][y].glueP = false;
             }
 
@@ -738,6 +747,10 @@ function updatePosition(){
         if(updateLives){
             io.sockets.in(active[i]).volatile.emit('score-update', compress(room));
         }
+
+        var send = compress(room);
+        io.sockets.in(active[i]).emit('game-update', send);
+
         if(alivePlayers <= 1){
 
             var winner = undefined;
@@ -759,9 +772,7 @@ function updatePosition(){
 
         
             
-            
-        var send = compress(room);
-        io.sockets.in(active[i]).volatile.emit('game-update', send);
+        
             
         
         
