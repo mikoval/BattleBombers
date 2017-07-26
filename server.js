@@ -564,7 +564,7 @@ function updatePosition(){
             addBomb(grid, (timer -2 ) /10 + 1);
         }
         var alivePlayers = 0
-        var updateLives = false;
+        var updateScore = false;
         for(var j = 0; j < players.length; j++){
             
             var player = players[j]
@@ -580,19 +580,22 @@ function updatePosition(){
                     player.speed = 0.15;
                 }
                 grid[x][y].boots = false;
+                updateScore = true;
             }
             if(grid[x][y].bombP){
                 player.bombMax += 1;
                 grid[x][y].bombP = false;
+                updateScore = true;
             }
             if(grid[x][y].bombS){
                 player.bombStrength += 1;
                 grid[x][y].bombS = false;
+                updateScore = true;
             }
             if(grid[x][y].lifeP){
                 player.lives += 1;
                 grid[x][y].lifeP = false;
-                updateLives= true;
+                updateScore= true;
             }
             if(grid[x][y].ghost){
                 player.ghost = 3.0;
@@ -601,6 +604,7 @@ function updatePosition(){
             if(grid[x][y].glueP){
                 player.glue += 3;
                 grid[x][y].glueP = false;
+                updateScore = true;
             }
 
             x = position.x;
@@ -613,7 +617,7 @@ function updatePosition(){
                 player.lives -= 1;
                 
                 player.invulnerable = 1;
-                updateLives= true;
+                updateScore= true;
             }
             ///////////
             var speed = player.speed;
@@ -765,7 +769,7 @@ function updatePosition(){
         var send = compress(room);
         io.sockets.in(active[i]).emit('game-update', send);
 
-        if(updateLives){
+        if(updateScore){
             io.sockets.in(active[i]).emit('score-update', players);
         }
         
@@ -809,7 +813,8 @@ function compress(game){
         minPlayers[i] = {
             position: players[i].position, lives: players[i].lives, dir:players[i].dir, 
             moving: players[i].moving, name: players[i].name,
-            ghost:players[i].ghost, id:players[i].id, character:players[i].character
+            ghost:players[i].ghost, id:players[i].id, character:players[i].character,
+            speed:players[i].speed, bombStrength:players[i].bombStrength, bombMax:players[i].bombMax
         }
     }
     var walls = [];

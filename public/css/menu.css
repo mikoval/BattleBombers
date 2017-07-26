@@ -166,7 +166,7 @@
 .score-item{
   width:80%;
   margin: 10%;
-  height:200px;
+  height:250px;
   background-color:white;
   border:solid;
   border-width:1px;
@@ -186,6 +186,34 @@
 .player-score{
   color:black;
   text-align: center;
+  margin:0px;
+  padding:0px;
+  font-size: 10px;
+}
+.player-score.lives{
+  font-weight: bold;
+  font-size: 14px;
+
+}
+.player-stats{
+  border:solid 1px black;
+  padding: 2px;
+  border-radius: 3px;
+  margin:6px;
+
+}
+.score-value{
+  right:0px;
+  position: absolute;
+}
+.score-title{
+  left:0px;
+  position: absolute;
+}
+.score-wrapper{
+  position: relative;
+  height:14px;
+  width:80%;
 }
 .score-padding{
   height:5%;
@@ -227,4 +255,8 @@
 }
 .score-ghost{
   display:none;
+}
+.score-profile{
+  display:inline-block;
+  float:left;
 }

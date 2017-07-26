@@ -147,10 +147,7 @@ function draw2D(){
         }
         
         if(players[i].lives <= 0){
-            if(i == 0){p1.remove()}
-            if(i == 1){p2.remove()}
-            if(i == 2){p3.remove()}
-            if(i == 3){p4.remove()}
+            sprites[i].remove();
         }
         else{
 

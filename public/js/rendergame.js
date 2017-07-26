@@ -32,7 +32,45 @@ function drawScore(){
         if ( $.trim(playername) == '' )
             playername = "Player " + (i + 1)
         var name = createElement('h3', playername);
-        var score = createElement('p', 'lives: ' + players[i].lives);
+
+        var lives = createElement('p', 'lives: ' + players[i].lives );
+        lives.class("score-title");
+       
+
+        var speed = createElement('p', 'speed:');
+        speed.class("score-title player-score");
+        var speedVal = createElement('p',   Math.round(players[i].speed * 100));
+        speedVal.class("score-value player-score");
+        var speedWrapper = createElement("div");
+        speedWrapper.class("score-wrapper");
+        speed.parent(speedWrapper);
+        speedVal.parent(speedWrapper);
+
+        var mBombs = createElement('p', 'Bombs:');
+        mBombs.class("score-title player-score");
+        var mBombsVal = createElement('p', players[i].bombMax );
+        mBombsVal.class("score-value player-score");
+        var mBombsWrapper = createElement("div");
+        mBombsWrapper.class("score-wrapper");
+        mBombs.parent(mBombsWrapper);
+        mBombsVal.parent(mBombsWrapper);
+
+        var sBombs = createElement('p', 'Strength:');
+        sBombs.class("score-title player-score");
+        var sBombsVal = createElement('p',   players[i].bombStrength);
+        sBombsVal.class("score-value player-score");
+        var sBombsWrapper = createElement("div");
+        sBombsWrapper.class("score-wrapper");
+        sBombs.parent(sBombsWrapper);
+        sBombsVal.parent(sBombsWrapper);
+
+
+
+
+       
+       // var mBombs = createElement('p', 'Bombs: ' + players[i].bombMax);
+       // var sBombs = createElement('p', 'Power: ' + players[i].bombStrength);
+
         var imgContainer = createElement('div')
         imgContainer.class('img-container')
         var img;
@@ -52,13 +90,27 @@ function drawScore(){
         ghostImg.id("score-ghost"+i)
         ghostImg.parent(imgContainer)
 
+
         name.class('player-name');
-        score.class('player-score');
+
+        statsWrapper = createElement("div");
+        statsWrapper.class("player-stats");
+        lives.class('player-score lives');
+       
+
+        scoreProfile = createElement('div');
+        scoreProfile.class("score-profile");
 
         name.parent(scoreItem);
-        score.parent(scoreItem);
+       
         
-        imgContainer.parent(scoreItem)
+        imgContainer.parent(scoreProfile)
+        lives.parent(scoreProfile);
+        speedWrapper.parent(statsWrapper);
+        mBombsWrapper.parent(statsWrapper);
+        sBombsWrapper.parent(statsWrapper);
+        statsWrapper.parent (scoreProfile);
+        scoreProfile.parent(scoreItem);
         if(i == 0 || i == 1)
             scoreItem.parent(scoreBoardLeft);
         else

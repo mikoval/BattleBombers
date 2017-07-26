@@ -85,12 +85,13 @@ function waitingRoom(data){
         if(players[i].id == socket.id){
             if(players[i].character == "fox")
                 current = createImg('/Images/FoxPics/front1.png');
-            if(players[i].character == "bun")
+            else if(players[i].character == "bun")
                 current = createImg('/Images/bunpics/front1.png');
-            if(players[i].character == "jones")
+            else if(players[i].character == "jones")
                 current = createImg('/Images/jonespics/front1.png');
-            if(players[i].character == "spear")
+            else if(players[i].character == "spear")
                 current = createImg('/Images/spearpics/front1.png');
+          
             current.class("current-character");
 
         }
@@ -154,19 +155,8 @@ function waitingRoom(data){
 
 }
 function gameOver(data){
-    for(var i = 0; i < players.length; i++){
-        if(i == 0){
-            p1.remove();
-        }
-        if(i == 1){
-            p2.remove();
-        }
-        if(i == 2){
-            p3.remove();
-        }
-        if(i == 3){
-            p4.remove();
-        }
+    for(var i = 0; i < sprites.length; i++){
+        sprites[i].remove();
     }
     
     
