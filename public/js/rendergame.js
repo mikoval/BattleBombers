@@ -36,17 +36,21 @@ function drawScore(){
         var imgContainer = createElement('div')
         imgContainer.class('img-container')
         var img;
-        if(i == 0)
+        if(players[i].character == "fox")
              img = createImg('/Images/FoxPics/front1.png');
-        else if(i == 1)
+        else if(players[i].character == "bun")
              img = createImg('/Images/bunpics/front1.png');
-        else if(i == 2)
+        else if(players[i].character == "jones")
              img = createImg('/Images/jonespics/front1.png');
-        else if(i == 3)
+        else if(players[i].character == "spear")
              img = createImg('/Images/spearpics/front1.png');
-        img.class("score-img");
+        img.class("score-img score-normal");
+        img.id("score-normal"+i)
         img.parent(imgContainer)
-
+        var ghostImg = createImg('/Images/ghost/front1.png');
+        ghostImg.class("score-img score-ghost");
+        ghostImg.id("score-ghost"+i)
+        ghostImg.parent(imgContainer)
 
         name.class('player-name');
         score.class('player-score');

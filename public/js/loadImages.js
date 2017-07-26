@@ -76,4 +76,15 @@ function loadImages(){
     spear_right_stand = loadAnimation("/Images/spearpics/right1.png", "/Images/spearpics/right1.png")
     spear_left_stand = loadAnimation("/Images/spearpics/left1.png", "/Images/spearpics/left1.png")
     spear_back_stand = loadAnimation("/Images/spearpics/back1.png", "/Images/spearpics/back1.png")
+
+    ghost_forward_animation = loadAnimation("/Images/ghost/front1.png", "/Images/ghost/front3.png");
+    ghost_right_animation = loadAnimation("/Images/ghost/right1.png", "/Images/ghost/right3.png")
+    ghost_left_animation = loadAnimation("/Images/ghost/left1.png", "/Images/ghost/left3.png")
+    ghost_back_animation = loadAnimation("/Images/ghost/back1.png", "/Images/ghost/back3.png")
+    ghost_forward_stand = loadAnimation("/Images/ghost/front1.png", "/Images/ghost/front1.png");
+    ghost_right_stand = loadAnimation("/Images/ghost/right1.png", "/Images/ghost/right1.png")
+    ghost_left_stand = loadAnimation("/Images/ghost/left1.png", "/Images/ghost/left1.png")
+    ghost_back_stand = loadAnimation("/Images/ghost/back1.png", "/Images/ghost/back1.png")
+
+
 }

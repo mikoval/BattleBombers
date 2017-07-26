@@ -204,3 +204,27 @@
   font-size: 200px;
   color:white;
 }  
+.select-img{
+  border: solid black 1px;
+  height:70px;
+  cursor: pointer;
+}
+.select-img:hover{
+  background-color:lightyellow;
+}
+.img-list{
+  display: inline-block;
+  margin: 0 auto;
+  text-align: center;
+}
+.current-character{
+  height:100px;
+}
+.character-selected{
+  background-color:black;
+  opacity: 0.1;
+  filter: alpha(opacity=40); /* msie */
+}
+.score-ghost{
+  display:none;
+}

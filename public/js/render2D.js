@@ -1,51 +1,76 @@
 function startGame2D(){
     for(var i = 0; i < players.length; i++){
-        if(i==0){
-
-            p1  = createSprite(50, 50, squareSize, squareSize);
-            p1.addAnimation("front-true", fox_forward_animation);
-            p1.addAnimation("right-true", fox_right_animation);
-            p1.addAnimation("left-true", fox_left_animation);
-            p1.addAnimation("back-true", fox_back_animation);
-            p1.addAnimation("front-false", fox_forward_stand);
-            p1.addAnimation("right-false", fox_right_stand);
-            p1.addAnimation("left-false", fox_left_stand);
-            p1.addAnimation("back-false", fox_back_stand);
-        }
-        if(i ==1 ){
-            p2  = createSprite(50, 50, squareSize, squareSize);
-            p2.addAnimation("front-true", bun_forward_animation);
-            p2.addAnimation("right-true", bun_right_animation);
-            p2.addAnimation("left-true", bun_left_animation);
-            p2.addAnimation("back-true", bun_back_animation);
-            p2.addAnimation("front-false", bun_forward_stand);
-            p2.addAnimation("right-false", bun_right_stand);
-            p2.addAnimation("left-false", bun_left_stand);
-            p2.addAnimation("back-false", bun_back_stand);
-        }
-        if(i==2){
-            p3  = createSprite(50, 50, squareSize, squareSize);
-            p3.addAnimation("front-true", jones_forward_animation);
-            p3.addAnimation("right-true", jones_right_animation);
-            p3.addAnimation("left-true", jones_left_animation);
-            p3.addAnimation("back-true", jones_back_animation);
-            p3.addAnimation("front-false", jones_forward_stand);
-            p3.addAnimation("right-false", jones_right_stand);
-            p3.addAnimation("left-false", jones_left_stand);
-            p3.addAnimation("back-false", jones_back_stand);
-        }
-        if(i==3){
-            p4  = createSprite(50, 50, squareSize, squareSize);
-            p4.addAnimation("front-true", spear_forward_animation);
-            p4.addAnimation("right-true", spear_right_animation);
-            p4.addAnimation("left-true", spear_left_animation);
-            p4.addAnimation("back-true", spear_back_animation);
-            p4.addAnimation("front-false", spear_forward_stand);
-            p4.addAnimation("right-false", spear_right_stand);
-            p4.addAnimation("left-false", spear_left_stand);
-            p4.addAnimation("back-false", spear_back_stand);
-        }
+        var s = createSprite(50, 50, squareSize, squareSize);
+        setAnimation(s, players[i]);
+        sprites.push(s);
     }
+        
+}
+function setAnimation(obj, player){
+
+
+    if(player.character == "fox"){
+        foxAnimation(obj);
+    }
+    if(player.character == "bun"){
+        bunAnimation(obj);
+    }
+    if(player.character == "jones"){
+        jonesAnimation(obj);
+    }
+    if(player.character == "spear"){
+        spearAnimation(obj);
+    }
+}
+function foxAnimation(obj){
+    obj.addAnimation("front-true", fox_forward_animation);
+    obj.addAnimation("right-true", fox_right_animation);
+    obj.addAnimation("left-true", fox_left_animation);
+    obj.addAnimation("back-true", fox_back_animation);
+    obj.addAnimation("front-false", fox_forward_stand);
+    obj.addAnimation("right-false", fox_right_stand);
+    obj.addAnimation("left-false", fox_left_stand);
+    obj.addAnimation("back-false", fox_back_stand);
+}
+function bunAnimation(obj){
+    obj.addAnimation("front-true", bun_forward_animation);
+    obj.addAnimation("right-true", bun_right_animation);
+    obj.addAnimation("left-true", bun_left_animation);
+    obj.addAnimation("back-true", bun_back_animation);
+    obj.addAnimation("front-false", bun_forward_stand);
+    obj.addAnimation("right-false", bun_right_stand);
+    obj.addAnimation("left-false", bun_left_stand);
+    obj.addAnimation("back-false", bun_back_stand);
+}
+function jonesAnimation(obj){
+    obj.addAnimation("front-true", jones_forward_animation);
+    obj.addAnimation("right-true", jones_right_animation);
+    obj.addAnimation("left-true", jones_left_animation);
+    obj.addAnimation("back-true", jones_back_animation);
+    obj.addAnimation("front-false", jones_forward_stand);
+    obj.addAnimation("right-false", jones_right_stand);
+    obj.addAnimation("left-false", jones_left_stand);
+    obj.addAnimation("back-false", jones_back_stand);
+}
+function spearAnimation(obj){
+    obj.addAnimation("front-true", spear_forward_animation);
+    obj.addAnimation("right-true", spear_right_animation);
+    obj.addAnimation("left-true", spear_left_animation);
+    obj.addAnimation("back-true", spear_back_animation);
+    obj.addAnimation("front-false", spear_forward_stand);
+    obj.addAnimation("right-false", spear_right_stand);
+    obj.addAnimation("left-false", spear_left_stand);
+    obj.addAnimation("back-false", spear_back_stand);
+}
+function ghostAnimation(obj){
+    obj.addAnimation("front-true", ghost_forward_animation);
+    obj.addAnimation("right-true", ghost_right_animation);
+    obj.addAnimation("left-true", ghost_left_animation);
+    obj.addAnimation("back-true", ghost_back_animation);
+    obj.addAnimation("front-false", ghost_forward_stand);
+    obj.addAnimation("right-false", ghost_right_stand);
+    obj.addAnimation("left-false", ghost_left_stand);
+    obj.addAnimation("back-false", ghost_back_stand);
 }
 function draw2D(){
 
@@ -118,7 +143,9 @@ function draw2D(){
     for(var i = 0; i < players.length; i++){
         if(players[i].ghost > 0 && players[i].id != socket.id){
             players[i].position = {x:-1000, y:-1000};
+            continue;
         }
+        
         if(players[i].lives <= 0){
             if(i == 0){p1.remove()}
             if(i == 1){p2.remove()}
@@ -126,42 +153,41 @@ function draw2D(){
             if(i == 3){p4.remove()}
         }
         else{
-            
+
+
             var position = players[i].position
 
 
             var x = startX + position.x * squareSize;
             var y = startY + position.y * squareSize;
             
-            if(i == 0){
-                p1.position.x = x;
-                p1.position.y = y;
+                if (players[i].ghost > 0 && players[i].id == socket.id){
+                    if(!sprites[i].ghost){
+                        ghostAnimation(sprites[i]);
+                        sprites[i].ghost = true;
+                        $("#score-ghost"+i).show();
+                        $("#score-normal"+i).hide();
+
+                    }
+
+                }
+                else{
+                    if(sprites[i].ghost){
+                        console.log( players[i]);
+                        setAnimation(sprites[i], players[i]);
+                        sprites[i].ghost = false;
+                        $("#score-ghost"+i).hide();
+                        $("#score-normal"+i).show();
+                    }
+                    
+                }
+
+                sprites[i].position.x = x;
+                sprites[i].position.y = y;
                 var dir = players[i].dir
                 var moving = players[i].moving
                
-                p1.changeAnimation(dir + "-" + moving);
-            }
-            else if(i == 1){
-                p2.position.x = x;
-                p2.position.y = y;
-                var dir = players[i].dir
-                var moving = players[i].moving
-                p2.changeAnimation(dir + "-" + moving);
-            }
-            else if(i == 2){
-                p3.position.x = x;
-                p3.position.y = y;
-                var dir = players[i].dir
-                var moving = players[i].moving
-                p3.changeAnimation(dir + "-" + moving);
-            }
-            else if(i == 3){
-                p4.position.x = x;
-                p4.position.y = y;
-                var dir = players[i].dir
-                var moving = players[i].moving
-                p4.changeAnimation(dir + "-" + moving);
-            }
+                sprites[i].changeAnimation(dir + "-" + moving);
             
 
         }

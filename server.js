@@ -1,7 +1,7 @@
  var express = require('express');
 var app = express();
 var port = process.env.PORT || 8080;
-
+var chars = require('./character_module.js');
 
 var server = app.listen(port, function() {
     console.log('Our app is running on http://localhost:' + port);
@@ -32,7 +32,8 @@ function newConnection(socket){
     socket.on('create-game', createGame);
     socket.on('join-game', joinGame);
     socket.on('start-room', startGame);
-    socket.on('update-input', updateInput)
+    socket.on('update-input', updateInput);
+    socket.on('character-update', updateCharacter);
     socket.on('disconnect', function () {
         if(socket.room){
             var room = rooms[socket.room];
@@ -65,6 +66,18 @@ function newConnection(socket){
         }
         
     });
+    function updateCharacter(data){
+        var roomid = socket.room;
+        var players = rooms[roomid].players
+        for(var i = 0; i < players.length; i++){
+            if(players[i].id == socket.id){
+                players[i].character = data;
+                break;
+            }
+        }
+        waitingRoom(socket.room, rooms[roomid]);
+
+    }
     function startGame(data){
         var roomid = socket.room;
         var players = rooms[roomid].players
@@ -84,15 +97,17 @@ function newConnection(socket){
             players[i].position = location;
             players[i].direction = {up: false, down: false, left: false, right: false, bomb: false, glue:false,};
             players[i].bombCount = 0;
-            players[i].bombMax = 1;
             players[i].lives = 3;
             players[i].invulnerable = -1;
-            players[i].speed = 0.05;
             players[i].dir = "front";
             players[i].moving = false;
-            players[i].bombStrength = 2;
             players[i].ghost = -1.0;
             players[i].glue = 0;
+
+            var stats = chars.getCharacterStats(players[i].character);
+            players[i].bombStrength = stats.bombStrength;
+            players[i].bombMax = stats.bombMax;
+            players[i].speed = stats.speed;
             
         }
         active.push(roomid);
@@ -107,10 +122,10 @@ function newConnection(socket){
             playerName = "Player " + (1)
         var room = generateRoomID();
         var players = []
-        players.push({name: playerName, id:socket.id});
+        players.push({name: playerName, id:socket.id, character:"fox"});
         socket.room = room;
         socket.join(room);
-        rooms[room] = {id: room, players:players};
+        rooms[room] = {id: room, players:players };
         waitingRoom(socket.room, room);
     }
     function joinGame(data){
@@ -135,7 +150,8 @@ function newConnection(socket){
         socket.room = roomid;
         socket.join(roomid);
         var room = rooms[roomid]
-        players.push({name: playerName, id:socket.id});
+        var character = chars.getValidCharacter(players);
+        players.push({name: playerName, id:socket.id, character:character});
         
         
         waitingRoom(socket.room, room);
@@ -744,12 +760,15 @@ function updatePosition(){
             }
 
         }
-        if(updateLives){
-            io.sockets.in(active[i]).volatile.emit('score-update', compress(room));
-        }
+        
 
         var send = compress(room);
         io.sockets.in(active[i]).emit('game-update', send);
+
+        if(updateLives){
+            io.sockets.in(active[i]).emit('score-update', players);
+        }
+        
 
         if(alivePlayers <= 1){
 
@@ -788,7 +807,9 @@ function compress(game){
     var minPlayers = new Array(players.length);
     for( var i = 0; i < players.length; i++){
         minPlayers[i] = {
-            position: players[i].position, lives: players[i].lives, dir:players[i].dir, moving: players[i].moving, name: players[i].name, ghost:players[i].ghost, id:players[i].id
+            position: players[i].position, lives: players[i].lives, dir:players[i].dir, 
+            moving: players[i].moving, name: players[i].name,
+            ghost:players[i].ghost, id:players[i].id, character:players[i].character
         }
     }
     var walls = [];

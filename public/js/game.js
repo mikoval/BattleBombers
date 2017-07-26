@@ -39,6 +39,7 @@ var fires = [];
 var bombs = [];
 var powerups =[];
 var glue = [];
+var sprites = [];
 
 
 

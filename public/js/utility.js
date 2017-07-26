@@ -42,6 +42,65 @@ function waitingRoom(data){
         var player = createElement("p", players[i].name);
         player.parent(PlayersDiv);
     }
+    var characterList = createElement('div')
+    var characterWrapper = createElement('div')
+    characterWrapper.class('center-div');
+    characterList.class('img-list')
+    characterList.parent(characterWrapper);
+    for(var i = 0; i < 4; i++){
+        var img;
+        if(i ==0){
+            img = createImg('/Images/FoxPics/front1.png');
+            img.class('fox select-img');
+            img.id("fox");
+        }
+            
+        if(i ==1){
+            img = createImg('/Images/bunpics/front1.png');
+            img.class("bun select-img");
+            img.id("bun");
+        }
+            
+        if(i ==2){
+            img = createImg('/Images/jonespics/front1.png');
+            img.class('jones select-img')
+            img.id("jones");
+        }
+            
+        if(i ==3){
+            img = createImg('/Images/spearpics/front1.png');
+            img.class('spear select-img');
+            img.id("spear");
+
+
+        }
+    
+       
+        img.parent(characterList)
+    }
+    var selectedCharacterWrapper = createElement('div')
+    selectedCharacterWrapper.class("center-div");
+    var current;
+    for(var i = 0; i < players.length; i++){
+        if(players[i].id == socket.id){
+            if(players[i].character == "fox")
+                current = createImg('/Images/FoxPics/front1.png');
+            if(players[i].character == "bun")
+                current = createImg('/Images/bunpics/front1.png');
+            if(players[i].character == "jones")
+                current = createImg('/Images/jonespics/front1.png');
+            if(players[i].character == "spear")
+                current = createImg('/Images/spearpics/front1.png');
+            current.class("current-character");
+
+        }
+
+    }
+    current.parent(selectedCharacterWrapper);
+    characterWrapper.parent(WaitingDiv);
+    selectedCharacterWrapper.parent(WaitingDiv);
+
+
     if(players.length < 2){
         var remaining = createElement("p", "Need at least 2 players to start");
         remaining.parent(PlayersDiv); 
@@ -84,6 +143,14 @@ function waitingRoom(data){
     button_leave.parent(WaitingDiv);
     
     WaitingDiv.center();
+    for(var i = 0; i < players.length; i++){
+        $("." + players[i].character).addClass("character-selected");
+    }
+    $(".select-img").on('click', function(){
+        if($(this).hasClass("character-selected") )  {return;}
+        var c = $(this).attr("id");
+        socket.emit("character-update", c);
+    });
 
 }
 function gameOver(data){
@@ -186,8 +253,10 @@ function updatePosition(){
     input.glue = false;
 }
 function updateScore(data){
-    console.log("updating score");
-    players = data.players;
+
+   
+    players = players;
+    console.log(players);m
     drawScore();
 }
 
