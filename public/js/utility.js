@@ -158,7 +158,7 @@ function gameOver(data){
     for(var i = 0; i < sprites.length; i++){
         sprites[i].remove();
     }
-    
+    sprites = [];
     
     
     
@@ -204,6 +204,7 @@ function startGame(data){
     grid = data.game.grid;
     squareSize = height/grid.length;
     players = data.players;
+    sprites = [];
     if(mode=="2D"){
         startGame2D();
     

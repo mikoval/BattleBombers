@@ -3,6 +3,7 @@ function startGame2D(){
         var s = createSprite(50, 50, squareSize, squareSize);
         setAnimation(s, players[i]);
         sprites.push(s);
+        console.log(sprites);
     }
         
 }
@@ -139,7 +140,7 @@ function draw2D(){
     }
 
 
-
+    if(sprites.length == 0){return;}
     for(var i = 0; i < players.length; i++){
         if(players[i].ghost > 0 && players[i].id != socket.id){
             players[i].position = {x:-1000, y:-1000};
@@ -147,6 +148,7 @@ function draw2D(){
         }
         
         if(players[i].lives <= 0){
+           
             sprites[i].remove();
         }
         else{
