@@ -245,17 +245,17 @@ function createGameBoard(width,height){
                 if(Math.random() < .8 && !arr[i][j].wall){
                     var rand = Math.random();
                     arr[i][j].box = true;
-                    if(rand < 0.02)
+                    if(rand < 0.04)
                         arr[i][j].lifeP = true;
-                    else if(rand < 0.07)
+                    else if(rand < 0.05)
                         arr[i][j].boots = true;
-                    else if (rand < 0.15)
+                    else if (rand < 0.30)
                         arr[i][j].bombP = true;
-                    else if (rand < 0.20)
+                    else if (rand < 0.40)
                         arr[i][j].bombS = true;
-                    else if(rand < 0.25)
+                    else if(rand < 0.50)
                         arr[i][j].ghost = true;
-                    else if(rand < 0.30)
+                    else if(rand < 0.55)
                         arr[i][j].glueP = true;
                 }
             }
@@ -299,17 +299,17 @@ function createGameBoard(width,height){
                 if(Math.random() < .8 && !arr[i][j].wall){
                     var rand = Math.random();
                     arr[i][j].box = true;
-                    if(rand < 0.02)
+                    if(rand < 0.04)
                         arr[i][j].lifeP = true;
-                    else if(rand < 0.07)
+                    else if(rand < 0.05)
                         arr[i][j].boots = true;
-                    else if (rand < 0.15)
+                    else if (rand < 0.30)
                         arr[i][j].bombP = true;
-                    else if (rand < 0.20)
+                    else if (rand < 0.40)
                         arr[i][j].bombS = true;
-                    else if(rand < 0.25)
+                    else if(rand < 0.50)
                         arr[i][j].ghost = true;
-                    else if(rand < 0.30)
+                    else if(rand < 0.55)
                         arr[i][j].glueP = true;
                 }
                 
@@ -349,17 +349,17 @@ function createGameBoard(width,height){
                 if(Math.random() < .8 && !arr[i][j].wall){
                     var rand = Math.random();
                     arr[i][j].box = true;
-                    if(rand < 0.02)
+                    if(rand < 0.04)
                         arr[i][j].lifeP = true;
-                    else if(rand < 0.07)
+                    else if(rand < 0.05)
                         arr[i][j].boots = true;
-                    else if (rand < 0.15)
+                    else if (rand < 0.30)
                         arr[i][j].bombP = true;
-                    else if (rand < 0.20)
+                    else if (rand < 0.40)
                         arr[i][j].bombS = true;
-                    else if(rand < 0.25)
+                    else if(rand < 0.50)
                         arr[i][j].ghost = true;
-                    else if(rand < 0.30)
+                    else if(rand < 0.55)
                         arr[i][j].glueP = true;
                 }
                 

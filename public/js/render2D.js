@@ -13,13 +13,13 @@ function setAnimation(obj, player){
     if(player.character == "fox"){
         foxAnimation(obj);
     }
-    if(player.character == "bun"){
+    else if(player.character == "bun"){
         bunAnimation(obj);
     }
-    if(player.character == "jones"){
+    else if(player.character == "jones"){
         jonesAnimation(obj);
     }
-    if(player.character == "spear"){
+    else{
         spearAnimation(obj);
     }
 }
@@ -144,9 +144,20 @@ function draw2D(){
     for(var i = 0; i < players.length; i++){
         if(players[i].ghost > 0 && players[i].id != socket.id){
             players[i].position = {x:-1000, y:-1000};
+            sprites[i].position = {x:-1000, y:-1000};
+            $("#score-ghost"+i).show();
+            $("#score-normal"+i).hide();
+            sprites[i].ghost = true;
             continue;
         }
+        else{
+            if(sprites[i].ghost && players[i].id != socket.id){
         
+                sprites[i].ghost = false;
+                $("#score-ghost"+i).hide();
+                $("#score-normal"+i).show();
+            }
+        }
         if(players[i].lives <= 0){
            
             sprites[i].remove();
@@ -171,7 +182,8 @@ function draw2D(){
 
                 }
                 else{
-                    if(sprites[i].ghost){
+                    if(players[i].id == socket.id && sprites[i].ghost){
+                        console.log("returning to normal");
                         console.log( players[i]);
                         setAnimation(sprites[i], players[i]);
                         sprites[i].ghost = false;
