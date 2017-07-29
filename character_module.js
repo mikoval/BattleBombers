@@ -10,7 +10,7 @@ module.exports = {
         for(var i = 0; i < this.CharacterList.length; i++){
             var match = false;
             for(var j = 0; j < players.length; j++){
-                if(players[j].character == this.CharacterList[i]){
+                if(players[j].sprite == this.CharacterList[i]){
                     match = true                }
                 
             }
@@ -20,6 +20,25 @@ module.exports = {
     },
     getCharacterStats: function(str){
         return this.CharacterStats[str];
+    },
+    loadCharacter: function(type, x, y){
+        var stats = this.getCharacterStats(type);
+        var player = new character(stats, x, y);
+        return player;
     }
 
 };
+function character(stats, x, y){
+    this.position = {x: x, y:y};
+
+    this.lives = 3;
+    this.invulnerable = -1;
+    this.dir = "front";
+    this.moving = false;
+    this.ghost = -1.0;
+    this.glue = 0;
+    this.bombStrength = stats.bombStrength;
+    this.bombMax = stats.bombMax;
+    this.bombCount = 0;
+    this.speed = stats.speed;
+}

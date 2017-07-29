@@ -74,6 +74,7 @@ function drawScore(){
         var imgContainer = createElement('div')
         imgContainer.class('img-container')
         var img;
+        
         if(players[i].character == "fox")
              img = createImg('/Images/FoxPics/front1.png');
         else if(players[i].character == "bun")

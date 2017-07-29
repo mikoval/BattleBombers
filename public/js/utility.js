@@ -83,13 +83,13 @@ function waitingRoom(data){
     var current;
     for(var i = 0; i < players.length; i++){
         if(players[i].id == socket.id){
-            if(players[i].character == "fox")
+            if(players[i].sprite == "fox")
                 current = createImg('/Images/FoxPics/front1.png');
-            else if(players[i].character == "bun")
+            else if(players[i].sprite == "bun")
                 current = createImg('/Images/bunpics/front1.png');
-            else if(players[i].character == "jones")
+            else if(players[i].sprite == "jones")
                 current = createImg('/Images/jonespics/front1.png');
-            else if(players[i].character == "spear")
+            else if(players[i].sprite == "spear")
                 current = createImg('/Images/spearpics/front1.png');
           
             current.class("current-character");
@@ -145,7 +145,7 @@ function waitingRoom(data){
     
     WaitingDiv.center();
     for(var i = 0; i < players.length; i++){
-        $("." + players[i].character).addClass("character-selected");
+        $("." + players[i].sprite).addClass("character-selected");
     }
     $(".select-img").on('click', function(){
         if($(this).hasClass("character-selected") )  {return;}
@@ -201,9 +201,10 @@ function startGame(data){
     removeElements();
     background(51);
     state = "Current Game";
-    grid = data.game.grid;
+    grid = data.grid;
     squareSize = height/grid.length;
     players = data.players;
+
     sprites = [];
     if(mode=="2D"){
         startGame2D();
@@ -228,7 +229,6 @@ function startGame(data){
     directionLoop = setInterval(updatePosition, 10);
 }
 function updateGame(data){
-  
     boxes = data.boxes;
     time = data.time;
     players = data.players;
@@ -243,11 +243,9 @@ function updatePosition(){
     input.bomb = false;
     input.glue = false;
 }
-function updateScore(data){
+function updateScore(){
 
    
-    players = players;
-    console.log(players);m
     drawScore();
 }
 

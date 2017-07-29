@@ -1,7 +1,8 @@
- var express = require('express');
+var express = require('express');
 var app = express();
 var port = process.env.PORT || 8080;
-var chars = require('./character_module.js');
+var characterModule = require('./character_module.js');
+var boardModule = require('./board_module.js');
 
 var server = app.listen(port, function() {
     console.log('Our app is running on http://localhost:' + port);
@@ -71,7 +72,7 @@ function newConnection(socket){
         var players = rooms[roomid].players
         for(var i = 0; i < players.length; i++){
             if(players[i].id == socket.id){
-                players[i].character = data;
+                players[i].sprite = data;
                 break;
             }
         }
@@ -82,11 +83,9 @@ function newConnection(socket){
         var roomid = socket.room;
         var players = rooms[roomid].players
         var room = rooms[roomid]
-        var grid = createGameBoard(9 + 2 * players.length,9 + 2 * players.length);
-        while(!validGrid(grid)){
-            console.log("invalid");
-            grid = createGameBoard(9 + 2 * players.length,9 + 2 * players.length);
-        }
+        var grid = boardModule.randomStandardMap(9 + 2 * players.length,9 + 2 * players.length);
+
+        
         room.game = {grid: grid,  startTime: new Date(), currentTime: 0 }
         for(var i = 0; i < players.length; i++){
             var location;
@@ -94,25 +93,15 @@ function newConnection(socket){
             else if (i == 1){location = {x: grid.length - 1.5, y : grid[0].length - 1.5}}
             else if (i == 2){location = {x: 1.5, y : grid[0].length - 1.5}}
             else if (i == 3){location = {x: grid.length - 1.5, y : 1.5}}
-            players[i].position = location;
-            players[i].direction = {up: false, down: false, left: false, right: false, bomb: false, glue:false,};
-            players[i].bombCount = 0;
-            players[i].lives = 3;
-            players[i].invulnerable = -1;
-            players[i].dir = "front";
-            players[i].moving = false;
-            players[i].ghost = -1.0;
-            players[i].glue = 0;
 
-            var stats = chars.getCharacterStats(players[i].character);
-            players[i].bombStrength = stats.bombStrength;
-            players[i].bombMax = stats.bombMax;
-            players[i].speed = stats.speed;
-            
+            players[i].direction =  {up: false, down: false, left: false, right: false, bomb: false, glue:false,};
+            players[i].character = characterModule.loadCharacter(players[i].sprite, location.x, location.y);
+           
         }
         active.push(roomid);
-
-        io.sockets.in(roomid).volatile.emit('game-start', room);
+        var send = compress(room);
+        var data = {grid: room.game.grid, players: send.players};
+        io.sockets.in(roomid).emit('game-start', data);
     }
     
     function createGame(data){
@@ -122,10 +111,11 @@ function newConnection(socket){
             playerName = "Player " + (1)
         var room = generateRoomID();
         var players = []
-        players.push({name: playerName, id:socket.id, character:"fox"});
+        players.push({name: playerName, id:socket.id, sprite:"fox"});
         socket.room = room;
         socket.join(room);
         rooms[room] = {id: room, players:players };
+
         waitingRoom(socket.room, room);
     }
     function joinGame(data){
@@ -150,8 +140,8 @@ function newConnection(socket){
         socket.room = roomid;
         socket.join(roomid);
         var room = rooms[roomid]
-        var character = chars.getValidCharacter(players);
-        players.push({name: playerName, id:socket.id, character:character});
+        var character = characterModule.getValidCharacter(players);
+        players.push({name: playerName, id:socket.id, sprite:character});
         
         
         waitingRoom(socket.room, room);
@@ -191,200 +181,7 @@ function generateRoomID(){
     return Math.floor(Math.random() * 1000000000)
 }
 
-function createGameBoard(width,height){
-     var type = Math.floor(Math.random()*3);
-    console.log(type);
-    var arr = [];
 
-    for(var i = 0; i < width; i++)
-    {   
-        arr.push([])
-        for(var j = 0; j < height; j++){
-            if(i == 0 || i == width-1 || j == 0 || j == height-1 ) {
-                arr[i].push({wall : true, fireTimer: -1, box: false,  center : {x: i + 0.5, y: j+0.5}, innerRadius: 1, outerRadius:  1.4142})
-            }
-            else{
-                arr[i].push({fireTimer: -1, box:false,  center : {x: i + 0.5, y: j+0.5}, innerRadius: 1, outerRadius:  1.4142});
-            }
-
-            
-        }
-    }
-
-    if(type == 0){
-        for(var i = 1; i < width-1; i++)
-        {   
-            for(var j = 1; j < height -1; j++){
-                if( i %2 ==  0 && j %2 == 0 ){
-                    arr[i][j].wall = true;
-                }
-                //bottom right
-                if((i == width-2 && j == height-2) || (i == width-2 && j == height-3) || (i == width-3 && j == height-2)) {
-                    arr[i][j].wall = false;
-                    continue;
-                }
-
-                //top left
-                if((i == 1 && j == 1) || (i ==1 && j ==2) || (i == 2 && j == 1)) {
-                    arr[i][j].wall = false;
-                    continue;
-                }
-
-                //top right
-                if((i == 1 && j == height-2) || (i ==1 && j == height-3) || (i == 2 && j == height-2)) {
-                    arr[i][j].wall = false;
-                    continue;
-                }
-
-                //bottom left
-                if((i ==  width-2 && j ==1) || (i ==width-3 && j ==  1) || (i == width-2 && j == 2)) {
-                    arr[i][j].wall = false;
-                    continue;
-                }
-                
-                if(Math.random() < .8 && !arr[i][j].wall){
-                    var rand = Math.random();
-                    arr[i][j].box = true;
-                    if(rand < 0.04)
-                        arr[i][j].lifeP = true;
-                    else if(rand < 0.05)
-                        arr[i][j].boots = true;
-                    else if (rand < 0.30)
-                        arr[i][j].bombP = true;
-                    else if (rand < 0.40)
-                        arr[i][j].bombS = true;
-                    else if(rand < 0.50)
-                        arr[i][j].ghost = true;
-                    else if(rand < 0.55)
-                        arr[i][j].glueP = true;
-                }
-            }
-        }
-    }
-       
-    else if(type == 1){
-        
-        for(var i = 1; i < width-1; i++)
-        {   
-            for(var j = 1; j < height -1; j++){
-                if(Math.round(Math.random()*10)%4 == 0){
-                    arr[i][j] = {wall : true, fireTimer: -1, box: false,  center : {x: i + 0.5, y: j+0.5}, innerRadius: 1, outerRadius:  1.4142}
-                }
-
-               //bottom right
-                if((i == width-2 && j == height-2) || (i == width-2 && j == height-3) || (i == width-3 && j == height-2)) {
-                    arr[i][j].wall = false;
-                    continue;
-                }
-
-                //top left
-                if((i == 1 && j == 1) || (i ==1 && j ==2) || (i == 2 && j == 1)) {
-                    arr[i][j].wall = false;
-                    continue;
-                }
-
-                //top right
-                if((i == 1 && j == height-2) || (i ==1 && j == height-3) || (i == 2 && j == height-2)) {
-                    arr[i][j].wall = false;
-                    continue;
-                }
-
-                //bottom left
-                if((i ==  width-2 && j ==1) || (i ==width-3 && j ==  1) || (i == width-2 && j == 2)) {
-                    arr[i][j].wall = false;
-                    continue;
-                }
-
-
-                if(Math.random() < .8 && !arr[i][j].wall){
-                    var rand = Math.random();
-                    arr[i][j].box = true;
-                    if(rand < 0.04)
-                        arr[i][j].lifeP = true;
-                    else if(rand < 0.05)
-                        arr[i][j].boots = true;
-                    else if (rand < 0.30)
-                        arr[i][j].bombP = true;
-                    else if (rand < 0.40)
-                        arr[i][j].bombS = true;
-                    else if(rand < 0.50)
-                        arr[i][j].ghost = true;
-                    else if(rand < 0.55)
-                        arr[i][j].glueP = true;
-                }
-                
-            }
-        }
-    }
-    else if (type == 2){
-        
-        for(var i = 1; i < width-1; i++)
-        {   
-            for(var j = 1; j < height -1; j++){
-                //bottom right
-                if((i == width-2 && j == height-2) || (i == width-2 && j == height-3) || (i == width-3 && j == height-2)) {
-                    arr[i][j].wall = false;
-                    continue;
-                }
-
-                //top left
-                if((i == 1 && j == 1) || (i ==1 && j ==2) || (i == 2 && j == 1)) {
-                    arr[i][j].wall = false;
-                    continue;
-                }
-
-                //top right
-                if((i == 1 && j == height-2) || (i ==1 && j == height-3) || (i == 2 && j == height-2)) {
-                    arr[i][j].wall = false;
-                    continue;
-                }
-
-                //bottom left
-                if((i ==  width-2 && j ==1) || (i ==width-3 && j ==  1) || (i == width-2 && j == 2)) {
-                    arr[i][j].wall = false;
-                    continue;
-                }
-
-
-                if(Math.random() < .8 && !arr[i][j].wall){
-                    var rand = Math.random();
-                    arr[i][j].box = true;
-                    if(rand < 0.04)
-                        arr[i][j].lifeP = true;
-                    else if(rand < 0.05)
-                        arr[i][j].boots = true;
-                    else if (rand < 0.30)
-                        arr[i][j].bombP = true;
-                    else if (rand < 0.40)
-                        arr[i][j].bombS = true;
-                    else if(rand < 0.50)
-                        arr[i][j].ghost = true;
-                    else if(rand < 0.55)
-                        arr[i][j].glueP = true;
-                }
-                
-            }
-        }
-    }
-    return arr;
-}
-function createGrid(width, height){
-   var arr = []
-
-    for(var i = 0; i < width; i++)
-    {   
-        arr.push([])
-        for(var j = 0; j < height; j++){
-           
-            arr[i].push({})
-            
-           
-
-            
-        }
-    }
-    return arr;
-}
 setInterval(updatePosition, 20)
 setInterval(updateBombs, 100)
 
@@ -423,7 +220,7 @@ function updateBombs(){
                 }
             }
         }
-        var send = compress(room);
+        //var send = compress(room);
         //io.sockets.in(active[i]).volatile.emit('game-update', send);
             
     }
@@ -434,7 +231,7 @@ function updateBombs(){
 function explodeBomb(grid, x, y){
     var bomb = grid[x][y].bomb
     if(bomb.player)
-        grid[x][y].bomb.player.bombCount -= 1;
+        grid[x][y].bomb.player.character.bombCount -= 1;
     grid[x][y].bomb = undefined;
     for(var k = 0; k <= bomb.strength; k++){
         
@@ -568,41 +365,42 @@ function updatePosition(){
         for(var j = 0; j < players.length; j++){
             
             var player = players[j]
-            if(player.lives <= 0){ continue;}
+            if(player.character.lives <= 0){ continue;}
             alivePlayers += 1;
-            var position = player.position;
+            var position = player.character.position;
             var direction = player.direction;
+            
             var x = Math.floor(position.x);
             var y = Math.floor(position.y);
             if(grid[x][y].boots){
-                player.speed += 0.01;
-                if(player.speed > 0.15){
-                    player.speed = 0.15;
+                player.character.speed += 0.01;
+                if(player.character.speed > 0.15){
+                    player.character.speed = 0.15;
                 }
                 grid[x][y].boots = false;
                 updateScore = true;
             }
             if(grid[x][y].bombP){
-                player.bombMax += 1;
+                player.character.bombMax += 1;
                 grid[x][y].bombP = false;
                 updateScore = true;
             }
             if(grid[x][y].bombS){
-                player.bombStrength += 1;
+                player.character.bombStrength += 1;
                 grid[x][y].bombS = false;
                 updateScore = true;
             }
             if(grid[x][y].lifeP){
-                player.lives += 1;
+                player.character.lives += 1;
                 grid[x][y].lifeP = false;
                 updateScore= true;
             }
             if(grid[x][y].ghost){
-                player.ghost = 3.0;
+                player.character.ghost = 3.0;
                 grid[x][y].ghost = false;
             }
             if(grid[x][y].glueP){
-                player.glue += 3;
+                player.character.glue += 3;
                 grid[x][y].glueP = false;
                 updateScore = true;
             }
@@ -611,24 +409,24 @@ function updatePosition(){
             y = position.y;
 
 
-            if(player.invulnerable >= 0){ player.invulnerable -= 0.01;}
-            if(player.ghost >= 0){ player.ghost -= 0.01;}
-            if(grid[Math.floor(position.x)][Math.floor(position.y)].fireTimer >= 0 && player.invulnerable < 0){
-                player.lives -= 1;
+            if(player.character.invulnerable >= 0){ player.character.invulnerable -= 0.01;}
+            if(player.character.ghost >= 0){ player.character.ghost -= 0.01;}
+            if(grid[Math.floor(position.x)][Math.floor(position.y)].fireTimer >= 0 && player.character.invulnerable < 0){
+                player.character.lives -= 1;
                 
-                player.invulnerable = 1;
+                player.character.invulnerable = 1;
                 updateScore= true;
             }
             ///////////
-            var speed = player.speed;
+            var speed = player.character.speed;
             if(grid[Math.floor(position.x)][Math.floor(position.y)].glue){
                 speed = 0.03;
             }
 
-
+       
             if(direction.up){
-                player.moving = true;
-                player.dir = "back"
+                player.character.moving = true;
+                player.character.dir = "back"
                 var cx = position.x - Math.floor(position.x)
                 if(cx!= 0.5){
                     if(cx < 0.5){
@@ -657,8 +455,8 @@ function updatePosition(){
                 
             }
             else if(direction.down){
-                player.moving = true;
-                player.dir = "front"
+                player.character.moving = true;
+                player.character.dir = "front"
                 var cx = position.x - Math.floor(position.x)
 
                 if(cx!= 0.5){
@@ -687,8 +485,8 @@ function updatePosition(){
                 }
             }
             else if(direction.right){
-                player.moving = true;
-                player.dir = "right"
+                player.character.moving = true;
+                player.character.dir = "right"
                 var cy = position.y - Math.floor(position.y)
 
                 if(cy!= 0.5){
@@ -717,8 +515,8 @@ function updatePosition(){
                 }
             }
             else if(direction.left){
-                player.moving = true;
-                player.dir = "left"
+                player.character.moving = true;
+                player.character.dir = "left"
                 var cy = position.y - Math.floor(position.y)
                 if(cy!= 0.5){
                     if(cy < 0.5){
@@ -746,19 +544,21 @@ function updatePosition(){
                 }
             }
             else{
-                player.moving = false;
+                player.character.moving = false;
             }
             if(direction.bomb){
-                if(player.bombCount < player.bombMax  &&  grid[Math.floor(position.x)][Math.floor(position.y)].bomb == undefined){
-                    grid[Math.floor(position.x)][Math.floor(position.y)].bomb = {player: player, timer: 1, active: true, strength: player.bombStrength}
-                    player.bombCount +=1;
+
+                if(player.character.bombCount < player.character.bombMax  &&  grid[Math.floor(position.x)][Math.floor(position.y)].bomb == undefined){
+         
+                    grid[Math.floor(position.x)][Math.floor(position.y)].bomb = {player: player, timer: 1, active: true, strength: player.character.bombStrength}
+                    player.character.bombCount +=1;
                 }
                 direction.bomb = false;
             }
             if(direction.glue){
-                if(player.glue  > 0  &&  grid[Math.floor(position.x)][Math.floor(position.y)].glue == undefined){
+                if(player.character.glue  > 0  &&  grid[Math.floor(position.x)][Math.floor(position.y)].glue == undefined){
                     grid[Math.floor(position.x)][Math.floor(position.y)].glue = true;
-                    player.glue -=1;
+                    player.character.glue -=1;
                 }
                 direction.glue = false;
             }
@@ -770,7 +570,7 @@ function updatePosition(){
         io.sockets.in(active[i]).emit('game-update', send);
 
         if(updateScore){
-            io.sockets.in(active[i]).emit('score-update', players);
+            io.sockets.in(active[i]).emit('score-update');
         }
         
 
@@ -778,7 +578,7 @@ function updatePosition(){
 
             var winner = undefined;
             for(var j = 0; j < players.length; j++){
-                if(players[j].lives >= 1){
+                if(players[j].character.lives >= 1){
                     winner = players[j].name;
                 }
             }
@@ -807,14 +607,14 @@ function compress(game){
     var players = game.players;
     var time = game.game.currentTime;
 
-    var minGrid = createGrid(grid.length, grid[0].length);
+    var minGrid = boardModule.createGrid(grid.length, grid[0].length);
     var minPlayers = new Array(players.length);
     for( var i = 0; i < players.length; i++){
         minPlayers[i] = {
-            position: players[i].position, lives: players[i].lives, dir:players[i].dir, 
-            moving: players[i].moving, name: players[i].name,
-            ghost:players[i].ghost, id:players[i].id, character:players[i].character,
-            speed:players[i].speed, bombStrength:players[i].bombStrength, bombMax:players[i].bombMax
+            position: players[i].character.position, lives: players[i].character.lives, dir:players[i].character.dir, 
+            moving: players[i].character.moving, name: players[i].name,
+            ghost:players[i].character.ghost, id:players[i].id, character:players[i].sprite,
+            speed:players[i].character.speed, bombStrength:players[i].character.bombStrength, bombMax:players[i].character.bombMax
         }
     }
     var walls = [];
@@ -846,31 +646,7 @@ function compress(game){
     return {boxes: boxes,fire:fire, glue:glue, players: minPlayers,bombs:bombs, powerups:powerups, time: time};
 
 }
-function validGrid(g){
-    var count = 0;
-    var arr = [{x:1, y:1}];
-    var width = g.length;
-    var height = g[0].length;
-    while(arr.length > 0){
-        var pos = arr.pop();
-        if(g[pos.x][pos.y].visited != undefined){continue;}
-        g[pos.x][pos.y].visited = true;
-        if(pos.x == width - 2 && pos.y == height-2){count++;}
-        if(pos.x == width - 2 && pos.y == 1){count++;}
-        if(pos.x == 1 && pos.y == height-2){count++;}
 
-        if(!g[pos.x + 1][pos.y].wall && !g[pos.x + 1][pos.y].visited){arr.push({x:pos.x+1, y:pos.y})}
-        if(!g[pos.x - 1][pos.y].wall && !g[pos.x - 1][pos.y].visited){arr.push({x:pos.x-1, y:pos.y})}
-        if(!g[pos.x][pos.y+1].wall && !g[pos.x][pos.y+1].visited){arr.push({x:pos.x, y:pos.y+1})}
-        if(!g[pos.x][pos.y-1].wall && !g[pos.x][pos.y-1].visited){arr.push({x:pos.x, y:pos.y-1})}
-    }
-    if(count == 3){
-        return true;
-    }
-    else{
-        return false;
-    }
-}
 function addBomb(grid, timer){
     var prob = Math.random();
     if(prob > Math.log(timer) ) { return;}
@@ -884,7 +660,6 @@ function addBomb(grid, timer){
     }
 }
 function waitingRoom(id){
-    
     if(rooms[id].players.length > 0){
         var s =  io.sockets.connected[rooms[id].players[0].id];
 
