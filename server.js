@@ -231,6 +231,13 @@ function updateBombs(){
                 }
             }
         }
+        for(var x = 0; x  < grid.length; x++){
+            for(var y = 0; y < grid[0].length; y++){
+                if(grid[x][y].glue != undefined && grid[x][y].glue > 0){
+                    grid[x][y].glue -= 0.1;
+                }
+            }
+        }
         //var send = compress(room);
         //io.sockets.in(active[i]).volatile.emit('game-update', send);
             
@@ -440,7 +447,7 @@ function updatePosition(){
             }
             ///////////
             var speed = player.character.speed;
-            if(grid[Math.floor(position.x)][Math.floor(position.y)].glue){
+            if(grid[Math.floor(position.x)][Math.floor(position.y)].glue < 0){
                 speed = 0.03;
             }
 
@@ -578,7 +585,7 @@ function updatePosition(){
             }
             if(direction.glue){
                 if(player.character.glue  > 0  &&  grid[Math.floor(position.x)][Math.floor(position.y)].glue == undefined){
-                    grid[Math.floor(position.x)][Math.floor(position.y)].glue = true;
+                    grid[Math.floor(position.x)][Math.floor(position.y)].glue = 1.0;
                     player.character.glue -=1;
                 }
                 direction.glue = false;

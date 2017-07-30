@@ -120,7 +120,7 @@ module.exports = {
                         arr[i][j].ghost = true;
                     else if(rand < 0.60)
                         arr[i][j].glueP = true;
-                    else if(rand < 0.90)
+                    else if(rand < 0.65)
                         arr[i][j].mineP = true;
                 }
             }
@@ -179,7 +179,7 @@ module.exports = {
                         arr[i][j].ghost = true;
                     else if(rand < 0.60)
                         arr[i][j].glueP = true;
-                    else if(rand < 0.90)
+                    else if(rand < 0.65)
                         arr[i][j].mineP = true;
                 }
                 
@@ -235,7 +235,7 @@ module.exports = {
                         arr[i][j].ghost = true;
                     else if(rand < 0.60)
                         arr[i][j].glueP = true;
-                    else if(rand < 0.90)
+                    else if(rand < 0.65)
                         arr[i][j].mineP = true;
                 }
                 
