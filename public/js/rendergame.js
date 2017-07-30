@@ -141,7 +141,7 @@ function initScore(){
      
         var bombWrapper = createElement('div');
         bombWrapper.class("powerup-wrapper");
-        var scoreBomb = createImg('/Images/bomb.png');
+        var scoreBomb = createImg('/Images/Bomb.png');
         scoreBomb.class("score-powerup");
         scoreBomb.parent(bombWrapper);
         bombText = createElement('p', "0");
