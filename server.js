@@ -198,9 +198,6 @@ function updateBombs(){
         var grid = room.game.grid;
         for(var x = 0; x  < grid.length; x++){
             for(var y = 0; y < grid[0].length; y++){
-                if(grid[x][y].fireTimer >= 0){
-                    grid[x][y].fireTimer -= .6;
-                }
                 if(grid[x][y].bomb != undefined){
                     grid[x][y].bomb.timer -= 0.035;
                     if(grid[x][y].bomb.timer <= 0 ){
@@ -208,6 +205,14 @@ function updateBombs(){
                     }
                     
                 }
+            }
+        }
+        for(var x = 0; x  < grid.length; x++){
+            for(var y = 0; y < grid[0].length; y++){
+                if(grid[x][y].fireTimer >= 0){
+                    grid[x][y].fireTimer -= .3;
+                }
+                
                 if(grid[x][y].box && grid[x][y].fireTimer > 0){
                     grid[x][y].box = false;
                     grid[x][y].fireTimer = -1
@@ -221,6 +226,7 @@ function updateBombs(){
                 
             }
         }
+
             
     }
 
