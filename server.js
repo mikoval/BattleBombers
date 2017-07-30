@@ -201,45 +201,26 @@ function updateBombs(){
                 if(grid[x][y].fireTimer >= 0){
                     grid[x][y].fireTimer -= .6;
                 }
-                
-            }
-        }
-        for(var x = 0; x  < grid.length; x++){
-            for(var y = 0; y < grid[0].length; y++){
-                 if(grid[x][y].bomb != undefined){
+                if(grid[x][y].bomb != undefined){
                     grid[x][y].bomb.timer -= 0.035;
                     if(grid[x][y].bomb.timer <= 0 ){
                         explodeBomb(grid, x, y) 
                     }
                     
                 }
-                
-            }
-        }
-        for(var x = 0; x  < grid.length; x++){
-            for(var y = 0; y < grid[0].length; y++){
                 if(grid[x][y].box && grid[x][y].fireTimer > 0){
                     grid[x][y].box = false;
                     grid[x][y].fireTimer = -1
                 }
-            }
-        }
-        for(var x = 0; x  < grid.length; x++){
-            for(var y = 0; y < grid[0].length; y++){
                 if(grid[x][y].mine != undefined && grid[x][y].mine > 0){
                     grid[x][y].mine -= 0.03;
                 }
-            }
-        }
-        for(var x = 0; x  < grid.length; x++){
-            for(var y = 0; y < grid[0].length; y++){
                 if(grid[x][y].glue != undefined && grid[x][y].glue > 0){
                     grid[x][y].glue -= 0.1;
                 }
+                
             }
         }
-        //var send = compress(room);
-        //io.sockets.in(active[i]).volatile.emit('game-update', send);
             
     }
 
