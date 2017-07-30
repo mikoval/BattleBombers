@@ -259,7 +259,37 @@
 .score-profile{
   display:inline-block;
   float:left;
+  width:45%;
+}
+.score-powerups{
+  width:45%;
+  display:inline-block;
 }
 .hidden{
   display: none;
+}
+.score-powerup{
+  width:100%;
+  height:auto;
+  
+
+}
+.powerups-text{
+  position: absolute;
+  bottom:-10px;
+  right:5px;
+  color:white;
+  background-color:gray;
+  padding:3px;
+  border-radius: 50%;
+
+
+}
+.powerup-wrapper{
+  position: relative;
+  width:45%;
+  height:auto;
+  display:inline-block;
+  background: lightgray;
+  border:solid black 1px;
 }

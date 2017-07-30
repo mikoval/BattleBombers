@@ -51,7 +51,6 @@ function setup() {
     socket.on('game-pending', waitingRoom);
     socket.on('game-start', startGame);
     socket.on('game-update', updateGame);
-    socket.on('score-update', updateScore);
     socket.on("invalid-room", invalidRoom);
     socket.on("game-over", gameOver);
     setInterval(function(){socket.emit('ping')}, 20000);
@@ -86,6 +85,7 @@ function draw(){
         else{
              drawGame();
         }
+        drawScore();
        
     }
 }

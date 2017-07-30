@@ -3,7 +3,6 @@ function startGame2D(){
         var s = createSprite(50, 50, squareSize, squareSize);
         setAnimation(s, players[i]);
         sprites.push(s);
-        console.log(sprites);
     }
         
 }

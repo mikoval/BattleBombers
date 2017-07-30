@@ -224,7 +224,7 @@ function startGame(data){
         }
     }
 
-    drawScore();
+    initScore();
     clearInterval(directionLoop);
     directionLoop = setInterval(updatePosition, 10);
 }
@@ -243,11 +243,7 @@ function updatePosition(){
     input.bomb = false;
     input.glue = false;
 }
-function updateScore(){
 
-   
-    drawScore();
-}
 
 function formatTime(rawTime){
     var timeval = parseFloat(rawTime) / 1000;

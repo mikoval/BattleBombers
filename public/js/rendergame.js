@@ -1,5 +1,5 @@
 var counter;
-function drawScore(){
+function initScore(){
     removeElements();
     var centerX = width/2;
     var centerY = height/2;
@@ -35,12 +35,14 @@ function drawScore(){
 
         var lives = createElement('p', 'lives: ' + players[i].lives );
         lives.class("score-title");
+        lives.id("lives-"+i);
        
 
         var speed = createElement('p', 'speed:');
         speed.class("score-title player-score");
         var speedVal = createElement('p',   Math.round(players[i].speed * 100));
         speedVal.class("score-value player-score");
+        speedVal.id("speed-"+i);
         var speedWrapper = createElement("div");
         speedWrapper.class("score-wrapper");
         speed.parent(speedWrapper);
@@ -50,6 +52,7 @@ function drawScore(){
         mBombs.class("score-title player-score");
         var mBombsVal = createElement('p', players[i].bombMax );
         mBombsVal.class("score-value player-score");
+        mBombsVal.id("mBombs-"+i);
         var mBombsWrapper = createElement("div");
         mBombsWrapper.class("score-wrapper");
         mBombs.parent(mBombsWrapper);
@@ -59,6 +62,7 @@ function drawScore(){
         sBombs.class("score-title player-score");
         var sBombsVal = createElement('p',   players[i].bombStrength);
         sBombsVal.class("score-value player-score");
+        sBombsVal.id("sBombs-"+i);
         var sBombsWrapper = createElement("div");
         sBombsWrapper.class("score-wrapper");
         sBombs.parent(sBombsWrapper);
@@ -110,7 +114,8 @@ function drawScore(){
         scoreProfile.class("score-profile");
 
         name.parent(scoreItem);
-       
+
+        
         
         imgContainer.parent(scoreProfile)
         lives.parent(scoreProfile);
@@ -119,10 +124,53 @@ function drawScore(){
         sBombsWrapper.parent(statsWrapper);
         statsWrapper.parent (scoreProfile);
         scoreProfile.parent(scoreItem);
+
+        var scorePowerups = createElement("div");
+        scorePowerups.class("score-powerups")
+        scorePowerups.parent(scoreItem);
+        var glueWrapper = createElement('div');
+        glueWrapper.class("powerup-wrapper");
+        var scoreGlue = createImg('/Images/glue.png');
+        scoreGlue.class("score-powerup");
+        scoreGlue.parent(glueWrapper);
+        glueText = createElement('p', "0");
+        glueText.id("glue-"+i);
+        glueText.class('powerups-text');
+        glueText.parent(glueWrapper);
+
+     
+        var bombWrapper = createElement('div');
+        bombWrapper.class("powerup-wrapper");
+        var scoreBomb = createImg('/Images/bomb.png');
+        scoreBomb.class("score-powerup");
+        scoreBomb.parent(bombWrapper);
+        bombText = createElement('p', "0");
+        bombText.id("bomb-"+i);
+        bombText.class('powerups-text');
+        bombText.parent(bombWrapper);
+
+        bombWrapper.parent(scorePowerups);
+
+        glueWrapper.parent(scorePowerups);
+
         if(i == 0 || i == 1)
             scoreItem.parent(scoreBoardLeft);
         else
             scoreItem.parent(scoreBoardRight);
+    }
+}
+function drawScore(){
+    for(var i = 0; i < players.length; i++){
+        $("#lives-"+i).text(players[i].lives);
+        $("#speed-"+i).text(Math.round(players[i].speed * 100));
+        $("#mBombs-"+i).text(players[i].bombMax);
+        $("#sBombs-"+i).text(players[i].bombStrength);
+
+        $("#bomb-"+i).text(players[i].bombsRemaining);
+        $("#glue-"+i).text(players[i].glue);
+
+
+
     }
 }
 function drawGame(){

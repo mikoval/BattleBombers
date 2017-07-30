@@ -361,7 +361,7 @@ function updatePosition(){
             addBomb(grid, (timer -2 ) /10 + 1);
         }
         var alivePlayers = 0
-        var updateScore = false;
+    
         for(var j = 0; j < players.length; j++){
             
             var player = players[j]
@@ -378,22 +378,22 @@ function updatePosition(){
                     player.character.speed = 0.15;
                 }
                 grid[x][y].boots = false;
-                updateScore = true;
+               
             }
             if(grid[x][y].bombP){
                 player.character.bombMax += 1;
                 grid[x][y].bombP = false;
-                updateScore = true;
+            
             }
             if(grid[x][y].bombS){
                 player.character.bombStrength += 1;
                 grid[x][y].bombS = false;
-                updateScore = true;
+             
             }
             if(grid[x][y].lifeP){
                 player.character.lives += 1;
                 grid[x][y].lifeP = false;
-                updateScore= true;
+               
             }
             if(grid[x][y].ghost){
                 player.character.ghost = 3.0;
@@ -402,7 +402,7 @@ function updatePosition(){
             if(grid[x][y].glueP){
                 player.character.glue += 3;
                 grid[x][y].glueP = false;
-                updateScore = true;
+               
             }
 
             x = position.x;
@@ -415,7 +415,7 @@ function updatePosition(){
                 player.character.lives -= 1;
                 
                 player.character.invulnerable = 1;
-                updateScore= true;
+          
             }
             ///////////
             var speed = player.character.speed;
@@ -569,9 +569,7 @@ function updatePosition(){
         var send = compress(room);
         io.sockets.in(active[i]).emit('game-update', send);
 
-        if(updateScore){
-            io.sockets.in(active[i]).emit('score-update');
-        }
+        
         
 
         if(alivePlayers <= 1){
@@ -612,8 +610,8 @@ function compress(game){
     for( var i = 0; i < players.length; i++){
         minPlayers[i] = {
             position: players[i].character.position, lives: players[i].character.lives, dir:players[i].character.dir, 
-            moving: players[i].character.moving, name: players[i].name,
-            ghost:players[i].character.ghost, id:players[i].id, character:players[i].sprite,
+            moving: players[i].character.moving, name: players[i].name, bombsRemaining: (players[i].character.bombMax - players[i].character.bombCount),
+            ghost:players[i].character.ghost, id:players[i].id, character:players[i].sprite, glue: players[i].character.glue, 
             speed:players[i].character.speed, bombStrength:players[i].character.bombStrength, bombMax:players[i].character.bombMax
         }
     }
