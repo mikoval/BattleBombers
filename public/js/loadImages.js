@@ -13,6 +13,9 @@ function loadImages(){
     ghost_img = loadImage("/Images/ghost.png")
     glue_img = loadImage("/Images/glue.png")
     glueP_img = loadImage("/Images/glue+.png")
+    mineP_img = loadImage("/Images/mineP.png")
+    mine_img = loadImage("/Images/mine.png")
+    mineR_img = loadImage("/Images/mineR.png")
 
 
     //3d materials

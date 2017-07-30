@@ -235,13 +235,15 @@ function updateGame(data){
     bombs = data.bombs;
     powerups = data.powerups;
     fires = data.fire;
-    glue = data.glue;
+    glue = data.glue;   
+    mines = data.mines;
 }
 
 function updatePosition(){
     socket.emit('update-input', input);
     input.bomb = false;
     input.glue = false;
+    input.mine = false;
 }
 
 

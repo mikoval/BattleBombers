@@ -41,4 +41,5 @@ function character(stats, x, y){
     this.bombMax = stats.bombMax;
     this.bombCount = 0;
     this.speed = stats.speed;
+    this.mines = 0;
 }

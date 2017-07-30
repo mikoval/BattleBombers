@@ -115,11 +115,21 @@ function draw2D(){
         var y = startY + glue[i].y * squareSize;
         image(glue_img, x, y, squareSize,squareSize);
     }
+    for(var i = 0; i < mines.length; i++){
+        var x = startX+mines[i].x*squareSize;
+        var y = startY + mines[i].y * squareSize;
+        if(mines[i].time > 0)
+            image(mine_img, x, y, squareSize,squareSize);
+        else{
+            image(mineR_img, x, y, squareSize,squareSize);
+        }
+    }
     for(var i = 0; i < bombs.length; i++){
         var x = startX+bombs[i].x*squareSize;
         var y = startY + bombs[i].y * squareSize;
         image(bomb_img, x, y, squareSize,squareSize);
     }
+    
     for(var i = 0; i < powerups.length; i++){
         var x = startX+powerups[i].x*squareSize;
         var y = startY + powerups[i].y * squareSize;
@@ -135,6 +145,8 @@ function draw2D(){
             image(ghost_img, x, y, squareSize,squareSize);
         if(powerups[i].t ==  "glue")
             image(glueP_img, x, y, squareSize,squareSize);
+        if(powerups[i].t ==  "mine")
+            image(mineP_img, x, y, squareSize,squareSize);
 
     }
 

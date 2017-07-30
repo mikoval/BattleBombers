@@ -149,9 +149,23 @@ function initScore(){
         bombText.class('powerups-text');
         bombText.parent(bombWrapper);
 
+
+        var mineWrapper = createElement('div');
+        mineWrapper.class("powerup-wrapper");
+        var scoreMine = createImg('/Images/mineP.png');
+        scoreMine.class("score-powerup");
+        scoreMine.parent(mineWrapper);
+        mineText = createElement('p', "0");
+        mineText.id("mine-"+i);
+        mineText.class('powerups-text');
+        mineText.parent(mineWrapper);
+
+
         bombWrapper.parent(scorePowerups);
 
         glueWrapper.parent(scorePowerups);
+
+        mineWrapper.parent(scorePowerups);
 
         if(i == 0 || i == 1)
             scoreItem.parent(scoreBoardLeft);
@@ -168,6 +182,7 @@ function drawScore(){
 
         $("#bomb-"+i).text(players[i].bombsRemaining);
         $("#glue-"+i).text(players[i].glue);
+        $("#mine-"+i).text(players[i].mines);
 
 
 

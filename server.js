@@ -94,7 +94,7 @@ function newConnection(socket){
             else if (i == 2){location = {x: 1.5, y : grid[0].length - 1.5}}
             else if (i == 3){location = {x: grid.length - 1.5, y : 1.5}}
 
-            players[i].direction =  {up: false, down: false, left: false, right: false, bomb: false, glue:false,};
+            players[i].direction =  {up: false, down: false, left: false, right: false, bomb: false, glue:false,mine:false,};
             players[i].character = characterModule.loadCharacter(players[i].sprite, location.x, location.y);
            
         }
@@ -159,12 +159,16 @@ function newConnection(socket){
                 if(players[i].direction){
                     var bomb = players[i].direction.bomb;
                     var glue = players[i].direction.glue;
+                    var mine = players[i].direction.mine;
 
                     players[i].direction = data;
                     if(!players[i].direction.bomb && bomb)
                         players[i].direction.bomb = bomb;
                     if(!players[i].direction.glue && glue)
                         players[i].direction.glue = glue;
+
+                    if(!players[i].direction.mine && mine)
+                        players[i].direction.mine = mine;
 
                     
                      
@@ -217,6 +221,13 @@ function updateBombs(){
                 if(grid[x][y].box && grid[x][y].fireTimer > 0){
                     grid[x][y].box = false;
                     grid[x][y].fireTimer = -1
+                }
+            }
+        }
+        for(var x = 0; x  < grid.length; x++){
+            for(var y = 0; y < grid[0].length; y++){
+                if(grid[x][y].mine != undefined && grid[x][y].mine > 0){
+                    grid[x][y].mine -= 0.03;
                 }
             }
         }
@@ -404,6 +415,11 @@ function updatePosition(){
                 grid[x][y].glueP = false;
                
             }
+            if(grid[x][y].mineP){
+                player.character.mines += 1;
+                grid[x][y].mineP = false;
+               
+            }
 
             x = position.x;
             y = position.y;
@@ -411,6 +427,11 @@ function updatePosition(){
 
             if(player.character.invulnerable >= 0){ player.character.invulnerable -= 0.01;}
             if(player.character.ghost >= 0){ player.character.ghost -= 0.01;}
+            if(grid[Math.floor(position.x)][Math.floor(position.y)].mine < 0){
+                grid[Math.floor(position.x)][Math.floor(position.y)].mine = undefined;
+                grid[Math.floor(position.x)][Math.floor(position.y)].fireTimer = 1.0;
+          
+            }
             if(grid[Math.floor(position.x)][Math.floor(position.y)].fireTimer >= 0 && player.character.invulnerable < 0){
                 player.character.lives -= 1;
                 
@@ -562,6 +583,13 @@ function updatePosition(){
                 }
                 direction.glue = false;
             }
+            if(direction.mine){
+                if(player.character.mines  > 0  &&  grid[Math.floor(position.x)][Math.floor(position.y)].mine == undefined){
+                    grid[Math.floor(position.x)][Math.floor(position.y)].mine = 1.0;
+                    player.character.mines -=1;
+                }
+                direction.mine = false;
+            }
 
         }
         
@@ -612,7 +640,7 @@ function compress(game){
             position: players[i].character.position, lives: players[i].character.lives, dir:players[i].character.dir, 
             moving: players[i].character.moving, name: players[i].name, bombsRemaining: (players[i].character.bombMax - players[i].character.bombCount),
             ghost:players[i].character.ghost, id:players[i].id, character:players[i].sprite, glue: players[i].character.glue, 
-            speed:players[i].character.speed, bombStrength:players[i].character.bombStrength, bombMax:players[i].character.bombMax
+            speed:players[i].character.speed, bombStrength:players[i].character.bombStrength, bombMax:players[i].character.bombMax, mines: players[i].character.mines
         }
     }
     var walls = [];
@@ -621,6 +649,7 @@ function compress(game){
     var bombs = [];
     var powerups = [];
     var glue = [];
+    var mines = [];
     for( var i = 0; i < grid.length; i++){
         for( var j = 0; j < grid[0].length; j++){
       
@@ -631,6 +660,7 @@ function compress(game){
             if(grid[i][j].bomb){bombs.push({x:i, y:j})}
 
             if(grid[i][j].glue){glue.push({x:i, y:j})}
+            if(grid[i][j].mine!= undefined){mines.push({x:i, y:j, time: grid[i][j].mine})}
     
 
             else if(!grid[i][j].box && grid[i][j].bombP){powerups.push({x:i, y:j, t:"bomb-boost"})}
@@ -639,9 +669,11 @@ function compress(game){
             else if(!grid[i][j].box && grid[i][j].lifeP){powerups.push({x:i, y:j, t:"extra-life"})}
             else if(!grid[i][j].box && grid[i][j].ghost){powerups.push({x:i, y:j, t:"ghost"})}
             else if(!grid[i][j].box && grid[i][j].glueP){powerups.push({x:i, y:j, t:"glue"})}
+            else if(!grid[i][j].box && grid[i][j].mineP){powerups.push({x:i, y:j, t:"mine"})}
+
         }
     }
-    return {boxes: boxes,fire:fire, glue:glue, players: minPlayers,bombs:bombs, powerups:powerups, time: time};
+    return {boxes: boxes,fire:fire, glue:glue, mines:mines, players: minPlayers,bombs:bombs, powerups:powerups, time: time};
 
 }
 

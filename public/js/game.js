@@ -19,7 +19,8 @@ var walls2=[];
 var boxes2=[];
 var fires2 = [];
 var powerups2 = [];
-var input = {up: false, down: false, left: false, right: false, bomb : false, glue:false};
+var mines2 = [];
+var input = {up: false, down: false, left: false, right: false, bomb : false, glue:false, mine:false};
 var directionLoop;
 var time = 0;
 var p1;
@@ -37,6 +38,7 @@ var walls = [];
 var boxes = [];
 var fires = [];
 var bombs = [];
+var mines = [];
 var powerups =[];
 var glue = [];
 var sprites = [];
@@ -99,7 +101,9 @@ function keyPressed(e) {
     if(key == "s" || key == "ArrowDown"){input.up = false; input.down = true; input.right = false; input.left = false}
     if(key == "a" || key == "ArrowLeft"){input.left =input.up = false; input.down = false; input.right = false; input.left = true}
     if(key == " "){input.bomb = true;}
-    if(key == "v"){input.glue = true;}
+    if(key == "1" || key =="j"){input.glue = true;}
+    if(key == "2" || key=="k") {input.mine = true;}
+
 }
 function keyReleased(e) {
     if(state != "Current Game"){return;}
