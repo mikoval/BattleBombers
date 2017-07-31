@@ -133,19 +133,19 @@ function draw2D(){
     for(var i = 0; i < powerups.length; i++){
         var x = startX+powerups[i].x*squareSize;
         var y = startY + powerups[i].y * squareSize;
-        if(powerups[i].t ==  "bomb-boost")
+        if(powerups[i].t ==  "bb")
              image(bomb_p_img, x, y, squareSize,squareSize);
-        if(powerups[i].t ==  "speed-boost")
+        if(powerups[i].t ==  "sb")
             image(boots_img, x, y, squareSize,squareSize);
-        if(powerups[i].t ==  "bomb-strength")
+        if(powerups[i].t ==  "bs")
             image(bomb_s_img, x, y, squareSize,squareSize);
-        if(powerups[i].t ==  "extra-life")
+        if(powerups[i].t ==  "el")
             image(life_img, x, y, squareSize,squareSize);
-        if(powerups[i].t ==  "ghost")
+        if(powerups[i].t ==  "gh")
             image(ghost_img, x, y, squareSize,squareSize);
-        if(powerups[i].t ==  "glue")
+        if(powerups[i].t ==  "gl")
             image(glueP_img, x, y, squareSize,squareSize);
-        if(powerups[i].t ==  "mine")
+        if(powerups[i].t ==  "m")
             image(mineP_img, x, y, squareSize,squareSize);
 
     }

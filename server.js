@@ -657,13 +657,13 @@ function compress(game){
             if(grid[i][j].mine!= undefined){mines.push({x:i, y:j, time: grid[i][j].mine})}
     
 
-            else if(!grid[i][j].box && grid[i][j].bombP){powerups.push({x:i, y:j, t:"bomb-boost"})}
-            else if(!grid[i][j].box && grid[i][j].boots){powerups.push({x:i, y:j, t:"speed-boost"})}
-            else if(!grid[i][j].box && grid[i][j].bombS){powerups.push({x:i, y:j, t:"bomb-strength"})}
-            else if(!grid[i][j].box && grid[i][j].lifeP){powerups.push({x:i, y:j, t:"extra-life"})}
-            else if(!grid[i][j].box && grid[i][j].ghost){powerups.push({x:i, y:j, t:"ghost"})}
-            else if(!grid[i][j].box && grid[i][j].glueP){powerups.push({x:i, y:j, t:"glue"})}
-            else if(!grid[i][j].box && grid[i][j].mineP){powerups.push({x:i, y:j, t:"mine"})}
+            else if(!grid[i][j].box && grid[i][j].bombP){powerups.push({x:i, y:j, t:"bb"})}
+            else if(!grid[i][j].box && grid[i][j].boots){powerups.push({x:i, y:j, t:"sb"})}
+            else if(!grid[i][j].box && grid[i][j].bombS){powerups.push({x:i, y:j, t:"bs"})}
+            else if(!grid[i][j].box && grid[i][j].lifeP){powerups.push({x:i, y:j, t:"el"})}
+            else if(!grid[i][j].box && grid[i][j].ghost){powerups.push({x:i, y:j, t:"gh"})}
+            else if(!grid[i][j].box && grid[i][j].glueP){powerups.push({x:i, y:j, t:"gl"})}
+            else if(!grid[i][j].box && grid[i][j].mineP){powerups.push({x:i, y:j, t:"m"})}
 
         }
     }
