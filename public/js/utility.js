@@ -203,7 +203,7 @@ function startGame(data){
     state = "Current Game";
     grid = data.grid;
     squareSize = height/grid.length;
-    players = data.players;
+    players = playerExpand(data.players);
 
     sprites = [];
     if(mode=="2D"){
@@ -229,16 +229,39 @@ function startGame(data){
     directionLoop = setInterval(updatePosition, 10);
 }
 function updateGame(data){
-    boxes = data.boxes;
-    time = data.time;
-    players = data.players;
-    bombs = data.bombs;
-    powerups = data.powerups;
-    fires = data.fire;
-    glue = data.glue;   
-    mines = data.mines;
-}
+    boxes = data.b;
+    time = data.t;
+    players = playerExpand(data.p);
 
+    bombs = data.bo;
+    powerups = data.po;
+    fires = data.f;
+    glue = data.g;   
+    mines = data.m;
+}
+function playerExpand(obj){
+    var arr = []
+    for (var i =0 ; i < obj.length; i++){
+        arr.push({
+            position: obj[i].p,
+            lives: obj[i].l,
+            dir: obj[i].d,
+            moving: obj[i].m,
+            name: obj[i].n,
+            bombsRemaining: obj[i].br,
+            ghost: obj[i].g,
+            id: obj[i].id,
+            character: obj[i].ch,
+            glue: obj[i].gl,
+            speed: obj[i].s,
+            bombStrength: obj[i].bs,
+            bombMax: obj[i].bm,
+            mines: obj[i].mi
+        })
+    }
+    
+    return arr;
+}
 function updatePosition(){
     socket.emit('update-input', input);
     input.bomb = false;

@@ -100,7 +100,7 @@ function newConnection(socket){
         }
         active.push(roomid);
         var send = compress(room);
-        var data = {grid: room.game.grid, players: send.players};
+        var data = {grid: room.game.grid, players: send.p};
         io.sockets.in(roomid).emit('game-start', data);
     }
     
@@ -631,10 +631,10 @@ function compress(game){
     var minPlayers = new Array(players.length);
     for( var i = 0; i < players.length; i++){
         minPlayers[i] = {
-            position: players[i].character.position, lives: players[i].character.lives, dir:players[i].character.dir, 
-            moving: players[i].character.moving, name: players[i].name, bombsRemaining: (players[i].character.bombMax - players[i].character.bombCount),
-            ghost:players[i].character.ghost, id:players[i].id, character:players[i].sprite, glue: players[i].character.glue, 
-            speed:players[i].character.speed, bombStrength:players[i].character.bombStrength, bombMax:players[i].character.bombMax, mines: players[i].character.mines
+            p: players[i].character.position, l: players[i].character.lives, d:players[i].character.dir, 
+            m: players[i].character.moving, n: players[i].name, br: (players[i].character.bombMax - players[i].character.bombCount),
+            gh:players[i].character.ghost, id:players[i].id, ch:players[i].sprite, gl: players[i].character.glue, 
+            sp:players[i].character.speed, bs:players[i].character.bombStrength, bm:players[i].character.bombMax, mi: players[i].character.mines
         }
     }
     var walls = [];
@@ -667,7 +667,7 @@ function compress(game){
 
         }
     }
-    return {boxes: boxes,fire:fire, glue:glue, mines:mines, players: minPlayers,bombs:bombs, powerups:powerups, time: time};
+    return { b: boxes,f:fire, g:glue, m:mines, p: minPlayers,bo:bombs, po:powerups, t: time};
 
 }
 
