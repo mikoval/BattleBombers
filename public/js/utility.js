@@ -254,7 +254,7 @@ function playerExpand(obj){
             id: obj[i].id,
             character: obj[i].ch,
             glue: obj[i].gl,
-            speed: obj[i].s,
+            speed: obj[i].sp,
             bombStrength: obj[i].bs,
             bombMax: obj[i].bm,
             mines: obj[i].mi
