@@ -304,7 +304,7 @@ module.exports = {
             }
         }
         if(!this.validate(arr)){
-            arr = this.standardRandom(width,height);
+            arr = this.forestRandom(width,height);
         }
         return arr;
     },
