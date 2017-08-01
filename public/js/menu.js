@@ -139,10 +139,8 @@ function startMenu(){
         createRoom()
     }
     function mainMenu(){
-
-        JoinCreateDiv.show();
-        CreateDiv.hide();
         JoinDiv.hide();
+        JoinCreateDiv.show();
     }
     function joinMenu(){
         JoinCreateDiv.hide();
