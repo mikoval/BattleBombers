@@ -297,7 +297,7 @@ module.exports = {
                     else if(rand < 0.65)
                         arr[i][j].mineP = true;
                 }
-                else if (!arr[i][j].wall){
+                else if (Math.random() < .5  && !arr[i][j].wall){
                     arr[i][j].bush = {timer:0.0};
                 }
                 
