@@ -83,7 +83,7 @@ function newConnection(socket){
         var roomid = socket.room;
         var players = rooms[roomid].players
         var room = rooms[roomid]
-        var grid = boardModule.randomStandardMap(9 + 2 * players.length,9 + 2 * players.length);
+        var grid = boardModule.forestRandom(9 + 2 * players.length,9 + 2 * players.length);
 
         
         room.game = {grid: grid,  startTime: new Date(), currentTime: 0 }
@@ -212,10 +212,17 @@ function updateBombs(){
                 if(grid[x][y].fireTimer >= 0){
                     grid[x][y].fireTimer -= .3;
                 }
+                if(grid[x][y].bush && grid[x][y].bush.timer >= 0){
+                    grid[x][y].bush.timer -= .01;
+                }
                 
                 if(grid[x][y].box && grid[x][y].fireTimer > 0){
                     grid[x][y].box = false;
                     grid[x][y].fireTimer = -1
+                }
+                if(grid[x][y].bush  && grid[x][y].fireTimer > 0){
+                    grid[x][y].bush.timer = 1.0;
+                    //grid[x][y].fireTimer = -1
                 }
                 if(grid[x][y].mine != undefined && grid[x][y].mine > 0){
                     grid[x][y].mine -= 0.03;
@@ -644,12 +651,16 @@ function compress(game){
     var powerups = [];
     var glue = [];
     var mines = [];
+    var bushes = [];
     for( var i = 0; i < grid.length; i++){
         for( var j = 0; j < grid[0].length; j++){
       
             if(grid[i][j].fireTimer >= 0){fire.push({x:i, y:j})}
      
             else if(grid[i][j].box)     {boxes.push({x:i, y:j})}
+
+            if(grid[i][j].bush){bushes.push({x:i, y:j, t:grid[i][j].bush.timer})}
+
 
             if(grid[i][j].bomb){bombs.push({x:i, y:j})}
 
@@ -667,7 +678,7 @@ function compress(game){
 
         }
     }
-    return { b: boxes,f:fire, g:glue, m:mines, p: minPlayers,bo:bombs, po:powerups, t: time};
+    return { b: boxes,f:fire, g:glue, m:mines, p: minPlayers,bo:bombs, po:powerups, t: time, bu:bushes};
 
 }
 

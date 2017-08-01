@@ -243,6 +243,127 @@ module.exports = {
         }
     
         return arr;
+    },
+    forestRandom:function(width, height){
+        console.log("forest random");
+        var arr = this.createBox(width, height);
+        for(var i = 1; i < width-1; i++)
+        {   
+            for(var j = 1; j < height -1; j++){
+                if(Math.round(Math.random()*10)%4 == 0){
+                    arr[i][j] = {wall : true, fireTimer: -1, box: false,  center : {x: i + 0.5, y: j+0.5}, innerRadius: 1, outerRadius:  1.4142}
+                }
+
+               //bottom right
+                if((i == width-2 && j == height-2) || (i == width-2 && j == height-3) || (i == width-3 && j == height-2)) {
+                    arr[i][j].wall = false;
+                    continue;
+                }
+
+                //top left
+                if((i == 1 && j == 1) || (i ==1 && j ==2) || (i == 2 && j == 1)) {
+                    arr[i][j].wall = false;
+                    continue;
+                }
+
+                //top right
+                if((i == 1 && j == height-2) || (i ==1 && j == height-3) || (i == 2 && j == height-2)) {
+                    arr[i][j].wall = false;
+                    continue;
+                }
+
+                //bottom left
+                if((i ==  width-2 && j ==1) || (i ==width-3 && j ==  1) || (i == width-2 && j == 2)) {
+                    arr[i][j].wall = false;
+                    continue;
+                }
+
+
+                if(Math.random() < .7 && !arr[i][j].wall){
+                    var rand = Math.random();
+                    arr[i][j].box = true;
+                    if(rand < 0.05)
+                        arr[i][j].lifeP = true;
+                    else if(rand < 0.20)
+                        arr[i][j].boots = true;
+                    else if (rand < 0.35)
+                        arr[i][j].bombP = true;
+                    else if (rand < 0.50)
+                        arr[i][j].bombS = true;
+                    else if(rand < 0.55)
+                        arr[i][j].ghost = true;
+                    else if(rand < 0.60)
+                        arr[i][j].glueP = true;
+                    else if(rand < 0.65)
+                        arr[i][j].mineP = true;
+                }
+                else if (!arr[i][j].wall){
+                    arr[i][j].bush = {timer:0.0};
+                }
+                
+            }
+        }
+        if(!this.validate(arr)){
+            arr = this.standardRandom(width,height);
+        }
+        return arr;
+    },
+    forestFull: function(width, height){
+        var arr = this.createBox(width, height);
+        for(var i = 1; i < width-1; i++)
+        {   
+            for(var j = 1; j < height -1; j++){
+                //bottom right
+                if((i == width-2 && j == height-2) || (i == width-2 && j == height-3) || (i == width-3 && j == height-2)) {
+                    arr[i][j].wall = false;
+                    continue;
+                }
+
+                //top left
+                if((i == 1 && j == 1) || (i ==1 && j ==2) || (i == 2 && j == 1)) {
+                    arr[i][j].wall = false;
+                    continue;
+                }
+
+                //top right
+                if((i == 1 && j == height-2) || (i ==1 && j == height-3) || (i == 2 && j == height-2)) {
+                    arr[i][j].wall = false;
+                    continue;
+                }
+
+                //bottom left
+                if((i ==  width-2 && j ==1) || (i ==width-3 && j ==  1) || (i == width-2 && j == 2)) {
+                    arr[i][j].wall = false;
+                    continue;
+                }
+
+                if(!arr[i][j].wall)
+                    arr[i][j].bush = {timer:0.0};
+                
+
+                if(Math.random() < .8 && !arr[i][j].wall){
+                    var rand = Math.random();
+                    
+                    if(rand < 0.05)
+                        arr[i][j].lifeP = true;
+                    else if(rand < 0.20)
+                        arr[i][j].boots = true;
+                    else if (rand < 0.35)
+                        arr[i][j].bombP = true;
+                    else if (rand < 0.50)
+                        arr[i][j].bombS = true;
+                    else if(rand < 0.55)
+                        arr[i][j].ghost = true;
+                    else if(rand < 0.60)
+                        arr[i][j].glueP = true;
+                    else if(rand < 0.65)
+                        arr[i][j].mineP = true;
+                }
+                
+            }
+        }
+    
+        return arr;
     }
     
 }

@@ -39,6 +39,7 @@ var boxes = [];
 var fires = [];
 var bombs = [];
 var mines = [];
+var bushes = [];
 var powerups =[];
 var glue = [];
 var sprites = [];

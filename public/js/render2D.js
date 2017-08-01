@@ -129,7 +129,7 @@ function draw2D(){
         var y = startY + bombs[i].y * squareSize;
         image(bomb_img, x, y, squareSize,squareSize);
     }
-    
+
     for(var i = 0; i < powerups.length; i++){
         var x = startX+powerups[i].x*squareSize;
         var y = startY + powerups[i].y * squareSize;
@@ -149,16 +149,36 @@ function draw2D(){
             image(mineP_img, x, y, squareSize,squareSize);
 
     }
+    
 
+    for(var i = 0; i < bushes.length; i++){
+        var x = startX+bushes[i].x*squareSize ;
+        var y = startY + bushes[i].y * squareSize;
+        if(bushes[i].t <= 0){
+            rect(x, y, squareSize, squareSize);
+            image(bushA_img, x-squareSize/20, y -squareSize/20, squareSize * 22/20,squareSize * 24/20);
+        }
+        else{
+            image(bushB_img, x, y, squareSize,squareSize);
 
+        }
+        
+    }
+    
+ //|| inBush(players[i].position
     if(sprites.length == 0){return;}
     for(var i = 0; i < players.length; i++){
-        if(players[i].ghost > 0 && players[i].id != socket.id){
+        if( (players[i].ghost > 0 ) && players[i].id != socket.id ){
             players[i].position = {x:-1000, y:-1000};
             sprites[i].position = {x:-1000, y:-1000};
             $("#score-ghost"+i).show();
             $("#score-normal"+i).hide();
             sprites[i].ghost = true;
+            continue;
+        }
+        else if( (inBush(players[i].position ) && players[i].id != socket.id )){
+            players[i].position = {x:-1000, y:-1000};
+            sprites[i].position = {x:-1000, y:-1000};
             continue;
         }
         else{
@@ -183,6 +203,7 @@ function draw2D(){
             var y = startY + position.y * squareSize;
             
                 if (players[i].ghost > 0 && players[i].id == socket.id){
+                    console.log("ghost")
                     if(!sprites[i].ghost){
                         ghostAnimation(sprites[i]);
                         sprites[i].ghost = true;
@@ -194,8 +215,7 @@ function draw2D(){
                 }
                 else{
                     if(players[i].id == socket.id && sprites[i].ghost){
-                        console.log("returning to normal");
-                        console.log( players[i]);
+                        
                         setAnimation(sprites[i], players[i]);
                         sprites[i].ghost = false;
                         $("#score-ghost"+i).hide();
@@ -218,6 +238,7 @@ function draw2D(){
 
         
     }
+
     drawSprites();
     if(time/1000  < 3){
         textSize(600);
@@ -226,4 +247,14 @@ function draw2D(){
         text(3 - Math.floor(time/1000), width/2, 2*height/3);
     }
     drawn = true;
+}
+function inBush(pos){
+    var x = Math.floor(pos.x);
+    var y = Math.floor(pos.y);
+    for(var i= 0; i < bushes.length; i++){
+        if(bushes[i].x == x && bushes[i].y == y && bushes[i].t <= 0){
+            return true;
+        }
+    }
+    return false;
 }

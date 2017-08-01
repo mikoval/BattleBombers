@@ -16,6 +16,8 @@ function loadImages(){
     mineP_img = loadImage("/Images/mineP.png")
     mine_img = loadImage("/Images/mine.png")
     mineR_img = loadImage("/Images/mineR.png")
+    bushA_img = loadImage("/Images/bush.png")
+    bushB_img = loadImage("/Images/bush2.png")
 
 
     //3d materials

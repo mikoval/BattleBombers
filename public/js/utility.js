@@ -238,6 +238,7 @@ function updateGame(data){
     fires = data.f;
     glue = data.g;   
     mines = data.m;
+    bushes = data.bu;
 }
 function playerExpand(obj){
     var arr = []
@@ -249,7 +250,7 @@ function playerExpand(obj){
             moving: obj[i].m,
             name: obj[i].n,
             bombsRemaining: obj[i].br,
-            ghost: obj[i].g,
+            ghost: obj[i].gh,
             id: obj[i].id,
             character: obj[i].ch,
             glue: obj[i].gl,
