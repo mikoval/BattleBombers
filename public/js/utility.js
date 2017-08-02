@@ -11,8 +11,8 @@ function createGrid(width, height){
     return arr;
 }
 
-function createRoom(){
-    socket.emit('create-game', {name: name});
+function createRoom(type){
+    socket.emit('create-game', {name: name, type: type});
 
 }
 function joinRoom(id){

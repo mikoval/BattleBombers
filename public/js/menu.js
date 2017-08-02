@@ -84,7 +84,7 @@ function startMenu(){
     JoinCreateDiv.center();
     JoinCreateDiv.hide();
     
-    create_button.mousePressed(create);
+    create_button.mousePressed(createMenu);
     join_button.mousePressed(joinMenu);
 
     if(mode=="2D"){
@@ -135,11 +135,62 @@ function startMenu(){
     JoinDiv.center();
     JoinDiv.hide()
 
+    //create room
+    // code for joining a room
+    var CreateDiv = createElement("div");
+    CreateDiv.class("menu-div");
+
+    var promptCreate = createElement("h2", 'Select type of game to make');
+    promptCreate.class("title")
+    promptCreate.parent(CreateDiv);
+
+    var roomSelectDiv = createElement("div")
+    roomSelectDiv.class("center-div");
+    var roomSelect = createSelect();
+    roomSelect.option('Standard', "standard-simple");
+    roomSelect.option('Standard Maze', "standard-maze");
+    roomSelect.option('Standard Empty', "standard-empty");
+    roomSelect.option('Forest Maze', "forest-maze");
+    roomSelect.option('Forest Empty', "forest-empty");
+    roomSelect.option('Ice Maze', "ice-maze");
+
+    roomSelect.class('select-large')
+    roomSelect.parent(roomSelectDiv);
+    roomSelectDiv.parent(CreateDiv);
+
+
+     var roomSubmitDiv = createElement("div")
+    roomSubmitDiv.class("center-div");
+    var roomSubmit = createButton('Submit');
+    roomSubmit.class("button-small button");
+    roomSubmit.mousePressed(create);
+    roomSubmit.parent(roomSubmitDiv);
+    roomSubmitDiv.parent(CreateDiv);
+
+    var backDiv = createElement("div")
+    backDiv.class("center-div");
+    var joinBack = createButton('Back');
+    joinBack.class("button-small button-error");
+    joinBack.mousePressed(mainMenu);
+    joinBack.parent(backDiv);
+    backDiv.parent(CreateDiv);
+
+    CreateDiv.center();
+    CreateDiv.hide()
+
+
+
+    function createMenu(){
+        JoinCreateDiv.hide();
+        CreateDiv.show();
+        
+    }
     function create(){
-        createRoom()
+        createRoom(roomSelect.value());
     }
     function mainMenu(){
         JoinDiv.hide();
+        CreateDiv.hide();
         JoinCreateDiv.show();
     }
     function joinMenu(){

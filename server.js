@@ -12,10 +12,10 @@ app.use(express.static(__dirname + '/public'));
 
 
 app.get('/', function (req, res) {
-  res.render('index.ejs', { title: 'Hey', message: 'Hello there!' })
+  res.render('index.ejs')
 })
 app.get('/:room', function (req, res) {
-  res.render('index.ejs', { title: 'Hey', message: 'Hello there!' })
+  res.render('index.ejs')
 })
 
 
@@ -81,9 +81,9 @@ function newConnection(socket){
     }
     function startGame(data){
         var roomid = socket.room;
-        var players = rooms[roomid].players
-        var room = rooms[roomid]
-        var grid = boardModule.forestRandom(9 + 2 * players.length,9 + 2 * players.length);
+        var room = rooms[roomid];
+        var players = room.players;
+        var grid = boardModule.loadMap(9 + 2 * players.length,9 + 2 * players.length, room.type);
 
         
         room.game = {grid: grid,  startTime: new Date(), currentTime: 0 }
@@ -106,6 +106,7 @@ function newConnection(socket){
     
     function createGame(data){
         var playerName = data.name;
+        var type = data.type;
 
         if ( (playerName.trim()) == '' )
             playerName = "Player " + (1)
@@ -114,7 +115,7 @@ function newConnection(socket){
         players.push({name: playerName, id:socket.id, sprite:"fox"});
         socket.room = room;
         socket.join(room);
-        rooms[room] = {id: room, players:players };
+        rooms[room] = {id: room, players:players, type : type };
 
         waitingRoom(socket.room, room);
     }

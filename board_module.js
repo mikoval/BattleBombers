@@ -92,6 +92,28 @@ module.exports = {
         }
         return arr;
     },
+    loadMap: function(width, height, type){
+        
+        if(type == "standard-simple"){
+            return this.standardSimple(width, height);
+        }
+        else if(type == "standard-maze"){
+            return this.standardMaze(width, height);
+        }
+        else if(type == "standard-empty"){
+            return this.standardEmpty(width, height)
+        }
+        else if(type == "forest-maze"){
+            return this.forestMaze(width, height);
+        }
+        else if(type == "forest-full"){
+            return this.forestFull(width, height);
+        }
+        else if(type == "ice-maze"){
+            return this.iceMaze(width, height);
+        }
+
+    },
     randomStandardMap: function(width, height){
         var i = Math.floor(Math.random()*3);
         if(i == 0){
@@ -161,7 +183,7 @@ module.exports = {
 
     
     },
-    standardRandom: function(width, height){
+    standardMaze: function(width, height){
         var arr = this.createBox(width, height);
         for(var i = 1; i < width-1; i++)
         {   
@@ -275,7 +297,7 @@ module.exports = {
     
         return arr;
     },
-    forestRandom:function(width, height){
+    forestMaze:function(width, height){
         console.log("forest random");
         var arr = this.createForestBox(width, height);
         for(var i = 1; i < width-1; i++)
@@ -457,7 +479,7 @@ module.exports = {
     
         return arr;
     },
-    iceRandom: function(width, height){
+    iceMaze: function(width, height){
 
         var arr = this.createIceBox(width, height);
         for(var i = 1; i < width-1; i++)
