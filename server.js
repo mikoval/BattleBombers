@@ -648,7 +648,7 @@ function updatePosition(){
                 }, 0, i)
             var code = generateRoomID();
             var data = {winner: winner, newRoom: code}
-            rooms[code] = {id: code, players:[], size:players.length};
+            rooms[code] = {id: code, players:[], size:players.length,  type: room.type};
 
             io.sockets.in(active[i]).emit('game-over', data);
         }

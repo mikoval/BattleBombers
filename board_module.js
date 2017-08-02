@@ -239,7 +239,7 @@ module.exports = {
             }
         }
         if(!this.validate(arr)){
-            arr = this.standardRandom(width,height);
+            arr = this.standardMaze(width,height);
         }
         return arr;
     },
@@ -357,7 +357,7 @@ module.exports = {
             }
         }
         if(!this.validate(arr)){
-            arr = this.forestRandom(width,height);
+            arr = this.forestMaze(width,height);
         }
         return arr;
     },
@@ -540,7 +540,7 @@ module.exports = {
             }
         }
         if(!this.validate(arr)){
-            arr = this.iceRandom(width,height);
+            arr = this.iceMaze(width,height);
         }
         return arr;
     }
