@@ -83,7 +83,7 @@ function newConnection(socket){
         var roomid = socket.room;
         var players = rooms[roomid].players
         var room = rooms[roomid]
-        var grid = boardModule.iceRandom(9 + 2 * players.length,9 + 2 * players.length);
+        var grid = boardModule.forestRandom(9 + 2 * players.length,9 + 2 * players.length);
 
         
         room.game = {grid: grid,  startTime: new Date(), currentTime: 0 }
