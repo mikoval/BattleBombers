@@ -151,7 +151,7 @@ function startMenu(){
     roomSelect.option('Standard Maze', "standard-maze");
     roomSelect.option('Standard Empty', "standard-empty");
     roomSelect.option('Forest Maze', "forest-maze");
-    roomSelect.option('Forest Empty', "forest-empty");
+    roomSelect.option('Forest Full', "forest-full");
     roomSelect.option('Ice Maze', "ice-maze");
 
     roomSelect.class('select-large')
