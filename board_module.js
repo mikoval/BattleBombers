@@ -49,12 +49,43 @@ module.exports = {
         for(var i = 0; i < width; i++)
         {   
             for(var j = 0; j < height; j++){
+                arr[i][j] = {fireTimer: -1, box:false, type: "normal" };
                 if(i == 0 || i == width-1 || j == 0 || j == height-1 ) {
-                    arr[i][j] = {wall : true, fireTimer: -1, box: false,};
+                    arr[i][j].wall = true; 
                 }
-                else{
-                    arr[i][j] = {fireTimer: -1, box:false, };
+               
+
+                
+            }
+        }
+        return arr;
+    },
+    createForestBox: function(width, height){
+        var arr = this.createGrid(width, height);
+        for(var i = 0; i < width; i++)
+        {   
+            for(var j = 0; j < height; j++){
+                arr[i][j] = {fireTimer: -1, box:false, type: "forest" };
+                if(i == 0 || i == width-1 || j == 0 || j == height-1 ) {
+                    arr[i][j].wall = true; 
                 }
+               
+
+                
+            }
+        }
+        return arr;
+    },
+    createIceBox: function(width, height){
+        var arr = this.createGrid(width, height);
+        for(var i = 0; i < width; i++)
+        {   
+            for(var j = 0; j < height; j++){
+                arr[i][j]= {fireTimer: -1, box:false,  type:"ice" };
+                if(i == 0 || i == width-1 || j == 0 || j == height-1 ) {
+                    arr[i][j].wall = true ;
+                }
+               
 
                 
             }
@@ -246,12 +277,12 @@ module.exports = {
     },
     forestRandom:function(width, height){
         console.log("forest random");
-        var arr = this.createBox(width, height);
+        var arr = this.createForestBox(width, height);
         for(var i = 1; i < width-1; i++)
         {   
             for(var j = 1; j < height -1; j++){
                 if(Math.round(Math.random()*10)%4 == 0){
-                    arr[i][j] = {wall : true, fireTimer: -1, box: false,  center : {x: i + 0.5, y: j+0.5}, innerRadius: 1, outerRadius:  1.4142}
+                    arr[i][j].wall = true;
                 }
 
                //bottom right
@@ -309,7 +340,7 @@ module.exports = {
         return arr;
     },
     forestFull: function(width, height){
-        var arr = this.createBox(width, height);
+        var arr = this.createForestBox(width, height);
         for(var i = 1; i < width-1; i++)
         {   
             for(var j = 1; j < height -1; j++){
@@ -358,6 +389,130 @@ module.exports = {
                         arr[i][j].glueP = true;
                     else if(rand < 0.65)
                         arr[i][j].mineP = true;
+                }
+                
+            }
+        }
+    
+        return arr;
+    },
+    iceFull: function(width, height){
+
+        var arr = this.createIceBox(width, height);
+        for(var i = 1; i < width-1; i++)
+        {   
+            for(var j = 1; j < height -1; j++){
+                //bottom right
+                if((i == width-2 && j == height-2) || (i == width-2 && j == height-3) || (i == width-3 && j == height-2)) {
+                    arr[i][j].wall = false;
+                    arr[i][j].type = "normal";
+                    continue;
+                }
+
+                //top left
+                if((i == 1 && j == 1) || (i ==1 && j ==2) || (i == 2 && j == 1)) {
+                    arr[i][j].wall = false;
+                    arr[i][j].type = "normal";
+                    continue;
+                }
+
+                //top right
+                if((i == 1 && j == height-2) || (i ==1 && j == height-3) || (i == 2 && j == height-2)) {
+                    arr[i][j].wall = false;
+                    arr[i][j].type = "normal";
+                    continue;
+                }
+
+                //bottom left
+                if((i ==  width-2 && j ==1) || (i ==width-3 && j ==  1) || (i == width-2 && j == 2)) {
+                    arr[i][j].wall = false;
+                    arr[i][j].type = "normal";
+                    continue;
+                }
+               
+              
+                
+
+                if(Math.random() < 0 && !arr[i][j].wall){
+                    var rand = Math.random();
+                    arr[i][j].box = true;
+                    if(rand < 0.05)
+                        arr[i][j].lifeP = true;
+                    else if(rand < 0.20)
+                        arr[i][j].boots = true;
+                    else if (rand < 0.35)
+                        arr[i][j].bombP = true;
+                    else if (rand < 0.50)
+                        arr[i][j].bombS = true;
+                    else if(rand < 0.55)
+                        arr[i][j].ghost = true;
+                    else if(rand < 0.60)
+                        arr[i][j].glueP = true;
+                    else if(rand < 0.65)
+                        arr[i][j].mineP = true;
+                }
+                
+            }
+        }
+    
+        return arr;
+    },
+    iceRandom: function(width, height){
+
+        var arr = this.createIceBox(width, height);
+        for(var i = 1; i < width-1; i++)
+        {   
+            for(var j = 1; j < height -1; j++){
+                if(Math.round(Math.random()*10)%6 == 0){
+                    arr[i][j].wall = true;
+                }
+
+                //bottom right
+                if((i == width-2 && j == height-2) || (i == width-2 && j == height-3) || (i == width-3 && j == height-2)) {
+                    arr[i][j].wall = false;
+                    arr[i][j].type = "normal";
+                    continue;
+                }
+
+                //top left
+                if((i == 1 && j == 1) || (i ==1 && j ==2) || (i == 2 && j == 1)) {
+                    arr[i][j].wall = false;
+                    arr[i][j].type = "normal";
+                    continue;
+                }
+
+                //top right
+                if((i == 1 && j == height-2) || (i ==1 && j == height-3) || (i == 2 && j == height-2)) {
+                    arr[i][j].wall = false;
+                    arr[i][j].type = "normal";
+                    continue;
+                }
+
+                //bottom left
+                if((i ==  width-2 && j ==1) || (i ==width-3 && j ==  1) || (i == width-2 && j == 2)) {
+                    arr[i][j].wall = false;
+                    arr[i][j].type = "normal";
+                    continue;
+                }
+               
+              
+                
+
+                if(Math.random() < 0.3 && !arr[i][j].wall){
+                    var rand = Math.random();
+                    arr[i][j].box = true;
+                    if(rand < 0.10)
+                        arr[i][j].lifeP = true;
+                    else if(rand < 0.25)
+                        arr[i][j].ghost = true;
+                    else if(rand < 0.50)
+                        arr[i][j].boots = true;
+                    else if (rand < 0.75)
+                        arr[i][j].bombP = true;
+                    else if (rand < 1.0)
+                        arr[i][j].bombS = true;
+                    
+                    
                 }
                 
             }

@@ -83,7 +83,7 @@ function newConnection(socket){
         var roomid = socket.room;
         var players = rooms[roomid].players
         var room = rooms[roomid]
-        var grid = boardModule.forestRandom(9 + 2 * players.length,9 + 2 * players.length);
+        var grid = boardModule.iceRandom(9 + 2 * players.length,9 + 2 * players.length);
 
         
         room.game = {grid: grid,  startTime: new Date(), currentTime: 0 }
@@ -419,7 +419,6 @@ function updatePosition(){
             if(grid[x][y].mineP){
                 player.character.mines += 1;
                 grid[x][y].mineP = false;
-               
             }
 
             x = position.x;
@@ -444,11 +443,27 @@ function updatePosition(){
             if(grid[Math.floor(position.x)][Math.floor(position.y)].glue < 0){
                 speed = 0.03;
             }
-
-       
+            var prev = undefined ;
+            if(grid[Math.floor(position.x)][Math.floor(position.y)].type == "ice")
+                prev = player.character.prevMove;
+            
             if(direction.up){
-                player.character.moving = true;
                 player.character.dir = "back"
+            }
+            else if(direction.down){
+                player.character.dir = "front"
+            }
+            else if(direction.right){
+                player.character.dir = "right"
+            }
+            else if(direction.left){
+                player.character.dir = "left"
+            }
+            if(direction.up && prev == undefined || prev == "up" ){
+                player.character.moving = true;
+                
+                player.character.prevMove = "up"
+
                 var cx = position.x - Math.floor(position.x)
                 if(cx!= 0.5){
                     if(cx < 0.5){
@@ -473,12 +488,16 @@ function updatePosition(){
                     var nx = position.x;
                     if(canMove(nx, ny ,  x ,y, grid))
                         position.y = position.y - speed
+                     else{
+                        player.character.prevMove = undefined;
+                    }
                 }
                 
             }
-            else if(direction.down){
+            else if(direction.down && prev == undefined || prev == "down" ){
                 player.character.moving = true;
-                player.character.dir = "front"
+              
+                player.character.prevMove = "down"
                 var cx = position.x - Math.floor(position.x)
 
                 if(cx!= 0.5){
@@ -504,11 +523,15 @@ function updatePosition(){
                     var nx = position.x;
                     if(canMove(nx, ny ,  x ,y, grid))
                         position.y = position.y + speed
+                     else{
+                        player.character.prevMove = undefined;
+                    }
                 }
             }
-            else if(direction.right){
+            else if(direction.right && prev == undefined || prev == "right" ){
                 player.character.moving = true;
-                player.character.dir = "right"
+            
+                player.character.prevMove = "right"
                 var cy = position.y - Math.floor(position.y)
 
                 if(cy!= 0.5){
@@ -534,11 +557,16 @@ function updatePosition(){
                     var nx = position.x + speed;
                     if(canMove(nx, ny ,  x ,y, grid))
                         position.x = position.x + speed
+                     else{
+                        player.character.prevMove = undefined;
+                    }
                 }
             }
-            else if(direction.left){
+            else  if(direction.left && prev == undefined || prev == "left" ){
+
                 player.character.moving = true;
-                player.character.dir = "left"
+
+                player.character.prevMove = "left"
                 var cy = position.y - Math.floor(position.y)
                 if(cy!= 0.5){
                     if(cy < 0.5){
@@ -563,9 +591,13 @@ function updatePosition(){
                     var nx = position.x -speed;
                     if(canMove(nx, ny ,  x ,y, grid))
                         position.x = position.x - speed
+                    else{
+                        player.character.prevMove = undefined;
+                    }
                 }
             }
             else{
+                player.character.prevMove = undefined;
                 player.character.moving = false;
             }
             if(direction.bomb){

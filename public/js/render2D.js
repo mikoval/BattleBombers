@@ -86,7 +86,19 @@ function draw2D(){
         for (var j = 0; j < grid[0].length; j++){
             var x = startX+i*squareSize;
             var y = startY + j * squareSize;
-            rect(x, y, squareSize, squareSize);
+            if(grid[i][j].type == "forest"){
+                fill("#556B2F")
+                rect(x, y, squareSize, squareSize);
+            }
+            else if(grid[i][j].type == "ice"){
+                fill("#A5F2F3")
+                rect(x, y, squareSize, squareSize);
+                fill("#A0A0A0")
+            }
+            else{
+                rect(x, y, squareSize, squareSize);
+            }
+            
             
             
         }
@@ -96,12 +108,27 @@ function draw2D(){
     for(var i = 0; i < walls.length; i++){
         var x = startX+walls[i].x*squareSize;
         var y = startY + walls[i].y * squareSize;
-        image(wall_img, x, y, squareSize,squareSize);
+        if(grid[walls[i].x][walls[i].y].type == "forest"){
+            image(mossyWall2_img, x, y, squareSize,squareSize);
+        }
+        else if(grid[walls[i].x][walls[i].y].type == "ice"){
+            image(iceWall_img, x, y, squareSize,squareSize);
+        }
+        else{
+            image(wall_img, x, y, squareSize,squareSize);
+        }
+        
     }
     for(var i = 0; i < boxes.length; i++){
         var x = startX+boxes[i].x*squareSize;
         var y = startY + boxes[i].y * squareSize;
-        image(wood_img, x, y, squareSize,squareSize);
+        if(false){
+            image(mossyBox_img, x, y, squareSize,squareSize);
+        }
+        else{
+            image(wood_img, x, y, squareSize,squareSize);
+        }
+        
     }
   
     for(var i = 0; i < fires.length; i++){

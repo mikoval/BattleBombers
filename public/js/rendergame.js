@@ -1,10 +1,16 @@
 var counter;
 function initScore(){
     removeElements();
+
+    
     var centerX = width/2;
     var centerY = height/2;
-    var startX = centerX - grid.length/2 * squareSize;
-    var startY = centerY - grid[0].length/2 * squareSize;
+    startX = centerX - grid.length/2 * squareSize;
+    startY = centerY - grid[0].length/2 * squareSize;
+    if(startX < 250){
+        console.log('returning')
+        return;
+    }
     
     var scoreBoardLeft = createElement('div');
     scoreBoardLeft.class("left-div");
@@ -174,6 +180,9 @@ function initScore(){
     }
 }
 function drawScore(){
+    if(startX < 250){
+        return;
+    }
     for(var i = 0; i < players.length; i++){
         $("#lives-"+i).text(players[i].lives);
         $("#speed-"+i).text(Math.round(players[i].speed * 100));

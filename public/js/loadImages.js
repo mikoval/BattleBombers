@@ -18,6 +18,11 @@ function loadImages(){
     mineR_img = loadImage("/Images/mineR.png")
     bushA_img = loadImage("/Images/bush.png")
     bushB_img = loadImage("/Images/bush2.png")
+    grass_img = loadImage("/Images/grass.jpg")
+    mossyWall_img = loadImage("/Images/mossyWall.jpg")
+    mossyWall2_img = loadImage("/Images/mossyWall3.png")
+    mossyBox_img = loadImage("/Images/mossyBox.jpg")
+    iceWall_img = loadImage("/Images/iceWall.jpg")
 
 
     //3d materials
