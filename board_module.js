@@ -517,7 +517,9 @@ module.exports = {
                 
             }
         }
-    
+        if(!this.validate(arr)){
+            arr = this.iceRandom(width,height);
+        }
         return arr;
     }
     
