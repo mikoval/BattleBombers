@@ -179,7 +179,7 @@ function gameOver(data){
 
     WinnerDiv.parent(GameOverDiv);
 
-    console.log(code);
+
 
     
     var playAgainBtn = createButton('Play Again');
@@ -204,7 +204,9 @@ function startGame(data){
     grid = data.grid;
     squareSize = height/grid.length;
     players = playerExpand(data.players);
-
+    for(var i = 0; i < sprites.length; i++){
+        sprites[i].remove();
+    }
     sprites = [];
     if(mode=="2D"){
         startGame2D();
