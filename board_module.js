@@ -17,6 +17,21 @@ module.exports = {
         }
         return arr;
     },
+    randomPowerup: function(){
+        var n = Math.random();
+        if(n < .30)
+            return "boots";
+        else if (n < .60)
+            return "bombP";
+        else if (n < .90)
+            return "bombS";
+        else if (n < .95)
+            return "ghost";
+        else 
+            return "lifeP"
+
+        
+    },
     validate: function(g){
 
         var count = 0;
