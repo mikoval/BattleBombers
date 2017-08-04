@@ -93,7 +93,7 @@ function initScore(){
              img = createImg('/Images/jonespics/front1.png');
         else if(players[i].character == "spear")
              img = createImg('/Images/spearpics/front1.png');
-        if(sprites[i].ghost){
+        if(playerSprites[i].ghost){
             img.class("hidden");
         }
         img.addClass("score-img score-normal");
@@ -102,7 +102,7 @@ function initScore(){
         var ghostImg = createImg('/Images/ghost/front1.png');
     
         ghostImg.class("score-img");
-        if(!sprites[i].ghost){
+        if(!playerSprites[i].ghost){
             ghostImg.addClass("score-ghost");
         }
         ghostImg.id("score-ghost"+i)

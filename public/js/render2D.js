@@ -2,9 +2,23 @@ function startGame2D(){
     for(var i = 0; i < players.length; i++){
         var s = createSprite(50, 50, squareSize, squareSize);
         setAnimation(s, players[i]);
-        sprites.push(s);
+        playerSprites.push(s);
+    }
+    for(var i = 0; i < enemies.length; i++){
+        var s = createSprite(50, 50, squareSize, squareSize);
+        setEnemyAnimation(s, enemies[i]);
+
+        enemySprites.push(s);
     }
         
+}
+function setEnemyAnimation(obj, player){
+
+
+    if(player.type == "squirrel"){
+        squirrelAnimation(obj);
+    }
+    
 }
 function setAnimation(obj, player){
 
@@ -21,6 +35,16 @@ function setAnimation(obj, player){
     else{
         spearAnimation(obj);
     }
+}
+function squirrelAnimation(obj){
+    obj.addAnimation("front-true", dog_forward_animation);
+    obj.addAnimation("right-true", dog_right_animation);
+    obj.addAnimation("left-true", dog_left_animation);
+    obj.addAnimation("back-true", dog_back_animation);
+    obj.addAnimation("front-false", dog_forward_stand);
+    obj.addAnimation("right-false", dog_right_stand);
+    obj.addAnimation("left-false", dog_left_stand);
+    obj.addAnimation("back-false", dog_back_stand);
 }
 function foxAnimation(obj){
     obj.addAnimation("front-true", fox_forward_animation);
@@ -193,32 +217,32 @@ function draw2D(){
     }
     
  //|| inBush(players[i].position
-    if(sprites.length == 0){return;}
+    if(playerSprites.length == 0){return;}
     for(var i = 0; i < players.length; i++){
         if( (players[i].ghost > 0 ) && players[i].id != socket.id ){
             players[i].position = {x:-1000, y:-1000};
-            sprites[i].position = {x:-1000, y:-1000};
+            playerSprites[i].position = {x:-1000, y:-1000};
             $("#score-ghost"+i).show();
             $("#score-normal"+i).hide();
-            sprites[i].ghost = true;
+            playerSprites[i].ghost = true;
             continue;
         }
         else if( (inBush(players[i].position ) && players[i].id != socket.id )){
             players[i].position = {x:-1000, y:-1000};
-            sprites[i].position = {x:-1000, y:-1000};
+            playerSprites[i].position = {x:-1000, y:-1000};
             continue;
         }
         else{
-            if(sprites[i].ghost && players[i].id != socket.id){
+            if(playerSprites[i].ghost && players[i].id != socket.id){
         
-                sprites[i].ghost = false;
+                playerSprites[i].ghost = false;
                 $("#score-ghost"+i).hide();
                 $("#score-normal"+i).show();
             }
         }
         if(players[i].lives <= 0){
            
-            sprites[i].remove();
+            playerSprites[i].remove();
         }
         else{
 
@@ -231,9 +255,9 @@ function draw2D(){
             
                 if (players[i].ghost > 0 && players[i].id == socket.id){
                     console.log("ghost")
-                    if(!sprites[i].ghost){
-                        ghostAnimation(sprites[i]);
-                        sprites[i].ghost = true;
+                    if(!playerSprites[i].ghost){
+                        ghostAnimation(playerSprites[i]);
+                        playerSprites[i].ghost = true;
                         $("#score-ghost"+i).show();
                         $("#score-normal"+i).hide();
 
@@ -241,22 +265,22 @@ function draw2D(){
 
                 }
                 else{
-                    if(players[i].id == socket.id && sprites[i].ghost){
+                    if(players[i].id == socket.id && playerSprites[i].ghost){
                         
-                        setAnimation(sprites[i], players[i]);
-                        sprites[i].ghost = false;
+                        setAnimation(playerSprites[i], players[i]);
+                        playerSprites[i].ghost = false;
                         $("#score-ghost"+i).hide();
                         $("#score-normal"+i).show();
                     }
                     
                 }
 
-                sprites[i].position.x = x;
-                sprites[i].position.y = y;
+                playerSprites[i].position.x = x;
+                playerSprites[i].position.y = y;
                 var dir = players[i].dir
                 var moving = players[i].moving
                
-                sprites[i].changeAnimation(dir + "-" + moving);
+                playerSprites[i].changeAnimation(dir + "-" + moving);
             
 
         }
@@ -265,7 +289,40 @@ function draw2D(){
 
         
     }
+    for(var i = 0; i < enemies.length; i++){
+      
+        if( (inBush(enemies[i].position ) )){
+            enemies[i].position = {x:-1000, y:-1000};
+            enemySprites[i].position = {x:-1000, y:-1000};
+            continue;
+        }
 
+        else{
+
+
+            var position = enemies[i].position
+
+
+            var x = startX + position.x * squareSize;
+            var y = startY + position.y * squareSize;
+            
+               
+                
+
+            enemySprites[i].position.x = x;
+            enemySprites[i].position.y = y;
+            var dir = enemies[i].dir
+            var moving = enemies[i].moving
+           
+            enemySprites[i].changeAnimation(dir + "-" + moving);
+            
+
+        }
+        
+
+
+        
+    }
     drawSprites();
     if(time/1000  < 3){
         textSize(600);

@@ -42,7 +42,8 @@ var mines = [];
 var bushes = [];
 var powerups =[];
 var glue = [];
-var sprites = [];
+var playerSprites = [];
+var enemySprites = [];
 
 
 

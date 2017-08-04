@@ -1,23 +1,40 @@
 var boardModule = require('./board_module.js');
+var enemyModule = require('./enemy_module.js');
 var radius = 0.5;
 module.exports = {
 	load: function(players, grid, type){
 		//if(type == "ice-full"|| type == "ice-maze"){
 		//	return new this.randomItems(players, grid);
 		//}
-		
-		return new this.twoMinBombs(players, grid);
+		return new this.twoMinBombs(players, grid, type);
 	},
-    twoMinBombs: function(players, grid){
+    twoMinBombs: function(players, grid, type){
         this.players = players;
         this.grid = grid;
+        this.type = type;
         this.startTime = new Date();
         this.currentTime = new Date();
+        
+
         this.update = function(){
         	this.updateBombs();
         	this.updatePosition();
+        	this.updateEnemies();
         	
         }
+        this.setEnemies = function(){
+        	var arr = []
+        	for(var x = 0; x  < grid.length; x++){
+	            for(var y = 0; y < grid[0].length; y++){
+	            	if(grid[x][y].squirrelStart == true){
+	            		arr.push(new enemyModule.squirrel(x, y));
+	            		grid[x][y].squirrelStart = undefined;
+	            	}
+	            }
+	        }
+	        return arr;
+        }
+        this.enemies = this.setEnemies();
         this.active = function(){
     		var alive = 0
         	for(var i= 0; i < this.players.length; i++){
@@ -42,11 +59,16 @@ module.exports = {
         this.compress = function(){
         	return compress(this);
         }
+        this.updateEnemies = function(){
+        	for(var i = 0; i < this.enemies.length; i++){
+        		this.enemies[i].update(this.grid);
+        	}
+        }
         this.updateBombs = function(){
         	for(var x = 0; x  < grid.length; x++){
 	            for(var y = 0; y < grid[0].length; y++){
 	                if(grid[x][y].bomb != undefined){
-	                    grid[x][y].bomb.timer -= 0.01;
+	                    grid[x][y].bomb.timer -= 0.006;
 	                    if(grid[x][y].bomb.timer <= 0 ){
 	                        explodeBomb(grid, x, y) 
 	                    }
@@ -60,7 +82,7 @@ module.exports = {
 	                    grid[x][y].fireTimer -= .1;
 	                }
 	                if(grid[x][y].bush && grid[x][y].bush.timer >= 0){
-	                    grid[x][y].bush.timer -= .01;
+	                    grid[x][y].bush.timer -= .0003;
 	                }
 	                
 	                if(grid[x][y].box && grid[x][y].fireTimer > 0){
@@ -72,10 +94,10 @@ module.exports = {
 	                    //grid[x][y].fireTimer = -1
 	                }
 	                if(grid[x][y].mine != undefined && grid[x][y].mine > 0){
-	                    grid[x][y].mine -= 0.03;
+	                    grid[x][y].mine -= 0.01;
 	                }
 	                if(grid[x][y].glue != undefined && grid[x][y].glue > 0){
-	                    grid[x][y].glue -= 0.1;
+	                    grid[x][y].glue -= 0.03;
 	                }
 	                
 	            }
@@ -827,8 +849,9 @@ function compress(game){
     var grid = game.grid;
     var players = game.players;
     var time = game.currentTime;
+    var enemies = game.enemies;
 
-    var minGrid = boardModule.createGrid(grid.length, grid[0].length);
+
     var minPlayers = new Array(players.length);
     for( var i = 0; i < players.length; i++){
         minPlayers[i] = {
@@ -836,6 +859,12 @@ function compress(game){
             m: players[i].character.moving, n: players[i].name, br: (players[i].character.bombMax - players[i].character.bombCount),
             gh:players[i].character.ghost, id:players[i].id, ch:players[i].sprite, gl: players[i].character.glue, 
             sp:players[i].character.speed, bs:players[i].character.bombStrength, bm:players[i].character.bombMax, mi: players[i].character.mines
+        }
+    }
+    var minEnemies= new Array(enemies.length);
+    for( var i = 0; i < enemies.length; i++){
+        minEnemies[i] = {
+            p: enemies[i].position, d:enemies[i].dir, t:enemies[i].type, m: enemies[i].moving
         }
     }
     var walls = [];
@@ -872,7 +901,7 @@ function compress(game){
 
         }
     }
-    return { b: boxes,f:fire, g:glue, m:mines, p: minPlayers,bo:bombs, po:powerups, t: time, bu:bushes};
+    return { b: boxes,f:fire, g:glue, m:mines, p: minPlayers,bo:bombs, po:powerups, t: time, bu:bushes, e:minEnemies};
 
 }
 

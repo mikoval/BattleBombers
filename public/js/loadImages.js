@@ -96,5 +96,14 @@ function loadImages(){
     ghost_left_stand = loadAnimation("/Images/ghost/left1.png", "/Images/ghost/left1.png")
     ghost_back_stand = loadAnimation("/Images/ghost/back1.png", "/Images/ghost/back1.png")
 
+    dog_forward_animation = loadAnimation("/Images/dogpics/front1.png", "/Images/dogpics/front3.png");
+    dog_right_animation = loadAnimation("/Images/dogpics/right1.png", "/Images/dogpics/right3.png")
+    dog_left_animation = loadAnimation("/Images/dogpics/left1.png", "/Images/dogpics/left3.png")
+    dog_back_animation = loadAnimation("/Images/dogpics/back1.png", "/Images/dogpics/back3.png")
+    dog_forward_stand = loadAnimation("/Images/dogpics/front1.png", "/Images/dogpics/front1.png");
+    dog_right_stand = loadAnimation("/Images/dogpics/right1.png", "/Images/dogpics/right1.png")
+    dog_left_stand = loadAnimation("/Images/dogpics/left1.png", "/Images/dogpics/left1.png")
+    dog_back_stand = loadAnimation("/Images/dogpics/back1.png", "/Images/dogpics/back1.png")
+
 
 }

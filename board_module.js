@@ -51,6 +51,11 @@ module.exports = {
             if(!g[pos.x][pos.y+1].wall && !g[pos.x][pos.y+1].visited){arr.push({x:pos.x, y:pos.y+1})}
             if(!g[pos.x][pos.y-1].wall && !g[pos.x][pos.y-1].visited){arr.push({x:pos.x, y:pos.y-1})}
         }
+        for(var i = 0; i < width; i++){   
+            for(var j = 0; j < height; j++){
+                g[i][j].visited = undefined;
+            }
+        }
         if(count == 3){
             return true;
         }
@@ -367,6 +372,9 @@ module.exports = {
                 }
                 else if (Math.random() < .5  && !arr[i][j].wall){
                     arr[i][j].bush = {timer:0.0};
+                    if (Math.random() < 0.1  ){
+                        arr[i][j].squirrelStart = true;
+                    }
                 }
                 
             }

@@ -155,10 +155,14 @@ function waitingRoom(data){
 
 }
 function gameOver(data){
-    for(var i = 0; i < sprites.length; i++){
-        sprites[i].remove();
+    for(var i = 0; i < playerSprites.length; i++){
+        playerSprites[i].remove();
     }
-    sprites = [];
+    playerSprites = [];
+    for(var i = 0; i < enemySprites.length; i++){
+        enemySprites[i].remove();
+    }
+    enemySprites = [];
     
     
     
@@ -204,10 +208,15 @@ function startGame(data){
     grid = data.grid;
     squareSize = height/grid.length;
     players = playerExpand(data.players);
-    for(var i = 0; i < sprites.length; i++){
-        sprites[i].remove();
+    enemies = enemyExpand(data.enemies);
+    for(var i = 0; i < playerSprites.length; i++){
+        playerSprites[i].remove();
     }
-    sprites = [];
+    playerSprites = [];
+    for(var i = 0; i < enemySprites.length; i++){
+        enemySprites[i].remove();
+    }
+    enemySprites = [];
     if(mode=="2D"){
         startGame2D();
     
@@ -234,7 +243,7 @@ function updateGame(data){
     boxes = data.b;
     time = data.t;
     players = playerExpand(data.p);
-
+    enemies = enemyExpand(data.e);
     bombs = data.bo;
     powerups = data.po;
     fires = data.f;
@@ -260,6 +269,19 @@ function playerExpand(obj){
             bombStrength: obj[i].bs,
             bombMax: obj[i].bm,
             mines: obj[i].mi
+        })
+    }
+    
+    return arr;
+}
+function enemyExpand(obj){
+     var arr = []
+    for (var i =0 ; i < obj.length; i++){
+        arr.push({
+            position: obj[i].p,
+            dir: obj[i].d,
+            moving: obj[i].m,
+            type: obj[i].t
         })
     }
     

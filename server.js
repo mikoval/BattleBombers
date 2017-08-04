@@ -103,7 +103,7 @@ function newConnection(socket){
         room.game = gameModule.load( players, grid, room.type);
         active.push(roomid);
         var send = room.game.compress();
-        var data = {grid: room.game.grid, players: send.p};
+        var data = {grid: room.game.grid, players: send.p, enemies: send.e};
         io.sockets.in(roomid).emit('game-start', data);
     }
     
