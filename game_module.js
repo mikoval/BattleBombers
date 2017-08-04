@@ -2,9 +2,9 @@ var boardModule = require('./board_module.js');
 var radius = 0.5;
 module.exports = {
 	load: function(players, grid, type){
-		if(type == "ice-full"|| type == "ice-maze"){
-			return new this.randomItems(players, grid);
-		}
+		//if(type == "ice-full"|| type == "ice-maze"){
+		//	return new this.randomItems(players, grid);
+		//}
 		else
 			return new this.twoMinBombs(players, grid);
 	},
