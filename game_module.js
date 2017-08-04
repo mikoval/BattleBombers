@@ -93,6 +93,7 @@ module.exports = {
 		        timer  = timer / 60
 		        if(timer > 2){
 		            addBomb(grid, (timer -2 ) /10 + 1);
+		            addItem(grid);
 		        }
 		        var alivePlayers = 0
 		    
