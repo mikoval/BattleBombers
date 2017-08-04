@@ -37,6 +37,7 @@ module.exports = {
                     winner = this.players[j].name;
                 }
             }
+            return winner;
         }
         this.compress = function(){
         	return compress(this);
