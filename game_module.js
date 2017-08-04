@@ -5,8 +5,8 @@ module.exports = {
 		//if(type == "ice-full"|| type == "ice-maze"){
 		//	return new this.randomItems(players, grid);
 		//}
-		else
-			return new this.twoMinBombs(players, grid);
+		
+		return new this.twoMinBombs(players, grid);
 	},
     twoMinBombs: function(players, grid){
         this.players = players;
