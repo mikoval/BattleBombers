@@ -18,13 +18,13 @@ module.exports = {
                 this.invince = 1.0;
                 this.dropPowerup(grid);
                 this.path = this.findPathToBush(grid);
-                console.log("going to bush")\       }
+                console.log("going to bush")       }
             if(this.invince > 0.0){
                 this.invince -= 0.03;
             }
             else{
                 if(hasPowerups(grid, {x:x, y:y})){
-\                    this.collectPowerups(grid);
+                    this.collectPowerups(grid);
                     this.findPathToBush(grid);
                 }
                 
