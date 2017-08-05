@@ -68,7 +68,7 @@ module.exports = {
         	for(var x = 0; x  < grid.length; x++){
 	            for(var y = 0; y < grid[0].length; y++){
 	                if(grid[x][y].bomb != undefined){
-	                    grid[x][y].bomb.timer -= 0.006;
+	                    grid[x][y].bomb.timer -= 0.008;
 	                    if(grid[x][y].bomb.timer <= 0 ){
 	                        explodeBomb(grid, x, y) 
 	                    }

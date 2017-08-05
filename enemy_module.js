@@ -1,5 +1,6 @@
 module.exports = {
     squirrel: function(x, y){
+        console.log("created")
         this.position = {x:x + 0.5, y:y + 0.5};
         this.target = undefined;
         this.speed = 0.1;
@@ -8,29 +9,71 @@ module.exports = {
         this.dir = "front";
         this.moving = false;
         this.count = 0;
+        this.powerups = [];
+        this.invince = -1;
         this.update = function(grid){
-            if(this.path.length == 0){
-            	var x = Math.floor(this.position.x);
-            	var y = Math.floor(this.position.y);
-            	collectPowerups(grid, this.position);
-            	this.count++;
-            	if(this.count > 0){
+            var x = Math.floor(this.position.x);
+            var y = Math.floor(this.position.y);
+            if(grid[x][y].fireTimer > 0 && this.invince < 0){
+                this.invince = 1.0;
+                this.dropPowerup(grid);
+                this.path = this.findPathToBush(grid);
+                console.log("going to bush")\       }
+            if(this.invince > 0.0){
+                this.invince -= 0.03;
+            }
+            else{
+                if(hasPowerups(grid, {x:x, y:y})){
+\                    this.collectPowerups(grid);
+                    this.findPathToBush(grid);
+                }
+                
+                
+            }
 
-                	this.path = this.findPathToItem(grid);
-                	this.count = 30;
-                    if(this.path.length == 0){
-                        console.log("finding bush");
-                        this.path = this.findPathToBush(grid);
-                    }
-            	}
+            if(this.path.length == 0){
+            	
+            	
+
+            	this.path = this.findPathToItem(grid);
+        
+          
+
+                if(this.path.length == 0 && (!grid[x][y].bush || grid[x][y].bush.timer > 0 )){
+                    this.path = this.findPathToBush(grid);
+                }
+            	
 
             }
             if(this.path.length > 0){
+                if(this.path.length > 1){
+                    if(grid[this.path[1].x][ this.path[1].y].bomb){
+                        //this.path = [];
+                        this.path = this.findPathToItem(grid);
+                        return;
+                    }
+                }
+                
+                var target = this.path[this.path.length -1];
+
+                
+
+
+
                 this.moving = true;
                 this.moveTo(this.path[0].x, this.path[0].y);
                 if(this.position.x == this.path[0].x + 0.5 && this.position.y == this.path[0].y + 0.5){
                     this.path.splice(0, 1);
                 }
+                if(this.path.length > 0){
+                    if(!hasPowerups(grid,target) && (!grid[target.x][target.y].bush || grid[target.x][target.y].bush.timer > 0 ) ){
+                        this.path = [];
+                    }
+                }
+
+                
+
+               
             }
             else{
                 this.moving = false;
@@ -54,10 +97,10 @@ module.exports = {
                     return path;
                 
 
-                if(  (!g[pos.x + 1][pos.y].wall&&!g[pos.x + 1][pos.y].box) && !g[pos.x + 1][pos.y].visited){arr.push({x:pos.x+1, y:pos.y, path:path})}
-                if(!g[pos.x - 1][pos.y].wall &&!g[pos.x - 1][pos.y].box && !g[pos.x - 1][pos.y].visited){arr.push({x:pos.x-1, y:pos.y,path:path})}
-                if(!g[pos.x][pos.y+1].wall && !g[pos.x][pos.y+1].box && !g[pos.x][pos.y+1].visited){arr.push({x:pos.x, y:pos.y+1, path:path})}
-                if(!g[pos.x][pos.y-1].wall && !g[pos.x][pos.y-1].box &&!g[pos.x][pos.y-1].visited){arr.push({x:pos.x, y:pos.y-1, path:path})}
+                if( !g[pos.x + 1][pos.y].wall&&!g[pos.x + 1][pos.y].box&&!g[pos.x + 1][pos.y].bomb && !g[pos.x + 1][pos.y].visited){arr.push({x:pos.x+1, y:pos.y, path:path})}
+                if(!g[pos.x - 1][pos.y].wall &&!g[pos.x - 1][pos.y].box && !g[pos.x - 1][pos.y].bomb && !g[pos.x - 1][pos.y].visited){arr.push({x:pos.x-1, y:pos.y,path:path})}
+                if(!g[pos.x][pos.y+1].wall && !g[pos.x][pos.y+1].box && !g[pos.x][pos.y+1].bomb && !g[pos.x][pos.y+1].visited){arr.push({x:pos.x, y:pos.y+1, path:path})}
+                if(!g[pos.x][pos.y-1].wall && !g[pos.x][pos.y-1].box && !g[pos.x][pos.y-1].bomb&&!g[pos.x][pos.y-1].visited){arr.push({x:pos.x, y:pos.y-1, path:path})}
             }
             for(var i = 0; i < width; i++){   
                 for(var j = 0; j < height; j++){
@@ -84,10 +127,10 @@ module.exports = {
                     return path;
                 
 
-                if(  (!g[pos.x + 1][pos.y].wall&&!g[pos.x + 1][pos.y].box) && !g[pos.x + 1][pos.y].visited){arr.push({x:pos.x+1, y:pos.y, path:path})}
-                if(!g[pos.x - 1][pos.y].wall &&!g[pos.x - 1][pos.y].box && !g[pos.x - 1][pos.y].visited){arr.push({x:pos.x-1, y:pos.y,path:path})}
-                if(!g[pos.x][pos.y+1].wall && !g[pos.x][pos.y+1].box && !g[pos.x][pos.y+1].visited){arr.push({x:pos.x, y:pos.y+1, path:path})}
-                if(!g[pos.x][pos.y-1].wall && !g[pos.x][pos.y-1].box &&!g[pos.x][pos.y-1].visited){arr.push({x:pos.x, y:pos.y-1, path:path})}
+                if(!g[pos.x + 1][pos.y].wall&&!g[pos.x + 1][pos.y].box&&!g[pos.x + 1][pos.y].bomb && !g[pos.x + 1][pos.y].visited){arr.push({x:pos.x+1, y:pos.y, path:path})}
+                if(!g[pos.x - 1][pos.y].wall &&!g[pos.x - 1][pos.y].box&&!g[pos.x - 1][pos.y].bomb && !g[pos.x - 1][pos.y].visited){arr.push({x:pos.x-1, y:pos.y,path:path})}
+                if(!g[pos.x][pos.y+1].wall && !g[pos.x][pos.y+1].box&&!g[pos.x][pos.y+1].bomb && !g[pos.x][pos.y+1].visited){arr.push({x:pos.x, y:pos.y+1, path:path})}
+                if(!g[pos.x][pos.y-1].wall && !g[pos.x][pos.y-1].box && !g[pos.x][pos.y-1].bomb&&!g[pos.x][pos.y-1].visited){arr.push({x:pos.x, y:pos.y-1, path:path})}
             }
             for(var i = 0; i < width; i++){   
                 for(var j = 0; j < height; j++){
@@ -142,6 +185,43 @@ module.exports = {
                     position.y = y;
                 }
             }
+
+        }
+        this.collectPowerups = function(g){
+            var pos  = {x: Math.floor(this.position.x), y: Math.floor(this.position.y)};
+            if( g[pos.x][pos.y].boots){
+                g[pos.x][pos.y].boots = undefined;
+                this.powerups.push("boots");
+            }
+            if( g[pos.x][pos.y].bombP){
+                g[pos.x][pos.y].bombP = undefined;
+                this.powerups.push("bombP");
+            }
+            if( g[pos.x][pos.y].bombS){
+                g[pos.x][pos.y].bombS = undefined;
+                this.powerups.push("bombS");
+            }
+            if( g[pos.x][pos.y].ghost){
+                g[pos.x][pos.y].ghost = undefined;
+                this.powerups.push("ghost");
+            }
+            if( g[pos.x][pos.y].glueP){
+                g[pos.x][pos.y].glueP = undefined;
+                this.powerups.push("glueP");
+            }
+            if( g[pos.x][pos.y].mineP){
+                g[pos.x][pos.y].mineP = undefined;
+                this.powerups.push("mineP");
+            }
+            if( g[pos.x][pos.y].lifeP){
+                g[pos.x][pos.y].lifeP = undefined;
+                this.powerups.push("lifeP");
+            }
+        }
+        this.dropPowerup = function(g){
+            var pos  = {x: Math.floor(this.position.x), y: Math.floor(this.position.y)};
+            g[pos.x][pos.y][this.powerups.shift()] = true;
+           
         }
     }
     
@@ -152,29 +232,4 @@ function hasPowerups(g, pos){
         return true;
     return false;
 
-}
-
-function collectPowerups(g, position){
-    var pos  = {x: Math.floor(position.x), y: Math.floor(position.y)};
-    if( g[pos.x][pos.y].boots){
-        g[pos.x][pos.y].boots = undefined;
-    }
-    if( g[pos.x][pos.y].bombP){
-        g[pos.x][pos.y].bombP = undefined;
-    }
-    if( g[pos.x][pos.y].bombS){
-        g[pos.x][pos.y].bombS = undefined;
-    }
-    if( g[pos.x][pos.y].ghost){
-        g[pos.x][pos.y].ghost = undefined;
-    }
-    if( g[pos.x][pos.y].glueP){
-        g[pos.x][pos.y].glueP = undefined;
-    }
-    if( g[pos.x][pos.y].mineP){
-        g[pos.x][pos.y].mineP = undefined;
-    }
-    if( g[pos.x][pos.y].lifeP){
-        g[pos.x][pos.y].lifeP = undefined;
-    }
 }
