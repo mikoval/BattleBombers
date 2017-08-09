@@ -3,7 +3,7 @@ module.exports = {
         console.log("created")
         this.position = {x:x + 0.5, y:y + 0.5};
         this.target = undefined;
-        this.speed = 0.1;
+        this.speed = 0.05;
         this.path = [];
         this.type= "squirrel";
         this.dir = "front";
