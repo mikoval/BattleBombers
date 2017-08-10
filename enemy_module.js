@@ -19,7 +19,7 @@ module.exports = {
                 this.dropPowerup(grid);
                 this.path = this.findPathToBush(grid);
                 if(path.length ==0){
-                	path = this.findPathToRandom(grid);
+                	path = this.findPathToRandom();
                 }
                 console.log("going to bush")       }
             if(this.invince > 0.0){
@@ -83,37 +83,7 @@ module.exports = {
             }
             
         } 
-        this.findPathToRandom = function(g){
-            var arr = [{x:Math.floor(this.position.x), y:Math.floor(this.position.y), path: []}];
-            var width = g.length;
-            var height = g[0].length;
-
-            while(arr.length > 0){
-                var pos = arr.shift();
-                
-                var path = pos.path.slice();
-
-                path.push({x:pos.x,y:pos.y});
-                if(g[pos.x][pos.y].visited != undefined){continue;}
-                g[pos.x][pos.y].visited = true;
-
-                if(x%30 == 0)
-                    return path;
-                
-
-                if( !g[pos.x + 1][pos.y].wall&&!g[pos.x + 1][pos.y].box&&!g[pos.x + 1][pos.y].bomb && !g[pos.x + 1][pos.y].visited){arr.push({x:pos.x+1, y:pos.y, path:path})}
-                if(!g[pos.x - 1][pos.y].wall &&!g[pos.x - 1][pos.y].box && !g[pos.x - 1][pos.y].bomb && !g[pos.x - 1][pos.y].visited){arr.push({x:pos.x-1, y:pos.y,path:path})}
-                if(!g[pos.x][pos.y+1].wall && !g[pos.x][pos.y+1].box && !g[pos.x][pos.y+1].bomb && !g[pos.x][pos.y+1].visited){arr.push({x:pos.x, y:pos.y+1, path:path})}
-                if(!g[pos.x][pos.y-1].wall && !g[pos.x][pos.y-1].box && !g[pos.x][pos.y-1].bomb&&!g[pos.x][pos.y-1].visited){arr.push({x:pos.x, y:pos.y-1, path:path})}
-            }
-            for(var i = 0; i < width; i++){   
-                for(var j = 0; j < height; j++){
-                    g[i][j].visited = undefined;
-                }
-            }
-            return this.findPathToRandom(g);
-            
-        }
+        this.findPathToItem = function(g){
             var arr = [{x:Math.floor(this.position.x), y:Math.floor(this.position.y), path: []}];
             var width = g.length;
             var height = g[0].length;
@@ -141,6 +111,36 @@ module.exports = {
                 }
             }
             return [];
+            
+        }
+        this.findPathToRandom = function(g){
+            var arr = [{x:Math.floor(this.position.x), y:Math.floor(this.position.y), path: []}];
+            var width = g.length;
+            var height = g[0].length;
+            while(arr.length > 0){
+                var pos = arr.shift();
+                
+                var path = pos.path.slice();
+
+                path.push({x:pos.x,y:pos.y});
+                if(g[pos.x][pos.y].visited != undefined){continue;}
+                g[pos.x][pos.y].visited = true;
+
+                if( (Math.random() * 10000) % 30 == 0)
+                    return path;
+                
+
+                if( !g[pos.x + 1][pos.y].wall&&!g[pos.x + 1][pos.y].box&&!g[pos.x + 1][pos.y].bomb && !g[pos.x + 1][pos.y].visited){arr.push({x:pos.x+1, y:pos.y, path:path})}
+                if(!g[pos.x - 1][pos.y].wall &&!g[pos.x - 1][pos.y].box && !g[pos.x - 1][pos.y].bomb && !g[pos.x - 1][pos.y].visited){arr.push({x:pos.x-1, y:pos.y,path:path})}
+                if(!g[pos.x][pos.y+1].wall && !g[pos.x][pos.y+1].box && !g[pos.x][pos.y+1].bomb && !g[pos.x][pos.y+1].visited){arr.push({x:pos.x, y:pos.y+1, path:path})}
+                if(!g[pos.x][pos.y-1].wall && !g[pos.x][pos.y-1].box && !g[pos.x][pos.y-1].bomb&&!g[pos.x][pos.y-1].visited){arr.push({x:pos.x, y:pos.y-1, path:path})}
+            }
+            for(var i = 0; i < width; i++){   
+                for(var j = 0; j < height; j++){
+                    g[i][j].visited = undefined;
+                }
+            }
+            return findPathToRandom(g);
             
         }
         this.findPathToBush = function(g){
