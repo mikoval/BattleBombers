@@ -18,10 +18,10 @@ module.exports = {
                 this.invince = 1.0;
                 this.dropPowerup(grid);
                 this.path = this.findPathToBush(grid);
-                if(path.length ==0){
-                	path = this.findPathToRandom();
+                if(this.path.length ==0){
+                	this.path = this.findPathToRandom(grid);
                 }
-                console.log("going to bush")       }
+            }
             if(this.invince > 0.0){
                 this.invince -= 0.03;
             }
@@ -70,7 +70,7 @@ module.exports = {
                 }
                 if(this.path.length > 0){
                     if(!hasPowerups(grid,target) && (!grid[target.x][target.y].bush || grid[target.x][target.y].bush.timer > 0 ) ){
-                        this.path = [];
+                       //this.path = [];
                     }
                 }
 
@@ -126,8 +126,10 @@ module.exports = {
                 if(g[pos.x][pos.y].visited != undefined){continue;}
                 g[pos.x][pos.y].visited = true;
 
-                if( (Math.random() * 10000) % 30 == 0)
+                if( Math.floor(Math.random() * 10000) % 30 == 0){
+                	console.log(path);
                     return path;
+                }
                 
 
                 if( !g[pos.x + 1][pos.y].wall&&!g[pos.x + 1][pos.y].box&&!g[pos.x + 1][pos.y].bomb && !g[pos.x + 1][pos.y].visited){arr.push({x:pos.x+1, y:pos.y, path:path})}
@@ -140,7 +142,7 @@ module.exports = {
                     g[i][j].visited = undefined;
                 }
             }
-            return findPathToRandom(g);
+            return this.findPathToRandom(g);
             
         }
         this.findPathToBush = function(g){
